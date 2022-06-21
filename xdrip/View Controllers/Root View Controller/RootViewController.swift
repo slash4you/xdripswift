@@ -338,7 +338,13 @@ final class RootViewController: UIViewController {
     
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground -  isIdleTimerDisabled
     private let applicationManagerKeyIsIdleTimerDisabled = "RootViewController-isIdleTimerDisabled"
+
+    /// SLH constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
+    private let applicationManagerKeyDisableSuspension = "applicationManagerKeyDisableSuspension"
     
+    /// SLH constant for key in ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground - trace that app goes to background
+    private let applicationManagerKeyEnableSuspension = "applicationManagerKeyEnableSuspension"
+
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
     private let applicationManagerKeyTraceAppGoesToBackGround = "applicationManagerKeyTraceAppGoesToBackGround"
     
@@ -474,7 +480,9 @@ final class RootViewController: UIViewController {
     /// create the landscape view
     private var landscapeChartViewController: LandscapeChartViewController?
 
-    
+    // SLH
+    private var webServerManager: WebServerManager?
+
     // MARK: - overriden functions
     
     // set the status bar content colour to light to match new darker theme
@@ -831,7 +839,19 @@ final class RootViewController: UIViewController {
         ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground(key: applicationManagerKeyStartNightScoutTreatmentSync, closure: {
             UserDefaults.standard.nightScoutSyncTreatmentsRequired = true
         })
-        
+
+        // SLH
+        ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground(key: applicationManagerKeyDisableSuspension, closure: {
+            if let webServerManager = self.webServerManager {
+                webServerManager.disableSuspension()
+            }
+        })
+        ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground(key: applicationManagerKeyEnableSuspension, closure: {
+            if let webServerManager = self.webServerManager {
+                webServerManager.enableSuspension()
+            }
+        })
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -1019,12 +1039,17 @@ final class RootViewController: UIViewController {
         self.chartOutlet.chartGenerator = { [weak self] (frame) in
             return self?.glucoseChartManager?.glucoseChartWithFrame(frame)?.view
         }
-        
+
         // initialize chartGenerator in miniChartOutlet
         self.miniChartOutlet.chartGenerator = { [weak self] (frame) in
             return self?.glucoseMiniChartManager?.glucoseChartWithFrame(frame)?.view
         }
         
+        // SLH
+        webServerManager = WebServerManager(coreDataManager: coreDataManager)
+        if let webServerManager = webServerManager {
+            webServerManager.start()
+        }
     }
     
     /// process new glucose data received from transmitter.
@@ -1265,6 +1290,8 @@ final class RootViewController: UIViewController {
                     loopManager?.share()
                 }
 
+                webServerManager?.share()
+                
                 updateWatchApp()
                 
             }
@@ -1711,6 +1738,8 @@ final class RootViewController: UIViewController {
                 }
 
                 
+                self.webServerManager?.share()
+
             }
             
         }, cancelHandler: nil)
@@ -3270,6 +3299,8 @@ extension RootViewController:NightScoutFollowerDelegate {
                     self.loopManager?.share()
                 }
                                 
+                self.webServerManager?.share()
+
                 updateWatchApp()
                 
             }

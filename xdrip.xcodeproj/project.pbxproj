@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */; };
+		0A364585284CE1F800BB90FE /* blank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A364584284CE1F800BB90FE /* blank.wav */; };
+		0A60228228537CCA00E23598 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60228128537CCA00E23598 /* WebServerManager.swift */; };
+		0A6022842855DC8D00E23598 /* ConstantsWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */; };
 		470B618A270C448000561E56 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470B6188270C448000561E56 /* Interface.storyboard */; };
 		470B618C270C448100561E56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 470B618B270C448100561E56 /* Assets.xcassets */; };
 		470B6192270C448100561E56 /* Watch App WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 470B6191270C448100561E56 /* Watch App WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -615,6 +619,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskAudio.swift; sourceTree = "<group>"; };
+		0A364584284CE1F800BB90FE /* blank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blank.wav; sourceTree = "<group>"; };
+		0A60228128537CCA00E23598 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
+		0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsWebServer.swift; sourceTree = "<group>"; };
 		170A1629CB2C62ADD901F4A6 /* Pods-xdrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xdrip.release.xcconfig"; path = "Target Support Files/Pods-xdrip/Pods-xdrip.release.xcconfig"; sourceTree = "<group>"; };
 		198D44C3260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Common.strings; sourceTree = "<group>"; };
 		198D44C4260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Alerts.strings; sourceTree = "<group>"; };
@@ -1587,6 +1595,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A60228028537C6900E23598 /* WebServer */ = {
+			isa = PBXGroup;
+			children = (
+				0A60228128537CCA00E23598 /* WebServerManager.swift */,
+			);
+			path = WebServer;
+			sourceTree = "<group>";
+		};
 		470B6187270C448000561E56 /* Watch App */ = {
 			isa = PBXGroup;
 			children = (
@@ -1722,6 +1738,7 @@
 		F8025E5A21F7AFA100ECF0C0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0A364584284CE1F800BB90FE /* blank.wav */,
 				F8B3A7B7226CC0B7004BA588 /* sounds */,
 				F8AC426621ADEBD70078C348 /* Assets.xcassets */,
 			);
@@ -2044,6 +2061,7 @@
 		F85DC2F621D25E3A00B9F74A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				0A60228028537C6900E23598 /* WebServer */,
 				47FB28052636AFE700042FFB /* Statistics */,
 				F821CF48229BF43A005C1E43 /* Alerts */,
 				F821CF54229BF43A005C1E43 /* Application */,
@@ -2728,6 +2746,7 @@
 				F8AF36142455C6F700B5977B /* ConstantsTrace.swift */,
 				F8E3A2AA23DA520B00E5E98A /* ConstantsWatch.swift */,
 				4752B3FF263570DA0081D551 /* ConstantsStatistics.swift */,
+				0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */,
 			);
 			name = Constants;
 			path = xdrip/Constants;
@@ -2746,6 +2765,7 @@
 				F8B3A7DD226E48C1004BA588 /* SoundPlayer */,
 				F8C5EBE622F38F0E00563B5F /* Trace.swift */,
 				F8EA6CA821BBE3010082976B /* UniqueId.swift */,
+				0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3401,6 +3421,7 @@
 				F82437B024CB7A9900BED341 /* In_A_Hurry.caf in Resources */,
 				F824378924CB7A9900BED341 /* Soft_Warm_Airy_Optimistic.caf in Resources */,
 				F82437C024CB7A9900BED341 /* Sci-Fi_Air_Raid_Alarm.caf in Resources */,
+				0A364585284CE1F800BB90FE /* blank.wav in Resources */,
 				F8BDD455221DEF22006EAB84 /* SettingsViews.strings in Resources */,
 				F82437C724CB7A9900BED341 /* Siri_Calibration_Needed.caf in Resources */,
 				F824378324CB7A9900BED341 /* Tornado_Siren.caf in Resources */,
@@ -3588,6 +3609,7 @@
 				F816E0F12433C31B009EE65B /* Blucon+CoreDataClass.swift in Sources */,
 				F8F9723323A5915900C3F17D /* M5StackBluetoothTransmitterDelegate.swift in Sources */,
 				F8B3A81B227DEC92004BA588 /* SensorsAccessor.swift in Sources */,
+				0A60228228537CCA00E23598 /* WebServerManager.swift in Sources */,
 				F8F9721E23A5915900C3F17D /* LibreSensorState.swift in Sources */,
 				F8B3A85D22821BB6004BA588 /* Int.swift in Sources */,
 				F808D2CE2403292C0084B5DB /* Bubble+CoreDataProperties.swift in Sources */,
@@ -3627,6 +3649,7 @@
 				F8F9721223A5915900C3F17D /* FirmwareVersionTxMessage.swift in Sources */,
 				F80D916824F7086D006840B5 /* Libre2BluetoothPeripheralViewModel.swift in Sources */,
 				F857A334253F6A7600951BB2 /* LibreCalibrationInfo.swift in Sources */,
+				0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */,
 				F867E2612252ADAB000FD265 /* Calibration+CoreDataProperties.swift in Sources */,
 				F8025E6B21F7CD7600ECF0C0 /* UIStoryboard.swift in Sources */,
 				F830991D23C2909E005741DF /* Watlaa+CoreDataProperties.swift in Sources */,
@@ -3649,6 +3672,7 @@
 				F8A2BC3A25DB0D6D001D1E78 /* BluetoothPeripheralManager+CGMGNSEntryTransmitterDelegate.swift in Sources */,
 				F8EA6CA921BBE3010082976B /* UniqueId.swift in Sources */,
 				F8A1585122EDB597007F5B5D /* ConstantsBGGraphBuilder.swift in Sources */,
+				0A6022842855DC8D00E23598 /* ConstantsWebServer.swift in Sources */,
 				F81D6D4822BD5F62005EFAE2 /* DexcomShareUploadManager.swift in Sources */,
 				F8C9784D2428052E00A09483 /* CGMSensorType.swift in Sources */,
 				F8A1586B22EDB967007F5B5D /* ConstantsMaster.swift in Sources */,
