@@ -1,18 +1,23 @@
 PODS:
   - ActionClosurable (2.0.0)
-  - CryptoSwift (1.4.2)
+  - CryptoSwift (1.4.3)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
   - PieCharts (0.0.7)
   - SwiftCharts (0.6.5)
 
 DEPENDENCIES:
   - ActionClosurable (from `https://github.com/takasek/ActionClosurable.git`)
   - CryptoSwift (~> 1.4.0)
+  - GCDWebServer (~> 3.0)
   - PieCharts
   - SwiftCharts (~> 0.6.5)
 
 SPEC REPOS:
   trunk:
     - CryptoSwift
+    - GCDWebServer
     - PieCharts
     - SwiftCharts
 
@@ -27,10 +32,11 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ActionClosurable: 92729a0f0bb4b38d2744319ea8282a3ce8fb1e0a
-  CryptoSwift: a532e74ed010f8c95f611d00b8bbae42e9fe7c17
+  CryptoSwift: a0799ee936271bd2253a006f1e4523df21845000
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   PieCharts: 30e50dfa7dc19e5b84e9878d32089673ef5d0453
   SwiftCharts: 2e755ea292f0b87d3e4b2c1eb5afc080a20cdc15
 
-PODFILE CHECKSUM: 9e7c827934c9a391ed069c554e2082e1775255df
+PODFILE CHECKSUM: a3a5aec7cc9bb9fa36c47bfe1b7b0b23ca3f1540
 
 COCOAPODS: 1.11.3

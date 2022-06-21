@@ -166,5 +166,7 @@ enum ConstantsLog {
     // for use in LoopManager
     static let categoryLoopManager =                            "LoopManager              "
     
+    static let categoryWebServerController =                    "WebServerController              "
+
 }
 

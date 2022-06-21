@@ -1,5 +1,7 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '13.0'
+
+source 'https://cdn.cocoapods.org/'
 
 target 'xdrip' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -16,5 +18,8 @@ target 'xdrip' do
   
   use_frameworks!
   pod 'PieCharts'
+  
+  use_frameworks!
+  pod "GCDWebServer", "~> 3.0"
   
 end
