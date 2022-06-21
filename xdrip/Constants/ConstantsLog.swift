@@ -166,5 +166,15 @@ enum ConstantsLog {
     // for use in LoopManager
     static let categoryLoopManager =                            "LoopManager              "
     
+    static let categoryWebServerController =                    "WebServerController              "
+
+    static let categoryNovopenController =                    "NovopenController              "
+
+    static let categoryNovopenStateMachine =                    "NovopenStateMachine              "
+
+    static let categoryNovopenMessage =                    "NovopenMessage              "
+
+    static let categoryTreatmentsViewController =                    "TreatmentsViewController              "
+
 }
 

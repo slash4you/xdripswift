@@ -174,17 +174,17 @@ extension Date {
             if days == 0 && hours < 1 {
                 
                 // show just minutes for less than one hour
-                daysAndHoursAgoString = abs(minutes).description + "m"
+                daysAndHoursAgoString = String(format:"%02u",abs(minutes)) + "m"
                 
             } else if days == 0 && hours < 12 {
                 
                 // show just hours and minutes for less than twelve hours
-                daysAndHoursAgoString = abs(hours).description + "h" + abs(minutes).description + "m"
+                daysAndHoursAgoString = String(format:"%02u",abs(hours)) + "h" + String(format:"%02u",abs(minutes)) + "m"
                 
             } else {
                 
                 // default show days and hours
-                daysAndHoursAgoString = abs(days).description + "d" + abs(hours).description + "h"
+                daysAndHoursAgoString = String(format:"%02u",abs(days)).description + "d" + String(format:"%02u",abs(hours)) + "h"
                 
             }
             

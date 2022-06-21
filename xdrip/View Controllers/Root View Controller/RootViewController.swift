@@ -8,6 +8,7 @@ import HealthKitUI
 import AVFoundation
 import PieCharts
 import WatchConnectivity
+import WidgetKit
 
 /// viewcontroller for the home screen
 final class RootViewController: UIViewController {
@@ -91,18 +92,15 @@ final class RootViewController: UIViewController {
         screenLockAlert(showClock: true)
     }
     
+    @IBOutlet weak var sageLabelOutlet: UILabel!
+    @IBOutlet weak var stepsLabelOutlet: UILabel!
+    @IBOutlet weak var iobLabelOutlet: UILabel!
     
     /// outlet for label that shows how many minutes ago and so on
     @IBOutlet weak var minutesLabelOutlet: UILabel!
     
-    @IBOutlet weak var minutesAgoLabelOutlet: UILabel!
-    
-    
     /// outlet for label that shows difference with previous reading
     @IBOutlet weak var diffLabelOutlet: UILabel!
-    
-    @IBOutlet weak var diffLabelUnitOutlet: UILabel!
-    
     
     /// outlet for label that shows the current reading
     @IBOutlet weak var valueLabelOutlet: UILabel!
@@ -222,11 +220,8 @@ final class RootViewController: UIViewController {
                     
                     // set timestamp to timestamp of latest chartPoint, in red so user can notice this is an old value
                     self.minutesLabelOutlet.text =  self.dateTimeFormatterForMinutesLabelWhenPanning.string(from: chartAxisValueDate.date)
-                    self.minutesLabelOutlet.textColor = UIColor.red
-                    
-                    self.minutesAgoLabelOutlet.text = ""
-                    
-                    self.valueLabelOutlet.textColor = UIColor.lightGray
+                    self.minutesLabelOutlet.textColor = UIColor.darkGray
+                    self.valueLabelOutlet.textColor = UIColor.darkGray
                     
                     // apply strikethrough to the BG value text format
                     let attributedString = NSMutableAttributedString(string: self.valueLabelOutlet.text!)
@@ -235,9 +230,20 @@ final class RootViewController: UIViewController {
                     self.valueLabelOutlet.attributedText = attributedString
                     
                     // don't show anything in diff outlet
-                    self.diffLabelOutlet.text = ""
-                    
-                    self.diffLabelUnitOutlet.text = ""
+                    self.diffLabelOutlet.text = " "
+					
+					// Update IOB label.
+                    var iobLabelText = " "
+					if UserDefaults.standard.insulinOnBoardEnabledDisplay {
+						if let calculator = self.insulinOnBoardCalculator {
+							let iob = calculator.insulinYetToBeConsumedAt(date: chartAxisValueDate.date)
+                            iobLabelText = iob.round(toDecimalPlaces: 1).description + "u"
+						}
+                    }
+                    self.iobLabelOutlet.textColor = UIColor.darkGray
+                    self.iobLabelOutlet.text = iobLabelText
+                    self.stepsLabelOutlet.text = " "
+                    self.sageLabelOutlet.text = " "
                     
                 } else {
                     
@@ -349,7 +355,13 @@ final class RootViewController: UIViewController {
     
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground -  isIdleTimerDisabled
     private let applicationManagerKeyIsIdleTimerDisabled = "RootViewController-isIdleTimerDisabled"
+
+    /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
+    private let applicationManagerKeyDisableSuspension = "applicationManagerKeyDisableSuspension"
     
+    /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground - trace that app goes to background
+    private let applicationManagerKeyEnableSuspension = "applicationManagerKeyEnableSuspension"
+
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
     private let applicationManagerKeyTraceAppGoesToBackGround = "applicationManagerKeyTraceAppGoesToBackGround"
     
@@ -454,6 +466,9 @@ final class RootViewController: UIViewController {
     
     /// housekeeper instance
     private var houseKeeper: HouseKeeper?
+	
+	/// InsulinOnBoardCalculator instance
+	private var insulinOnBoardCalculator: InsulinOnBoardCalculator?
     
     /// current value of webOPEnabled, if nil then it means no cgmTransmitter connected yet , false is used as value
     /// - used to detect changes in the value
@@ -485,7 +500,8 @@ final class RootViewController: UIViewController {
     /// create the landscape view
     private var landscapeChartViewController: LandscapeChartViewController?
 
-    
+    private var webServerManager: WebServerManager?
+
     // MARK: - overriden functions
     
     // set the status bar content colour to light to match new darker theme
@@ -848,7 +864,18 @@ final class RootViewController: UIViewController {
         ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground(key: applicationManagerKeyStartNightScoutTreatmentSync, closure: {
             UserDefaults.standard.nightScoutSyncTreatmentsRequired = true
         })
-        
+
+        ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground(key: applicationManagerKeyDisableSuspension, closure: {
+            if let webServerManager = self.webServerManager {
+                webServerManager.disableSuspension()
+            }
+        })
+        ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground(key: applicationManagerKeyEnableSuspension, closure: {
+            if let webServerManager = self.webServerManager {
+                webServerManager.enableSuspension()
+            }
+        })
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -888,7 +915,7 @@ final class RootViewController: UIViewController {
         }
     }
     
-    // creates activeSensor, bgreadingsAccessor, calibrationsAccessor, NightScoutUploadManager, soundPlayer, dexcomShareUploadManager, nightScoutFollowManager, alertManager, healthKitManager, bgReadingSpeaker, bluetoothPeripheralManager, watchManager, housekeeper
+    // creates activeSensor, bgreadingsAccessor, calibrationsAccessor, NightScoutUploadManager, soundPlayer, dexcomShareUploadManager, nightScoutFollowManager, alertManager, healthKitManager, bgReadingSpeaker, bluetoothPeripheralManager, watchManager, housekeeper, insulinOnBoardCalculator
     private func setupApplicationData() {
         
         // setup Trace
@@ -1031,17 +1058,24 @@ final class RootViewController: UIViewController {
         
         // initialize statisticsManager
         statisticsManager = StatisticsManager(coreDataManager: coreDataManager)
+		
+		// initialize insulinOnBoardCalculator
+		insulinOnBoardCalculator = InsulinOnBoardCalculator(coreDataManager: coreDataManager)
         
         // initialize chartGenerator in chartOutlet
         self.chartOutlet.chartGenerator = { [weak self] (frame) in
             return self?.glucoseChartManager?.glucoseChartWithFrame(frame)?.view
         }
-        
+
         // initialize chartGenerator in miniChartOutlet
         self.miniChartOutlet.chartGenerator = { [weak self] (frame) in
             return self?.glucoseMiniChartManager?.glucoseChartWithFrame(frame)?.view
         }
         
+        webServerManager = WebServerManager(coreDataManager: coreDataManager, healthDelegate: self)
+        if let webServerManager = webServerManager {
+            webServerManager.start()
+        }
     }
     
     /// process new glucose data received from transmitter.
@@ -1210,6 +1244,9 @@ final class RootViewController: UIViewController {
                     // check on glucoseLevelRaw > 0 because I've had a case where a faulty sensor was giving negative values
                     if glucose.glucoseLevelRaw > 0 {
                         
+                        // get latest3BgReadings
+                        var latest3BgReadings = bgReadingsAccessor.getLatestBgReadings(limit: 3, howOld: nil, forSensor: activeSensor, ignoreRawData: false, ignoreCalculatedValue: false)
+                        
                         let newReading = calibrator.createNewBgReading(rawData: glucose.glucoseLevelRaw, timeStamp: glucose.timeStamp, sensor: activeSensor, last3Readings: &latest3BgReadings, lastCalibrationsForActiveSensorInLastXDays: &lastCalibrationsForActiveSensorInLastXDays, firstCalibration: firstCalibrationForActiveSensor, lastCalibration: lastCalibrationForActiveSensor, deviceName: self.getCGMTransmitterDeviceName(for: cgmTransmitter), nsManagedObjectContext: coreDataManager.mainManagedObjectContext)
                         
                         if UserDefaults.standard.addDebugLevelLogsInTraceFileAndNSLog {
@@ -1308,7 +1345,11 @@ final class RootViewController: UIViewController {
                     loopManager?.share()
                 }
 
+                webServerManager?.share()
+                
                 updateWatchApp()
+                // Request reload for all widgets
+                WidgetCenter.shared.reloadAllTimelines()
             }
             
         }
@@ -1766,7 +1807,8 @@ final class RootViewController: UIViewController {
                     self.loopManager?.share()
                 }
 
-                
+                self.webServerManager?.share()
+
             }
             
         }, cancelHandler: nil)
@@ -2026,8 +2068,9 @@ final class RootViewController: UIViewController {
         let mgdl = UserDefaults.standard.bloodGlucoseUnitIsMgDl
         
         // set minutesLabelOutlet.textColor to white, might still be red due to panning back in time
-        self.minutesLabelOutlet.textColor = UIColor.white
-        
+        self.minutesLabelOutlet.textColor = UIColor.lightGray
+        self.iobLabelOutlet.textColor = UIColor.lightGray
+
         // get latest reading, doesn't matter if it's for an active sensor or not, but it needs to have calculatedValue > 0 / which means, if user would have started a new sensor, but didn't calibrate yet, and a reading is received, then there's not going to be a latestReading
         let latestReadings = bgReadingsAccessor.get2LatestBgReadings(minimumTimeIntervalInMinutes: 4.0)
         
@@ -2035,10 +2078,11 @@ final class RootViewController: UIViewController {
         guard latestReadings.count > 0 else {
             
             valueLabelOutlet.textColor = UIColor.darkGray
-            minutesLabelOutlet.text = ""
-            minutesAgoLabelOutlet.text = ""
-            diffLabelOutlet.text = ""
-            diffLabelUnitOutlet.text = ""
+            minutesLabelOutlet.text = " "
+            diffLabelOutlet.text = " "
+            iobLabelOutlet.text = " "
+            stepsLabelOutlet.text = " "
+            sageLabelOutlet.text = " "
                 
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "---")
             attributeString.addAttribute(.strikethroughStyle, value: 0, range: NSMakeRange(0, attributeString.length))
@@ -2101,26 +2145,38 @@ final class RootViewController: UIViewController {
             // BG is between high and low objectives so considered "in range"
             valueLabelOutlet.textColor = UIColor.green
         }
-        
-        // get minutes ago and create value text for minutes ago label
+
+        var iobLabelText : String = " "
+        // Update IOB label
+        if UserDefaults.standard.insulinOnBoardEnabledDisplay {
+            if let calculator = insulinOnBoardCalculator {
+                let iob = calculator.insulinYetToBeConsumedAt(date: lastReading.timeStamp)
+                iobLabelText = iob.round(toDecimalPlaces: 1).description + "u"
+            }
+        }
+        iobLabelOutlet.textColor = UIColor.lightGray
+        iobLabelOutlet.text = iobLabelText
+
+        // get minutes ago and create text for minutes ago label
         let minutesAgo = -Int(lastReading.timeStamp.timeIntervalSinceNow) / 60
-        let minutesAgoText = minutesAgo.description
-        minutesLabelOutlet.text = minutesAgoText
+        minutesLabelOutlet.text = minutesAgo.description + " mn"
+
+        var sageLabelText : String = " "
+        if let activeSensor = activeSensor {
+            sageLabelText = activeSensor.startDate.daysAndHoursAgo(appendAgo: false)
+        }
+        sageLabelOutlet.text = sageLabelText
+                
+        // create delta text
+        let diffLabelText = lastReading.unitizedDeltaString(previousBgReading: lastButOneReading, showUnit: true, highGranularity: true, mgdl: UserDefaults.standard.bloodGlucoseUnitIsMgDl)
         
-        // configure the localized text in the "mins ago" label
-        let minutesAgoMinAgoText = (minutesAgo == 1 ? Texts_Common.minute : Texts_Common.minutes) + " " + Texts_HomeView.ago
-        minutesAgoLabelOutlet.text = minutesAgoMinAgoText
-        
-        // create delta value text (without the units)
-        let diffLabelText = lastReading.unitizedDeltaString(previousBgReading: lastButOneReading, showUnit: false, highGranularity: true, mgdl: mgdl)
         diffLabelOutlet.text = diffLabelText
-        
-        // set the delta unit label text
-        let diffLabelUnitText = mgdl ? Texts_Common.mgdl : Texts_Common.mmol
-        diffLabelUnitOutlet.text = diffLabelUnitText
+
+        stepsLabelOutlet.text = UserDefaults.standard.stepsCount.description
         
         // update the chart up to now
         updateChartWithResetEndDate()
+		
         
         self.updateMiniChart()
         
@@ -3362,7 +3418,9 @@ extension RootViewController:NightScoutFollowerDelegate {
                 if !UserDefaults.standard.suppressLoopShare {
                     self.loopManager?.share()
                 }
-                                
+
+                webServerManager?.share()
+
                 updateWatchApp()
                 
             }
@@ -3420,4 +3478,22 @@ extension RootViewController: WCSessionDelegate {
             
         }
     }
+}
+
+extension RootViewController: WebServerDelegateProtocol {
+    
+    func receivedHealthData(heart: Int) {
+        // possibly not running on main thread here
+        DispatchQueue.main.async {
+            UserDefaults.standard.heartRate = heart
+        }
+    }
+    
+    func receivedHealthData(steps: Int) {
+        // possibly not running on main thread here
+        DispatchQueue.main.async {
+            UserDefaults.standard.stepsCount = steps
+        }
+    }
+    
 }
