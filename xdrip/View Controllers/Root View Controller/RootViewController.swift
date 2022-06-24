@@ -2065,9 +2065,7 @@ final class RootViewController: UIViewController {
             
             valueLabelOutlet.textColor = UIColor.darkGray
             minutesLabelOutlet.text = ""
-            minutesAgoLabelOutlet.text = ""
             diffLabelOutlet.text = ""
-            diffLabelUnitOutlet.text = ""
                 
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: "---")
             attributeString.addAttribute(.strikethroughStyle, value: 0, range: NSMakeRange(0, attributeString.length))
@@ -2133,20 +2131,18 @@ final class RootViewController: UIViewController {
         
         // get minutes ago and create value text for minutes ago label
         let minutesAgo = -Int(lastReading.timeStamp.timeIntervalSinceNow) / 60
-        let minutesAgoText = minutesAgo.description
+        var sage = ""
+        if let activeSensor = activeSensor {
+            sage = "            " + activeSensor.startDate.daysAndHoursAgo() + " ago"
+        }
+        let minutesAgoText = minutesAgo.description + " " + (minutesAgo == 1 ? Texts_Common.minute:Texts_Common.minutes) + sage
+        
         minutesLabelOutlet.text = minutesAgoText
         
-        // configure the localized text in the "mins ago" label
-        let minutesAgoMinAgoText = (minutesAgo == 1 ? Texts_Common.minute : Texts_Common.minutes) + " " + Texts_HomeView.ago
-        minutesAgoLabelOutlet.text = minutesAgoMinAgoText
+        // create delta text
+        let diffLabelText = lastReading.unitizedDeltaString(previousBgReading: lastButOneReading, showUnit: true, highGranularity: true, mgdl: UserDefaults.standard.bloodGlucoseUnitIsMgDl)
         
-        // create delta value text (without the units)
-        let diffLabelText = lastReading.unitizedDeltaString(previousBgReading: lastButOneReading, showUnit: false, highGranularity: true, mgdl: mgdl)
         diffLabelOutlet.text = diffLabelText
-        
-        // set the delta unit label text
-        let diffLabelUnitText = mgdl ? Texts_Common.mgdl : Texts_Common.mmol
-        diffLabelUnitOutlet.text = diffLabelUnitText
         
         // update the chart up to now
         updateChartWithResetEndDate()
