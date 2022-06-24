@@ -1960,7 +1960,11 @@ final class RootViewController: UIViewController {
         
         // get minutes ago and create text for minutes ago label
         let minutesAgo = -Int(lastReading.timeStamp.timeIntervalSinceNow) / 60
-        let minutesAgoText = minutesAgo.description + " " + (minutesAgo == 1 ? Texts_Common.minute:Texts_Common.minutes) + " " + Texts_HomeView.ago
+        var sage = ""
+        if let activeSensor = activeSensor {
+            sage = "            " + activeSensor.startDate.daysAndHoursAgo() + " ago"
+        }
+        let minutesAgoText = minutesAgo.description + " " + (minutesAgo == 1 ? Texts_Common.minute:Texts_Common.minutes) + sage
         
         minutesLabelOutlet.text = minutesAgoText
         
