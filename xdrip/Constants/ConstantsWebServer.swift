@@ -18,5 +18,8 @@ enum ConstantsWebServer {
     
     static let aggressiveSuspensionPrevention = true
 
-    static let lightSuspensionPreventionInterval = 5
+    static let moderateSuspensionPreventionInterval : Double = 5.0
+
+    static let aggressiveSuspensionPreventionInterval : Double = 1.0
+
 }

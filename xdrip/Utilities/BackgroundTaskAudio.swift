@@ -10,24 +10,27 @@ import AVFoundation
 class BackgroundTask {
     
     // MARK: - Vars
-    private var player : AVPlayer?
-    private var audioPlayer:AVAudioPlayer?
+    private var avplayer : AVPlayer?
+    private var aplayer  : AVAudioPlayer?
     private var playSoundTimer:RepeatingTimer?
 
     public init() {
         if ConstantsWebServer.aggressiveSuspensionPrevention {
             //if let silentFile = Bundle.main.url(forResource: "blank", withExtension: "wav") {
             if let silentFile = Bundle.main.url(forResource: "1-millisecond-of-silence", withExtension: "mp3") {
-                player = AVPlayer(url: silentFile)
+                avplayer = AVPlayer(url: silentFile)
             }
+            playSoundTimer = RepeatingTimer(timeInterval: TimeInterval(ConstantsWebServer.aggressiveSuspensionPreventionInterval), eventHandler: {
+                self.playAudio()
+            })
         } else {
             // creat audioplayer
             do {
                 if let soundFile = Bundle.main.url(forResource: "1-millisecond-of-silence", withExtension: "mp3")  {
-                    try audioPlayer = AVAudioPlayer(contentsOf: soundFile)
+                    try aplayer = AVAudioPlayer(contentsOf: soundFile)
                 }
                 // create playSoundTimer
-                playSoundTimer = RepeatingTimer(timeInterval: TimeInterval(Double(ConstantsWebServer.lightSuspensionPreventionInterval)), eventHandler: {
+                playSoundTimer = RepeatingTimer(timeInterval: TimeInterval(ConstantsWebServer.moderateSuspensionPreventionInterval), eventHandler: {
                     self.playAudio()
                 })
             } catch let error {
@@ -40,23 +43,19 @@ class BackgroundTask {
     func disableSuspension() {
         if ConstantsWebServer.aggressiveSuspensionPrevention {
             NotificationCenter.default.addObserver(self, selector: #selector(interruptedAudio), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-            playAudio()
-        } else {
-            if let playSoundTimer = playSoundTimer {
-                playSoundTimer.resume()
-            }
+        }
+        if let playSoundTimer = playSoundTimer {
+            playSoundTimer.resume()
         }
     }
     
     func enableSuspension() {
         if ConstantsWebServer.aggressiveSuspensionPrevention {
             NotificationCenter.default.removeObserver(self, name: AVAudioSession.interruptionNotification, object: nil)
-            stopAudio()
-        } else {
-            // stop the timer for now, might be already suspended but doesn't harm
-            if let playSoundTimer = playSoundTimer {
-                playSoundTimer.suspend()
-            }
+        }
+        // stop the timer for now, might be already suspended but doesn't harm
+        if let playSoundTimer = playSoundTimer {
+            playSoundTimer.suspend()
         }
     }
     
@@ -71,32 +70,32 @@ class BackgroundTask {
     
     fileprivate func playAudio() {
         if ConstantsWebServer.aggressiveSuspensionPrevention {
-            if let player = self.player {
+            if let avplayer = self.avplayer {
                 // Play audio forever by setting num of loops to -1
                 //player.numberOfLoops = -1
                 // 'actionAtItemEnd=none' prevent from suspending the session at playback end
-                player.actionAtItemEnd = .none
-                player.volume = 0.01
-                player.play()
+                avplayer.actionAtItemEnd = .none
+                avplayer.volume = 0.01
+                avplayer.seek(to: CMTime.zero)
+                avplayer.play()
             }
         } else {
             // play the sound
-            if let audioPlayer = self.audioPlayer, !audioPlayer.isPlaying {
-                audioPlayer.volume = 0.01
-                audioPlayer.play()
+            if let aplayer = self.aplayer, !aplayer.isPlaying {
+                aplayer.volume = 0.01
+                aplayer.play()
             }
         }
     }
     
     fileprivate func stopAudio() {
         if ConstantsWebServer.aggressiveSuspensionPrevention {
-            if let player = self.player {
-                player.seek(to: CMTime.zero)
-                player.pause()
+            if let avplayer = self.avplayer {
+                avplayer.pause()
             }
         } else {
-            if let audioPlayer = self.audioPlayer, audioPlayer.isPlaying {
-                audioPlayer.stop()
+            if let aplayer = self.aplayer, aplayer.isPlaying {
+                aplayer.stop()
             }
         }
     }
