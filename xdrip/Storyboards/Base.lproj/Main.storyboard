@@ -252,12 +252,20 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Treatments" image="Home" id="EM7-TR-8Pt"/>
                     <navigationItem key="navigationItem" title="Treatments" id="fUA-gv-91n">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="iA1-b8-F3J">
-                            <color key="tintColor" systemColor="systemYellowColor"/>
-                            <connections>
-                                <segue destination="QgE-Gq-57r" kind="show" identifier="TreatmentsToNewTreatmentsSegue" id="iy5-gk-yrr"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="iA1-b8-F3J">
+                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                <connections>
+                                    <segue destination="QgE-Gq-57r" kind="show" identifier="TreatmentsToNewTreatmentsSegue" id="iy5-gk-yrr"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Pencil" image="pencil" catalog="system" id="chj-Yu-fKp">
+                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                <connections>
+                                    <action selector="importPencilData:" destination="01q-Jv-AjA" id="e2d-tY-wlc"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="XPB-uN-uCA" id="fV3-OR-Exz"/>
@@ -2068,6 +2076,7 @@
         <image name="ellipsis.circle" catalog="system" width="128" height="121"/>
         <image name="lock" catalog="system" width="128" height="128"/>
         <image name="moon.zzz" catalog="system" width="115" height="128"/>
+        <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="questionmark.circle" catalog="system" width="128" height="121"/>
         <image name="scope" catalog="system" width="128" height="122"/>
         <image name="sensor14_14_alt" width="390" height="14"/>
