@@ -23,6 +23,10 @@ class NovStateMachine {
         case AWAIT_CLOSE_DOWN
         case PROFIT
         
+        var description: String {
+            return String(describing: self)
+        }
+
         func next() -> State {
           let all = type(of: self).allCases // 1
           if self == all.last! {
@@ -49,13 +53,13 @@ class NovStateMachine {
     func processPayload(payload: Data) -> Fsa {
         
         let msg : NovMessage = NovMessage.parse(data: payload)
-        print("NFC: ", msg.description())
+        print("NFC: NovStateMachine.processPayload - ", msg.description())
         if (msg.isError()) {
-            print("NFC : error")
+            print("NFC : NovStateMachine.processPayload - invalid message")
             return Fsa()
         }
         else if (msg.wantsRelease()) {
-            print("NFC : remote close")
+            print("NFC : NovStateMachine.processPayload - remote close request")
             state = .AWAIT_CLOSE_DOWN
             return Fsa(action: .WRITE_READ, data: msg.closeDown())
         }
@@ -65,40 +69,55 @@ class NovStateMachine {
             {
             case .AWAIT_ASSOCIATION_REQ:
                 if (msg.requestIsValid()) {
+                    let D : Data = msg.acceptAssoc()
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
                     state = state.next()
-                    let D : Data = msg.requestAnswer()
-                    print ("NFC: ", Apdu.parse(data:D).description())
                     return Fsa(action: .WRITE_READ, data: D)
                 }
                 break
             case .AWAIT_CONFIGURATION:
-                state = state.next()
-                return Fsa()
+                if (msg.configIsValid()) {
+                    let D : Data = msg.acceptConfig()
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: D)
+                }
+                break
             case .ASK_INFORMATION:
-                state = state.next()
-                return Fsa()
+                if (msg.configIsValid()) {
+                    let D : Data = msg.askInformation()
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: D)
+                }
             case .AWAIT_INFORMATION:
+                print("NFC: NovStateMachine.processPayload - not implemented yet")
                 state = state.next()
                 return Fsa()
             case .AWAIT_STORAGE_INFO:
+                print("NFC: NovStateMachine.processPayload - not implemented yet")
                 state = state.next()
                 return Fsa()
             case .AWAIT_XFER_CONFIRM:
+                print("NFC: NovStateMachine.processPayload - not implemented yet")
                 state = state.next()
                 return Fsa()
             case .AWAIT_LOG_DATA:
+                print("NFC: NovStateMachine.processPayload - not implemented yet")
                 state = state.next()
                 return Fsa()
             case .AWAIT_CLOSE_DOWN:
                 if (msg.isClosed() == false) {
-                    print("NFC : missing expected closure")
+                    print("NFC : NovStateMachine.processPayload - missing expected closure")
                 }
                 return Fsa()
             case .PROFIT:
+                print("NFC: NovStateMachine.processPayload - not implemented yet")
                 state = state.next()
                 return Fsa()
             }
         }
+        print("NFC: NovStateMachine.processPayload - processing failed")
         return Fsa()
     }
     

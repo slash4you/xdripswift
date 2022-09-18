@@ -18,43 +18,34 @@ class PHDLinkLayer
     static let WELL_KNOWN : UInt8 = 1
     static let DEFAULT_OPCODE : UInt8 = 0xD1
 
-    private var opcode : UInt8
-    private var sequences : UInt8
-    private var checksum : UInt8
+    private var pOpcode : UInt8
+    private var pSeqNum : UInt8
+    private var pChecksum : UInt8
     private var headerData : Data
     private var payloadData : Data
-    private var valid : Bool
     
     public init() {
-        opcode = 0
-        sequences = 0
-        checksum = 0
+        pOpcode = 0
+        pSeqNum = 0
+        pChecksum = 0
         headerData = Data()
         payloadData = Data()
-        valid = false
-    }
-    
-    func description() -> String {
-        if (valid) {
-            return " [PHDLL] Opcode:" + String(format: "%02X", opcode) + " Header:" + headerData.toHexString() + " Sum:" + String(format: "%02X", checksum) + " Seq:" + String(format: "%02d", sequences) + " Payload:" + payloadData.toHexString() 
-        } else {
-            return " [PHDLL] Invalid"
-        }
-    }
-    
-    private func checkBit( bit : Int ) -> Bool {
-        return (((checksum >> bit) & 0x01 ) != 0x00)
     }
 
-    private func setCheckBit( bit : Int ) -> Void {
-        checksum |= ( 1 << bit )
+    public init(seqNum : UInt8) {
+        pOpcode = 0
+        pSeqNum = seqNum
+        pChecksum = 0
+        headerData = Data()
+        payloadData = Data()
+    }
+
+    func description() -> String {
+        return " [PHDLL] Opcode:" + String(format: "%02X", pOpcode) + " Header:" + headerData.toHexString() + " Sum:" + String(format: "%02X", pChecksum) + " Seq:" + String(format: "%02d", pSeqNum) + " Payload:" + payloadData.toHexString()
     }
     
-    func encode() -> Data {
-        if (!valid) {
-            return Data()
-        }
-        let pLen : UInt8 = UInt8(payloadData.count)
+    func encode(payload: Data) -> Data {
+        let pLen : UInt8 = UInt8(payload.count)
         let hLen : UInt8 = UInt8(headerData.count)
         let hasHeader : Bool = (hLen > 0)
         let hasPayload : Bool = (pLen > 0)
@@ -69,47 +60,23 @@ class PHDLinkLayer
         if (hasHeader) {
             buf.append( headerData )
         }
-        buf.append( contentsOf: [ (sequences & 0x0F) | 0x80 | checksum])
+        buf.append( contentsOf: [ (pSeqNum & 0x0F) | 0x80 | (pChecksum & 0xF0)])
         if (hasPayload) {
-            buf.append(contentsOf: payloadData)
+            buf.append(contentsOf: payload)
         }
         return buf
-    }
-    
-    func setOpCode(byte : UInt8) -> Void {
-        opcode = byte
-    }
-    
-    func setPayload(buf: Data) -> Void {
-        payloadData = buf
     }
     
     func payload() -> Data {
         return payloadData
     }
     
-    func setHeader(buf: Data) -> Void {
-        headerData = buf
+    func seqNum() -> UInt8 {
+        return pSeqNum
     }
     
-    func setChecksum(byte: UInt8) -> Void {
-        checksum = byte
-    }
-    
-    func setSeq(byte: UInt8) -> Void {
-        sequences = byte
-    }
-    
-    func seq() -> UInt8 {
-        return sequences
-    }
-    
-    func enable() -> Void {
-        valid = true
-    }
-
     func isValid() -> Bool {
-        return valid
+        return (pOpcode == PHDLinkLayer.DEFAULT_OPCODE)
     }
 
     static func parse(data : Data) -> PHDLinkLayer {
@@ -123,11 +90,10 @@ class PHDLinkLayer
             return PHDLinkLayer()
         }
 
-        let O : UInt8 = data[index]
-        phd.setOpCode( byte: O )
+        phd.pOpcode = data[index]
         index += 1
 
-        let hasHeader : Bool = ( (O & PHDLinkLayer.IL) != 0x00 )
+        let hasHeader : Bool = ( (phd.pOpcode & PHDLinkLayer.IL) != 0x00 )
 
         // b1 : Type length = "PHD".length() = 3
         if (data.endIndex < index) {
@@ -211,7 +177,7 @@ class PHDLinkLayer
                 return PHDLinkLayer()
             }
 
-            phd.setHeader(buf: data[ index ..< nextIndex ])
+            phd.headerData = data[ index ..< nextIndex ]
             index = nextIndex
         }
         
@@ -221,11 +187,10 @@ class PHDLinkLayer
             return PHDLinkLayer()
         }
 
-        let C : UInt8 = data[index]
-        phd.setChecksum(byte: C)
+        phd.pChecksum = data[index]
         index += 1
 
-        phd.setSeq(byte: (C & 0x0F))
+        phd.pSeqNum = (phd.pChecksum & 0x0F)
 
         // b(9+H) : payload
         if (pLen > 0) {
@@ -236,12 +201,10 @@ class PHDLinkLayer
                 return PHDLinkLayer()
             }
 
-            phd.setPayload(buf: data[ index ..< nextIndex ])
+            phd.payloadData = data[ index ..< nextIndex ]
             index = nextIndex
         }
-        
-        phd.enable()
-        
+
         return phd
     }
 }

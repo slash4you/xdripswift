@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2D3C6628D705F800D01D68 /* NovSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6528D705F800D01D68 /* NovSpecification.swift */; };
+		0A2D3C6828D70ED800D01D68 /* NovRelativeTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */; };
+		0A2D3C6A28D710A800D01D68 /* NovModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6928D710A800D01D68 /* NovModel.swift */; };
+		0A2D3C6C28D711E500D01D68 /* NovEventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */; };
 		0A33390D28B3FC59002DF1CD /* PHDLinkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */; };
 		0A33390F28B90F7E002DF1CD /* PHDLinkLayerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */; };
 		0A33391128B9F7E4002DF1CD /* NovStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */; };
@@ -18,6 +22,12 @@
 		0A33391D28C0AA57002DF1CD /* Aare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391C28C0AA57002DF1CD /* Aare.swift */; };
 		0A33391F28C10E8A002DF1CD /* Fsa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391E28C10E8A002DF1CD /* Fsa.swift */; };
 		0A33392128C3A89F002DF1CD /* NovopenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33392028C3A89F002DF1CD /* NovopenDelegate.swift */; };
+		0A34D23828CCAF51000DA716 /* NovEventReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D23728CCAF51000DA716 /* NovEventReport.swift */; };
+		0A34D23A28CCAF60000DA716 /* NovEventRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D23928CCAF60000DA716 /* NovEventRequest.swift */; };
+		0A34D23C28CCB0C8000DA716 /* NovConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D23B28CCB0C8000DA716 /* NovConfiguration.swift */; };
+		0A34D23E28CCB51C000DA716 /* NovAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D23D28CCB51C000DA716 /* NovAttribute.swift */; };
+		0A34D24028CDC9A3000DA716 /* NovValueMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D23F28CDC9A3000DA716 /* NovValueMap.swift */; };
+		0A34D24228CDD4F2000DA716 /* NovInsulinDose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */; };
 		0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */; };
 		0A364585284CE1F800BB90FE /* blank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A364584284CE1F800BB90FE /* blank.wav */; };
 		0A60228228537CCA00E23598 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60228128537CCA00E23598 /* WebServerManager.swift */; };
@@ -627,6 +637,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A2D3C6528D705F800D01D68 /* NovSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSpecification.swift; sourceTree = "<group>"; };
+		0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovRelativeTime.swift; sourceTree = "<group>"; };
+		0A2D3C6928D710A800D01D68 /* NovModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovModel.swift; sourceTree = "<group>"; };
+		0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovEventInfo.swift; sourceTree = "<group>"; };
 		0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayer.swift; sourceTree = "<group>"; };
 		0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayerHelper.swift; sourceTree = "<group>"; };
 		0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovStateMachine.swift; sourceTree = "<group>"; };
@@ -638,6 +652,12 @@
 		0A33391C28C0AA57002DF1CD /* Aare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aare.swift; sourceTree = "<group>"; };
 		0A33391E28C10E8A002DF1CD /* Fsa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fsa.swift; sourceTree = "<group>"; };
 		0A33392028C3A89F002DF1CD /* NovopenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovopenDelegate.swift; sourceTree = "<group>"; };
+		0A34D23728CCAF51000DA716 /* NovEventReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovEventReport.swift; sourceTree = "<group>"; };
+		0A34D23928CCAF60000DA716 /* NovEventRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovEventRequest.swift; sourceTree = "<group>"; };
+		0A34D23B28CCB0C8000DA716 /* NovConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovConfiguration.swift; sourceTree = "<group>"; };
+		0A34D23D28CCB51C000DA716 /* NovAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovAttribute.swift; sourceTree = "<group>"; };
+		0A34D23F28CDC9A3000DA716 /* NovValueMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovValueMap.swift; sourceTree = "<group>"; };
+		0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovInsulinDose.swift; sourceTree = "<group>"; };
 		0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskAudio.swift; sourceTree = "<group>"; };
 		0A364584284CE1F800BB90FE /* blank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blank.wav; sourceTree = "<group>"; };
 		0A60228128537CCA00E23598 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
@@ -1625,6 +1645,16 @@
 				0A33391C28C0AA57002DF1CD /* Aare.swift */,
 				0A33391E28C10E8A002DF1CD /* Fsa.swift */,
 				0A33392028C3A89F002DF1CD /* NovopenDelegate.swift */,
+				0A34D23728CCAF51000DA716 /* NovEventReport.swift */,
+				0A34D23928CCAF60000DA716 /* NovEventRequest.swift */,
+				0A34D23B28CCB0C8000DA716 /* NovConfiguration.swift */,
+				0A34D23D28CCB51C000DA716 /* NovAttribute.swift */,
+				0A34D23F28CDC9A3000DA716 /* NovValueMap.swift */,
+				0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */,
+				0A2D3C6528D705F800D01D68 /* NovSpecification.swift */,
+				0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */,
+				0A2D3C6928D710A800D01D68 /* NovModel.swift */,
+				0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */,
 			);
 			path = Novopen;
 			sourceTree = "<group>";
@@ -3602,6 +3632,7 @@
 			files = (
 				F8BDD450221CAA64006EAB84 /* TextsCommon.swift in Sources */,
 				F81D6D4E22BFC762005EFAE2 /* TextsDexcomShareTestResult.swift in Sources */,
+				0A34D23828CCAF51000DA716 /* NovEventReport.swift in Sources */,
 				F8A5EEC2257D18DC0085E660 /* LibreNFCDelegate.swift in Sources */,
 				F8F9720523A5915900C3F17D /* TransmitterMessage.swift in Sources */,
 				F816E1282439DE55009EE65B /* CGMDexomG4TransmitterDelegate.swift in Sources */,
@@ -3678,6 +3709,7 @@
 				F821CF6F229FC280005C1E43 /* Endpoint+NightScout.swift in Sources */,
 				F8F9722A23A5915900C3F17D /* TransmitterBatteryInfo.swift in Sources */,
 				F821CF5D229BF43A005C1E43 /* NSDateFormatter.swift in Sources */,
+				0A34D23A28CCAF60000DA716 /* NovEventRequest.swift in Sources */,
 				F8F16715272745A2001AA3D8 /* DexcomCalibrationResponseType.swift in Sources */,
 				F8F9721B23A5915900C3F17D /* CGMMiaoMiaoTransmitter.swift in Sources */,
 				F8F9721A23A5915900C3F17D /* CGMBubbleTransmitter.swift in Sources */,
@@ -3709,6 +3741,7 @@
 				F8A2BC3825DB0D6D001D1E78 /* BluetoothPeripheralManager+CGMBluconTransmitterDelegate.swift in Sources */,
 				F51B9F7D24B216CD00FC0643 /* Libre1NonFixedSlopeCalibrator.swift in Sources */,
 				0A33391B28BBB9F2002DF1CD /* Apoep.swift in Sources */,
+				0A2D3C6628D705F800D01D68 /* NovSpecification.swift in Sources */,
 				F8E51D612448E695001C9E5A /* Bundle.swift in Sources */,
 				F821CF61229BF4A2005C1E43 /* NightScoutUploadManager.swift in Sources */,
 				F8F9721023A5915900C3F17D /* TransmitterVersionRxMessage.swift in Sources */,
@@ -3728,6 +3761,7 @@
 				F8AF36152455C6F700B5977B /* ConstantsTrace.swift in Sources */,
 				F8F971B723A5914D00C3F17D /* BluetoothPeripheralType.swift in Sources */,
 				F80610C4222D4E4D00D8F236 /* ActionClosureable-extension.swift in Sources */,
+				0A2D3C6C28D711E500D01D68 /* NovEventInfo.swift in Sources */,
 				F8F1670E27273EA7001AA3D8 /* GlucoseDataRxMessage.swift in Sources */,
 				F8B3A835227F08AC004BA588 /* PickerViewController.swift in Sources */,
 				F821CF9522ADB0D7005C1E43 /* HealthKitManager.swift in Sources */,
@@ -3739,6 +3773,7 @@
 				F8025E5021EE746400ECF0C0 /* Calibrator.swift in Sources */,
 				0A33391328B9FDA3002DF1CD /* NovMessage.swift in Sources */,
 				F85DC2F421CFE3D400B9F74A /* Sensor+CoreDataClass.swift in Sources */,
+				0A34D24228CDD4F2000DA716 /* NovInsulinDose.swift in Sources */,
 				F8B3A844227F090E004BA588 /* SettingsViewAlertSettingsViewModel.swift in Sources */,
 				F8D0587C24BCB570008C8734 /* SettingsViewHomeScreenSettingsViewModel.swift in Sources */,
 				F8A1586322EDB86E007F5B5D /* ConstantsSounds.swift in Sources */,
@@ -3784,6 +3819,7 @@
 				F8CB59C22738206D00BA199E /* DexcomGlucoseDataTxMessage.swift in Sources */,
 				F8C97854242AA70D00A09483 /* MiaoMiao+CoreDataProperties.swift in Sources */,
 				F8F9720A23A5915900C3F17D /* DexcomTransmitterOpCode.swift in Sources */,
+				0A34D24028CDC9A3000DA716 /* NovValueMap.swift in Sources */,
 				F8AC425E21ADEBD60078C348 /* AppDelegate.swift in Sources */,
 				0A33390F28B90F7E002DF1CD /* PHDLinkLayerHelper.swift in Sources */,
 				F8A2BC0825DB09BE001D1E78 /* Atom+CoreDataProperties.swift in Sources */,
@@ -3814,6 +3850,7 @@
 				F8A1585922EDB7C6007F5B5D /* ConstantsDefaultAlertLevels.swift in Sources */,
 				F8A54AAD22D6859200934E7A /* SlopeParameters.swift in Sources */,
 				F830993023C928E0005741DF /* WatlaaBluetoothTransmitterDelegate.swift in Sources */,
+				0A34D23C28CCB0C8000DA716 /* NovConfiguration.swift in Sources */,
 				F8025C0A21D94FD700ECF0C0 /* CBManagerState.swift in Sources */,
 				47ADD2DF27FAF8630025E2F4 /* ChartPointsScatterDownTrianglesLayer.swift in Sources */,
 				0A33391128B9F7E4002DF1CD /* NovStateMachine.swift in Sources */,
@@ -3825,6 +3862,7 @@
 				F8F9721823A5915900C3F17D /* CGMBlueReaderTransmitter.swift in Sources */,
 				F8252867243E50FE0067AF77 /* ConstantsLibre.swift in Sources */,
 				F8A1586D22EDB9BE007F5B5D /* ConstantsDexcomFollower.swift in Sources */,
+				0A34D23E28CCB51C000DA716 /* NovAttribute.swift in Sources */,
 				F8F9720923A5915900C3F17D /* AESCrypt.m in Sources */,
 				F8CB59D3274D94AF00BA199E /* DexcomSessionStartTxMessage.swift in Sources */,
 				F80ED2ED236F68F90005C035 /* SettingsViewM5StackGeneralSettingsViewModel.swift in Sources */,
@@ -3842,6 +3880,7 @@
 				F8B3A78E22622954004BA588 /* AlertType+CoreDataClass.swift in Sources */,
 				F821CF5A229BF43A005C1E43 /* CoreDataManager.swift in Sources */,
 				F8E51D6924549E2C001C9E5A /* SettingsViewTraceSettingsViewModel.swift in Sources */,
+				0A2D3C6A28D710A800D01D68 /* NovModel.swift in Sources */,
 				F85DC2F321CFE3D400B9F74A /* Calibration+CoreDataClass.swift in Sources */,
 				F8AF361B245D93EE00B5977B /* Int16.swift in Sources */,
 				F8E3A2AB23DA520B00E5E98A /* ConstantsWatch.swift in Sources */,
@@ -3955,6 +3994,7 @@
 				F8A1584D22ECA445007F5B5D /* SettingsViewDevelopmentSettingsViewModel.swift in Sources */,
 				F816E12A2439DF3A009EE65B /* DexcomG4+CoreDataClass.swift in Sources */,
 				F8F9723E23A593C000C3F17D /* M5StickCBluetoothPeripheralViewModel.swift in Sources */,
+				0A2D3C6828D70ED800D01D68 /* NovRelativeTime.swift in Sources */,
 				F8A2BC3525DB0D6D001D1E78 /* BluetoothPeripheralManager+BluetoothTransmitterDelegate.swift in Sources */,
 				F8F9722323A5915900C3F17D /* LibreDataParser.swift in Sources */,
 				F8E51D5F2448E2E8001C9E5A /* ConstantsShareWithLoop.swift in Sources */,

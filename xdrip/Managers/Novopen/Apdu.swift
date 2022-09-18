@@ -33,44 +33,51 @@ class Apdu {
         }
     }
     
-    private var at : UInt16
-    private var kind : ApduType
-    private var choiceLen : UInt16
-    private var choiceData : Data
+    private var aType : ApduType
+    private var payloadData : Data
     
     public init() {
-        at = 0
-        kind = ApduType.Invalid
-        choiceLen = 0
-        choiceData = Data()
+        aType = ApduType.Invalid
+        payloadData = Data()
     }
     
     public init( type : ApduType ) {
-        at = type.rawValue
-        kind = type
-        choiceLen = 0
-        choiceData = Data()
+        aType = type
+        payloadData = Data()
     }
 
     func description() -> String {
-        return "[APDU] AT:" + String(format: "%04X", at) + " T:" + kind.description + " L:" + String(format: "%04X", choiceLen) + " P:" + choiceData.toHexString()
+        return "[APDU] Value:" + String(format: "%04X", aType.rawValue) + " Type:" + aType.description + " L:" + payloadData.count.description + " Payload:" + payloadData.toHexString()
     }
     
     func payload() -> Data {
-        return choiceData
+        return payloadData
+    }
+
+    func isError() -> Bool {
+        return (aType == ApduType.Invalid || aType == ApduType.Abrt)
     }
     
+    func wantsRelease() -> Bool {
+        return (aType == ApduType.Rlrq)
+    }
+    
+    func type() -> ApduType {
+        return aType
+    }
+
     func encode(payload : Data) -> Data {
         
-        if (at == 0 || kind == ApduType.Invalid) {
+        if (aType == ApduType.Invalid) {
             print("NFC : Apdu.encode - Invalid apdu")
             return Data()
         }
 
         var buf : Data = Data()
 
-        let A1 : UInt8 = UInt8((at >> 8) & 0xFF)
-        let A0 : UInt8 = UInt8(at & 0xFF)
+        let T : UInt16 = aType.rawValue
+        let A1 : UInt8 = UInt8((T >> 8) & 0xFF)
+        let A0 : UInt8 = UInt8(T & 0xFF)
         buf.append(contentsOf: [A1, A0])
         
         let L1 : UInt8 = UInt8((payload.count >> 8) & 0xFF)
@@ -92,12 +99,12 @@ class Apdu {
             return Apdu()
         }
 
-        apdu.at = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let T : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
         index += 2
 
-        apdu.kind = ApduType.findByValue(val: apdu.at)
+        apdu.aType = ApduType.findByValue(val: T)
 
-        if (apdu.kind == ApduType.Invalid) {
+        if (apdu.aType == ApduType.Invalid) {
             print("NFC : Apdu.parse - Invalid apdu")
             return Apdu()
         }
@@ -107,37 +114,22 @@ class Apdu {
             return Apdu()
         }
 
-        // TODO : SLH : valider si choicelen vaut data.endIndex
-        apdu.choiceLen = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let length : Int = Int(data[index]) * 256 + Int(data[index+1])
         index += 2
 
-        if (apdu.choiceLen == 0) {
-            print("NFC : Apdu.parse - Invalid data")
-            return Apdu()
-        }
-
-        let nextindex : Int = index + Int(apdu.choiceLen)
+        if (length > 0) {
+            let nextindex : Int = index + length
         
-        if (data.endIndex < nextindex) {
-            print("NFC : Apdu.parse - Invalid data")
-            return Apdu()
-        }
+            if (data.endIndex < nextindex) {
+                print("NFC : Apdu.parse - Invalid data")
+                return Apdu()
+            }
 
-        apdu.choiceData = data[index ..< nextindex]
-        index = nextindex
+            apdu.payloadData = data[index ..< nextindex]
+            index = nextindex
+        }
         
         return apdu
     }
 
-    func isError() -> Bool {
-        return (kind == ApduType.Invalid || kind == ApduType.Abrt)
-    }
-    
-    func wantsRelease() -> Bool {
-        return (kind == ApduType.Rlrq)
-    }
-    
-    func type() -> ApduType {
-        return kind
-    }
 }
