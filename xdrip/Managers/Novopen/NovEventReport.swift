@@ -61,6 +61,10 @@ class NovEventReport {
         return evConfig
     }
     
+    func handle() -> UInt16 {
+        return evHandle
+    }
+    
     func description() -> String {
         
         var log : String = "[REPORT] L:" + evLength.description + " handle:" + String(format: "%04X", evHandle) + " time:" + String(format: "%08X", evTime) + "type:" + evType.description

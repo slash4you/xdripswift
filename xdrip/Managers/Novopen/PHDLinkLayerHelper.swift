@@ -46,20 +46,18 @@ class PHDLinkLayerHelper {
         }
         let frame = phdll.encode(payload: bytes)
         
-        if (frame.count == 0 || frame.count > 0xFD) {
-            print("NFC: packInnerPacket - invalid frame size")
+        if (frame.count == 0) {
+            print("NFC: packInnerPacket - invalid frame size = " + frame.count.description)
             return Data()
         }
         
         print("NFC: " + PHDLinkLayer.parse(data: frame).description())
         
         // TODO : SLH :  mlcMax vs fragment management
-        //let len : UInt8 = UInt8(frame.count) + 2
-        let dlen : UInt8 = UInt8(frame.count)
         var out : Data = Data()
-        //out.append(contentsOf: [len])
-        //out.append(contentsOf: [0x00, dlen])
-        out.append(contentsOf: [0x00, dlen])
+        let D1 : UInt8 = UInt8((frame.count >> 8) & 0xFF)
+        let D0 : UInt8 = UInt8(frame.count & 0xFF)
+        out.append(contentsOf: [D1, D0])
         out.append(contentsOf: frame)
                 
         return out

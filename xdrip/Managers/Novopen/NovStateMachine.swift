@@ -39,13 +39,11 @@ class NovStateMachine {
     }
     
     
-    private var  requestCounter : Int
-    private var curSegmentCount : Int64
+    private var curSegmentCount : Int32
     private var state : State
     
     public init()
     {
-        requestCounter = 0
         curSegmentCount = -1
         state = State.AWAIT_ASSOCIATION_REQ
     }
@@ -91,30 +89,42 @@ class NovStateMachine {
                     return Fsa(action: .WRITE_READ, data: D)
                 }
             case .AWAIT_INFORMATION:
-                print("NFC: NovStateMachine.processPayload - not implemented yet")
-                state = state.next()
-                return Fsa()
+                if (msg.specificationIsValid()) {
+                    let D : Data = msg.confirmedAction()
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: D)
+                } else {
+                    let D : Data = msg.askInformation()
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    return Fsa(action: .WRITE_READ, data: D)
+                }
             case .AWAIT_STORAGE_INFO:
-                print("NFC: NovStateMachine.processPayload - not implemented yet")
-                state = state.next()
-                return Fsa()
+                if (msg.segmentInfoIsValid()) {
+                    self.curSegmentCount = msg.currentSegmentUsage()
+                    let D : Data = msg.xferAction(segmentId: msg.currentSegmentId() )
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: D)
+                }
             case .AWAIT_XFER_CONFIRM:
-                print("NFC: NovStateMachine.processPayload - not implemented yet")
-                state = state.next()
-                return Fsa()
+                if (msg.segmentDataIsValid()) {
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " send nil payload" )
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: Data())
+                }
             case .AWAIT_LOG_DATA:
+                if (msg.isEmpty()) {
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " send nil payload" )
+                    return Fsa(action: .WRITE_READ, data: Data())
+                }
                 print("NFC: NovStateMachine.processPayload - not implemented yet")
-                state = state.next()
-                return Fsa()
             case .AWAIT_CLOSE_DOWN:
                 if (msg.isClosed() == false) {
                     print("NFC : NovStateMachine.processPayload - missing expected closure")
                 }
-                return Fsa()
             case .PROFIT:
                 print("NFC: NovStateMachine.processPayload - not implemented yet")
-                state = state.next()
-                return Fsa()
             }
         }
         print("NFC: NovStateMachine.processPayload - processing failed")

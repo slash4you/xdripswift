@@ -26,8 +26,22 @@ class NovEventInfo {
         return "[INFO] handle:" + String(format: "%04X", aHandle) + " > " + aSpecification.description() + " > " + aModel.description() + " > " + aTime.description()
     }
     
-    //NFC:  [DPDU] invokeId:0000 Choice:0203 L:62 Payload:0100 0008 0038 0a4d0002080009430002000009410004000003200953000200000a5700040002504d0951000200010a630004000000000944000400000018
-    //NFC : [INFO] > [SPEC] SN:? PN:? SW:? HW:? > [MODEL] name:? > [TIME] relative:00000000 absolute:1970-01-01 00:00:00 +0000
+    func isAsExpected() -> Bool {
+        return (aSpecification.serial() != "?") && (aTime.relative() != 0)
+    }
+
+    //NFC:  [DPDU] invokeId:0000 Choice:0203 L:203 Payload:0000 0008 00c5
+    //  SYS_ID                       TIME_REL         TIME_INFO
+    // 0984000a0008001465004008931b 098f000400518efd 0a45001020001f00ffffffff00001f4000000000
+    //  PROD_SPECN      SN=AAREY3                PN=D21491065500000 D21491065500000
+    //092d004b00040047 000100010006414152455933 0002000100204432313439313036353530303030302044323134393130363535303030303020
+    //  HW=00          SW=01.08.00
+    // 00030001000100 00040001000830312e30382e3030
+    //  SPEC_LIST                ID_MODEL
+    // 0a5a00080001000410480001 0928001c00104e6f766f204e6f726469736b20412f5300084e6f766f50656e00
+    //  CONFIG_ID    CERT_DATA_LIST
+    // 0a440002400a 0a4b00160002001202010008040000010002a048020200020000
+    //NFC : [INFO] handle:0000 > [SPEC] SN:AAREY3 PN:D21491065500000 D21491065500000  SW:01.08.00 HW:? > [MODEL] name:Novo Nordisk A/S > [TIME] relative:00519842 absolute:2022-09-19 16:49:55 +0000
 
     static func parse(data: Data) -> NovEventInfo {
         

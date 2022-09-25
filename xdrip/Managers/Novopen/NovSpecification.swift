@@ -123,16 +123,24 @@ class NovSpecification {
                 switch (type)
                 {
                 case SpecType.SERIAL_NUMBER.rawValue:
-                    spec.aSerialNumber = String(decoding: bytes, as: UTF8.self)
+                    if (bytes.count > 0 && bytes.first != 0 ) {
+                        spec.aSerialNumber = String(decoding: bytes, as: Unicode.ASCII.self)
+                    }
                     break
                 case SpecType.PART_NUMBER.rawValue:
-                    spec.aPartNumber = String(decoding: bytes, as: UTF8.self)
+                    if (bytes.count > 0 && bytes.first != 0 ) {
+                        spec.aPartNumber = String(decoding: bytes, as: Unicode.ASCII.self)
+                    }
                     break
                 case SpecType.HW_VERSION.rawValue:
-                    spec.aHardwareVersion = String(decoding: bytes, as: UTF8.self)
+                    if (bytes.count > 0 && bytes.first != 0 ) {
+                        spec.aHardwareVersion = String(decoding: bytes, as: Unicode.ASCII.self)
+                    }
                     break
                 case SpecType.SW_VERSION.rawValue:
-                    spec.aSoftwareVersion = String(decoding: bytes, as: UTF8.self)
+                    if (bytes.count > 0 && bytes.first != 0 ) {
+                        spec.aSoftwareVersion = String(decoding: bytes, as: Unicode.ASCII.self)
+                    }
                     break
                 default:
                     break

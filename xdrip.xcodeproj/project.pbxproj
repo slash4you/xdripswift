@@ -11,6 +11,12 @@
 		0A2D3C6828D70ED800D01D68 /* NovRelativeTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */; };
 		0A2D3C6A28D710A800D01D68 /* NovModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6928D710A800D01D68 /* NovModel.swift */; };
 		0A2D3C6C28D711E500D01D68 /* NovEventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */; };
+		0A2D3C6E28D8D6F000D01D68 /* NovConfirmedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6D28D8D6F000D01D68 /* NovConfirmedAction.swift */; };
+		0A2D3C7028DA409400D01D68 /* NovSegmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6F28DA409400D01D68 /* NovSegmentList.swift */; };
+		0A2D3C7228DA40E400D01D68 /* NovSegmentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7128DA40E400D01D68 /* NovSegmentInfo.swift */; };
+		0A2D3C7428DA42B800D01D68 /* NovSegmentMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */; };
+		0A2D3C7628DE123400D01D68 /* NovSegmentEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */; };
+		0A2D3C7828DEF0CB00D01D68 /* NovSegmentDataXFer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */; };
 		0A33390D28B3FC59002DF1CD /* PHDLinkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */; };
 		0A33390F28B90F7E002DF1CD /* PHDLinkLayerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */; };
 		0A33391128B9F7E4002DF1CD /* NovStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */; };
@@ -641,6 +647,12 @@
 		0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovRelativeTime.swift; sourceTree = "<group>"; };
 		0A2D3C6928D710A800D01D68 /* NovModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovModel.swift; sourceTree = "<group>"; };
 		0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovEventInfo.swift; sourceTree = "<group>"; };
+		0A2D3C6D28D8D6F000D01D68 /* NovConfirmedAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovConfirmedAction.swift; sourceTree = "<group>"; };
+		0A2D3C6F28DA409400D01D68 /* NovSegmentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentList.swift; sourceTree = "<group>"; };
+		0A2D3C7128DA40E400D01D68 /* NovSegmentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentInfo.swift; sourceTree = "<group>"; };
+		0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentMap.swift; sourceTree = "<group>"; };
+		0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentEntry.swift; sourceTree = "<group>"; };
+		0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentDataXFer.swift; sourceTree = "<group>"; };
 		0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayer.swift; sourceTree = "<group>"; };
 		0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayerHelper.swift; sourceTree = "<group>"; };
 		0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovStateMachine.swift; sourceTree = "<group>"; };
@@ -1655,6 +1667,12 @@
 				0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */,
 				0A2D3C6928D710A800D01D68 /* NovModel.swift */,
 				0A2D3C6B28D711E500D01D68 /* NovEventInfo.swift */,
+				0A2D3C6D28D8D6F000D01D68 /* NovConfirmedAction.swift */,
+				0A2D3C6F28DA409400D01D68 /* NovSegmentList.swift */,
+				0A2D3C7128DA40E400D01D68 /* NovSegmentInfo.swift */,
+				0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */,
+				0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */,
+				0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */,
 			);
 			path = Novopen;
 			sourceTree = "<group>";
@@ -3632,6 +3650,7 @@
 			files = (
 				F8BDD450221CAA64006EAB84 /* TextsCommon.swift in Sources */,
 				F81D6D4E22BFC762005EFAE2 /* TextsDexcomShareTestResult.swift in Sources */,
+				0A2D3C7628DE123400D01D68 /* NovSegmentEntry.swift in Sources */,
 				0A34D23828CCAF51000DA716 /* NovEventReport.swift in Sources */,
 				F8A5EEC2257D18DC0085E660 /* LibreNFCDelegate.swift in Sources */,
 				F8F9720523A5915900C3F17D /* TransmitterMessage.swift in Sources */,
@@ -3673,6 +3692,7 @@
 				F8A54AAF22D686CD00934E7A /* NightScoutBgReading.swift in Sources */,
 				F8DF765323E34F4500063910 /* DexcomG5+CoreDataClass.swift in Sources */,
 				F8F9720F23A5915900C3F17D /* NSData+CRC.swift in Sources */,
+				0A2D3C6E28D8D6F000D01D68 /* NovConfirmedAction.swift in Sources */,
 				F8A1585722EDB754007F5B5D /* ConstantsCoreData.swift in Sources */,
 				F8797CEA255B43960033956B /* GlucoseData+Smoothable.swift in Sources */,
 				F821CF9022AB1068005C1E43 /* DatePickerViewData.swift in Sources */,
@@ -3708,6 +3728,7 @@
 				F8CB59C02734976D00BA199E /* DexcomTransmitterTimeTxMessage.swift in Sources */,
 				F821CF6F229FC280005C1E43 /* Endpoint+NightScout.swift in Sources */,
 				F8F9722A23A5915900C3F17D /* TransmitterBatteryInfo.swift in Sources */,
+				0A2D3C7828DEF0CB00D01D68 /* NovSegmentDataXFer.swift in Sources */,
 				F821CF5D229BF43A005C1E43 /* NSDateFormatter.swift in Sources */,
 				0A34D23A28CCAF60000DA716 /* NovEventRequest.swift in Sources */,
 				F8F16715272745A2001AA3D8 /* DexcomCalibrationResponseType.swift in Sources */,
@@ -3731,6 +3752,7 @@
 				D40C3DA62775438F00111B73 /* TreatmentEntry+CoreDataProperties.swift in Sources */,
 				F80D917024F85C7A006840B5 /* Libre2+BluetoothPeripheral.swift in Sources */,
 				F8F9721423A5915900C3F17D /* AuthChallengeRxMessage.swift in Sources */,
+				0A2D3C7428DA42B800D01D68 /* NovSegmentMap.swift in Sources */,
 				47B60F3726F389E2003198D3 /* LandscapeChartViewController.swift in Sources */,
 				F8025E5421EE8D2100ECF0C0 /* Libre1Calibrator.swift in Sources */,
 				F81FA00A228F53680028C70F /* TextsHomeView.swift in Sources */,
@@ -3830,6 +3852,7 @@
 				F821CF8E22AB090C005C1E43 /* DatePickerViewController.swift in Sources */,
 				F8AF11F324B1279500AE5BA2 /* TextsLibreErrors.swift in Sources */,
 				F8691888239CEEFA0065B607 /* BluetoothPeripheralViewModel.swift in Sources */,
+				0A2D3C7028DA409400D01D68 /* NovSegmentList.swift in Sources */,
 				F8297F4F238DCAD800D74D66 /* BluetoothPeripheralNavigationController.swift in Sources */,
 				F8A1585322EDB602007F5B5D /* ConstantsBloodGlucose.swift in Sources */,
 				F85FB769255DE14600D1C39E /* ConstantsLibreSmoothing.swift in Sources */,
@@ -3893,6 +3916,7 @@
 				F81F9FFC2288C7530028C70F /* NewAlertSettingsViewController.swift in Sources */,
 				F80D916524F5B3DE006840B5 /* Libre2+CoreDataClass.swift in Sources */,
 				D4028CC02774A50600341476 /* TreatmentsViewController.swift in Sources */,
+				0A2D3C7228DA40E400D01D68 /* NovSegmentInfo.swift in Sources */,
 				F898EDF2234A8A0500BFB79B /* UInt8.swift in Sources */,
 				F8DF766423E781C100063910 /* BLEPeripheralAccessor.swift in Sources */,
 				F8F1671727288B24001AA3D8 /* DexcomSessionStopRxMessage.swift in Sources */,
