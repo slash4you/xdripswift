@@ -39,9 +39,11 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
     
     private var transaction : Int = 0 // SLH
     
-    private var mlcMax : UInt16 = 255 // SLH
+    private var mlcMax : Int = 255 // SLH
     
-    private var mleMax : UInt16 = 255 // SLH
+    private var mleMax : Int = 255 // SLH
+    
+    private var cachedResponse : Data = Data() // SLH
 
     // SLH
     @IBAction func importPencilData(_ sender: UIBarButtonItem) {
@@ -57,6 +59,7 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
             self.transaction = 0
             self.mlcMax = 255
             self.mleMax = 255
+            self.cachedResponse = Data()
             if let tagSession = self.session {
                 tagSession.alertMessage = TextsLibreNFC.holdTopOfIphoneNearSensor
                 print("NFC: NFC start session@")
@@ -108,10 +111,13 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
     }
     
     // SLH
-    func readDataFromLinkLayer(tag: NFCISO7816Tag, total: Int, length: Int) -> Void {
+    func readDataFromLinkLayer(tag: NFCISO7816Tag, offset: Int, remaining: Int, length: Int) -> Void {
+        // build arguments
+        let O1 : UInt8 = UInt8((offset >> 8) & 0xFF)
+        let O0 : UInt8 = UInt8(offset & 0xFF)
         // read data
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:0x00, p2Parameter:0x02, data: Data(), expectedResponseLength:length)
-        print("NFC: readDataFromLinkLayer - Send Read Binary command length=" + length.description)
+        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:O1, p2Parameter:O0, data: Data(), expectedResponseLength:length)
+        print("NFC: readDataFromLinkLayer - Send Read Binary command offset=" + offset.description + " remaining=" + remaining.description + " length=" + length.description)
         tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
             guard error == nil else {
                 if let error = error {
@@ -129,18 +135,23 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
             }
 
             print("NFC: readDataFromLinkLayer - Read Binary response data@", response.toHexString())
-            
-            if let phd = self.phd, let engine = self.engine {
-                self.transaction += 1
-                if (self.transaction < 12) {
 
-                    let input : Data = phd.unpackInnerPacket(tag: tag, bytes: response)
-                    print("NFC: readDataFromLinkLayer - IN transaction:" + self.transaction.description + " L:" + input.count.description + " P:" + input.toHexString())
-                    
-                    if (input.count >= 0) {
-                        let fsa : Fsa = engine.processPayload(payload: input)
-                        switch fsa.action()
-                        {
+            // cache response
+            self.cachedResponse.append(contentsOf: response)
+            
+            if (remaining <= length) {
+                
+                if let phd = self.phd, let engine = self.engine {
+                    self.transaction += 1
+                    if (self.transaction < 12) {
+                        
+                        let input : Data = phd.unpackInnerPacket(tag: tag, bytes: self.cachedResponse)
+                        print("NFC: readDataFromLinkLayer - IN transaction:" + self.transaction.description + " L:" + input.count.description + " P:" + input.toHexString())
+                        
+                        if (input.count >= 0) {
+                            let fsa : Fsa = engine.processPayload(payload: input)
+                            switch fsa.action()
+                            {
                             case .WRITE_READ:
                                 print("NFC: readDataFromLinkLayer - OUT L:" + fsa.data().count.description + " P:" + fsa.data().toHexString())
                                 let output: Data = phd.packInnerPacket(tag: tag, bytes: fsa.data())
@@ -150,21 +161,33 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
                                 self.readLengthFromLinkLayer(tag: tag)
                                 break
                             default:
-                                print("NFC: readDataFromLinkLayer - no further action " + fsa.action().description)
+                                print("NFC: readDataFromLinkLayer - no further action (" + fsa.action().description + ")")
+                                if let session = self.session {
+                                    session.invalidate()
+                                }
                                 break
+                            }
+                        } else {
+                            print("NFC: readDataFromLinkLayer - unpack data failed")
                         }
                     } else {
-                        print("NFC: readDataFromLinkLayer - unpack data failed")
+                        print("NFC: readDataFromLinkLayer - maximum of transactions reached")
                     }
-                } else {
-                    print("NFC: readDataFromLinkLayer - maximum of transactions reached")
                 }
+                
+            } else {
+                // bound length to mleMax
+                let boundedLength : Int = min((remaining - length), self.mleMax)
+                // read and cache next chunk
+                self.readDataFromLinkLayer(tag: tag, offset: (offset+length), remaining: (remaining - length), length: boundedLength)
             }
         }
     }
     
     // SLH
     func readLengthFromLinkLayer(tag : NFCISO7816Tag) -> Void {
+        // clear previous cached response
+        self.cachedResponse = Data()
         // read length
         let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:0x00, p2Parameter:0x00, data: Data(), expectedResponseLength:2)
         print("NFC: readLengthFromLinkLayer - Send Read Length command@")
@@ -186,9 +209,13 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
             let len : Int = Int(response[0]) * 256 + Int(response[1])
             print("NFC: readLengthFromLinkLayer - Expected Binary response length : L=", len)
             
-            //if (len <= self.mleMax) {
-                self.readDataFromLinkLayer(tag: tag, total: len, length: len)
-            //}
+            if (len <= self.mleMax) {
+                // read only one chunk
+                self.readDataFromLinkLayer(tag: tag, offset: 2, remaining: 0, length: len)
+            } else {
+                // read several chunks
+                self.readDataFromLinkLayer(tag: tag, offset: 2, remaining: len, length: self.mleMax)
+            }
         }
     }
     
@@ -235,9 +262,9 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
             print("NFC: readContainer - Read Binary response data@", response.toHexString())
             //let cclen : UInt16 = UInt16(response[0]) * 256 + UInt16(response[1])
             //let mapping : UInt8 = response[2]
-            self.mleMax = UInt16(response[3]) * 256 + UInt16(response[4])
+            self.mleMax = Int(response[3]) * 256 + Int(response[4])
             self.mleMax = min(self.mleMax, 255)
-            self.mlcMax = UInt16(response[5]) * 256 + UInt16(response[6])
+            self.mlcMax = Int(response[5]) * 256 + Int(response[6])
             self.mlcMax = min(self.mlcMax, 255)
             //let t : UInt8 = response[7]
             //let l : UInt8 = response[8]
@@ -247,8 +274,8 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
             //let wsec : UInt8 = response[14]
             //print("NFC: cclen=0x", String(format: "%04X", cclen))
             //print("NFC: mapping=0x", String(format: "%02X", mapping))
-            print("NFC: mleMax=0x", String(format: "%04X", self.mleMax))
-            print("NFC: mlcMax=0x", String(format: "%04X", self.mlcMax))
+            print("NFC: mleMax=0x", String(format: "%08X", self.mleMax))
+            print("NFC: mlcMax=0x", String(format: "%08X", self.mlcMax))
             //print("NFC: t=0x", String(format: "%02X", t))
             //print("NFC: l=0x", String(format: "%02X", l))
             //print("NFC: ident=0x", String(format: "%04X", ident))
@@ -344,6 +371,9 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
         self.phd = nil
         self.engine = nil
         self.transaction = 0
+        self.mleMax = 255
+        self.mlcMax = 255
+        self.cachedResponse = Data()
         NovMessage.reset()
     }
 

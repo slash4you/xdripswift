@@ -23,7 +23,6 @@ class NovMessage {
     static let MDC_ACT_SEG_TRIG_XFER : UInt16 = 0x0C1C
     static let STORE_HANDLE : UInt16 = 0x0100
     
-    private var valid : Bool
     private var length : Int
     private var invokedId : UInt16
     private var closed : Bool
@@ -38,7 +37,6 @@ class NovMessage {
     private var aSegData : NovSegmentDataXFer
     
     private init() {
-        valid = false
         length = -1
         invokedId = 0
         closed = false
@@ -54,7 +52,6 @@ class NovMessage {
     }
     
     static func reset() -> Void {
-        sharedInstance.valid = false
         sharedInstance.length = -1
         sharedInstance.invokedId = 0
         sharedInstance.closed = false
@@ -67,20 +64,6 @@ class NovMessage {
         sharedInstance.aAction = NovConfirmedAction()
         sharedInstance.aSegInfo = NovSegmentList()
         sharedInstance.aSegData = NovSegmentDataXFer()
-    }
-    
-    func description() -> String {
-        var logmsg : String = ""
-        if (valid == true) {
-            logmsg = "[MSG] Id:" + String(format: "%04X", invokedId)
-        }
-        else if (closed == true) {
-            logmsg = "[MSG] Closed:" + closed.description
-        }
-        else {
-            logmsg = "[MSG] Valid:" + valid.description
-        }
-        return logmsg
     }
     
     func isEmpty() -> Bool {
@@ -125,6 +108,18 @@ class NovMessage {
 
     func isClosed() -> Bool {
         return closed
+    }
+    
+    func doses() -> [NovInsulinDose] {
+        return aReport.doses()
+    }
+    
+    func index() -> UInt32 {
+        return aReport.index()
+    }
+    
+    func count() -> UInt32 {
+        return aReport.count()
     }
     
     func acceptAssoc() -> Data {
@@ -230,41 +225,25 @@ class NovMessage {
         return A.encode(payload: D.encode(payload: P.encode_segment(segment: segmentId)))
     }
     
-    //NFC: readDataFromLinkLayer - OUT L:0 P:
-    //NFC:  [PHDLL] Opcode:D1 Header: Sum:8B Seq:11 Payload:
-    //NFC: transceiveEMPTY - Send Empty command@ 0003d00000
-    //NFC: transceiveEMPTY - Empty response data@
-    //NFC: transceiveUP - Send Update command@ 0007d103015048448b
-    //NFC: transceiveUP - Update response data@
-    //NFC: readLengthFromLinkLayer - Send Read Length command@
-    //NFC: readLengthFromLinkLayer - Expected Binary response length : L= 7
-    //NFC: readDataFromLinkLayer - Send Read Binary command@
-    //NFC: readDataFromLinkLayer - Read Binary response data@ d103015048448c
-    //NFC:  [PHDLL] Opcode:D1 Header: Sum:8C Seq:12 Payload:
-    //NFC: readDataFromLinkLayer - IN transaction:7 L:0 P:
-    //NFC: NovMessage.parse - Invalid payload data
-    //NFC: NovStateMachine.processPayload -  [MSG] Valid:false
-    //NFC: readDataFromLinkLayer - OUT L:0 P:
-    //NFC:  [PHDLL] Opcode:D1 Header: Sum:8D Seq:13 Payload:
-    //NFC: transceiveEMPTY - Send Empty command@ 0003d00000
-    //NFC: transceiveEMPTY - Empty response data@
-    //NFC: transceiveUP - Send Update command@ 0007d103015048448d
-    //NFC: transceiveUP - Update response data@
     //NFC: readLengthFromLinkLayer - Send Read Length command@
     //NFC: readLengthFromLinkLayer - Expected Binary response length : L= 259
-    //NFC: readDataFromLinkLayer - Send Read Binary command@
-    //NFC: readDataFromLinkLayer - Invalid Read Binary response@
+    //NFC: readDataFromLinkLayer - Send Read Binary command offset=2 remaining=259 length=255
+    //NFC: readDataFromLinkLayer - Read Binary response data@ d103fd5048448ee70000f800f68001010100f0010000593e880d2100e600100000000000000012800000d800593cc4ff00000a080000000053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000002caf66ff00002308000000002ca76aff00002d08000000002b5f32ff00002808000000002b48c2ff00002d08000000002ae263ff00005a
+    //NFC: readDataFromLinkLayer - Send Read Binary command offset=257 remaining=4 length=4
+    //NFC: readDataFromLinkLayer - Read Binary response data@ 08000000
+    //NFC:  [PHDLL] Opcode:D1 Header: Sum:8E Seq:14 Payload:e70000f800f68001010100f0010000593e880d2100e600100000000000000012800000d800593cc4ff00000a080000000053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000002caf66ff00002308000000002ca76aff00002d08000000002b5f32ff00002808000000002b48c2ff00002d08000000002ae263ff00005a08000000
+    //NFC: readDataFromLinkLayer - IN transaction:8 L:252 P:e70000f800f68001010100f0010000593e880d2100e600100000000000000012800000d800593cc4ff00000a080000000053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000002caf66ff00002308000000002ca76aff00002d08000000002b5f32ff00002808000000002b48c2ff00002d08000000002ae263ff00005a08000000
+    //NFC:  [APDU] Value:E700 Type:Prst L:248 Payload:00f68001010100f0010000593e880d2100e600100000000000000012800000d800593cc4ff00000a080000000053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000002caf66ff00002308000000002ca76aff00002d08000000002b5f32ff00002808000000002b48c2ff00002d08000000002ae263ff00005a08000000
+    //NFC:  [DPDU] invokeId:8001 Choice:0101 L:240 Payload:010000593e880d2100e600100000000000000012800000d800593cc4ff00000a080000000053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000002caf66ff00002308000000002ca76aff00002d08000000002b5f32ff00002808000000002b48c2ff00002d08000000002ae263ff00005a08000000
+    //NFC : [REPORT] L:230 handle:0100 time:00593E88type:MDC_NOTI_SEGMENT_DATA instance:0010 index:00000000 count:18 doses: [DOSE] valid:true time:2022-09-25 11:57:37 +0000 units:1.0 flags:08000000[DOSE] valid:true time:2022-09-20 18:37:44 +0000 units:2.0 flags:08000000[DOSE] valid:true time:2022-09-18 07:42:59 +0000 units:2.5 flags:08000000[DOSE] valid:true time:2022-09-17 08:45:50 +0000 units:1.5 flags:08000000[DOSE] valid:true time:2022-09-16 16:21:59 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-09-16 16:11:18 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-09-10 09:13:33 +0000 units:3.0 flags:08000000[DOSE] valid:true time:2022-09-10 09:12:05 +0000 units:1.0 flags:08000000[DOSE] valid:true time:2022-09-09 16:01:28 +0000 units:5.0 flags:08000000[DOSE] valid:true time:2022-09-03 07:29:01 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-08-27 16:49:44 +0000 units:1.0 flags:08000000[DOSE] valid:true time:2022-08-26 14:11:50 +0000 units:4.0 flags:08000000[DOSE] valid:true time:2022-08-26 14:07:56 +0000 units:6.5 flags:08000000[DOSE] valid:true time:2022-08-22 16:54:43 +0000 units:3.5 flags:08000000[DOSE] valid:true time:2022-08-22 16:20:39 +0000 units:4.5 flags:08000000[DOSE] valid:true time:2022-08-21 17:00:15 +0000 units:4.0 flags:08000000[DOSE] valid:true time:2022-08-21 15:24:31 +0000 units:4.5 flags:08000000[DOSE] valid:true time:2022-08-21 08:07:44 +0000 units:9.0 flags:08000000
 
-    //NFC: readLengthFromLinkLayer - Send Read Length command@
-    //NFC: readLengthFromLinkLayer - Expected Binary response length : L= 187
-    //NFC: readDataFromLinkLayer - Send Read Binary command length=187
-    //NFC: readDataFromLinkLayer - Read Binary response data@ d103b550484484e70000b000ae8001010100a8010000590a360d21009e0010000000000000000c800000900053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000
-    //NFC:  [PHDLL] Opcode:D1 Header: Sum:84 Seq:04 Payload:e70000b000ae8001010100a8010000590a360d21009e0010000000000000000c800000900053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000
-    //NFC: readDataFromLinkLayer - IN transaction:3 L:180 P:e70000b000ae8001010100a8010000590a360d21009e0010000000000000000c800000900053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000
-    //NFC:  [APDU] Value:E700 Type:Prst L:176 Payload:00ae8001010100a8010000590a360d21009e0010000000000000000c800000900053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000
-    //NFC:  [DPDU] invokeId:8001 Choice:0101 L:168 Payload:010000590a360d21009e0010000000000000000c800000900053030bff00001408000000004fc696ff00001908000000004e83d1ff00000f08000000004d9d3aff00003c08000000004d9ab9ff00003c0800000000454fd0ff00001e0800000000454f78ff00000a0800000000445debff00003208000000003bfcd0ff00003c08000000003345bbff00000a080000000031cf39ff000028080000000031ce4fff00004108000000
-    //NFC : [REPORT] L:158 handle:0100 time:00590A36type:MDC_NOTI_SEGMENT_DATA instance:0010 index:00000000 count:12 doses: [DOSE] valid:true time:2022-09-20 18:37:45 +0000 units:2.0 flags:08000000[DOSE] valid:true time:2022-09-18 07:43:00 +0000 units:2.5 flags:08000000[DOSE] valid:true time:2022-09-17 08:45:51 +0000 units:1.5 flags:08000000[DOSE] valid:true time:2022-09-16 16:22:00 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-09-16 16:11:19 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-09-10 09:13:34 +0000 units:3.0 flags:08000000[DOSE] valid:true time:2022-09-10 09:12:06 +0000 units:1.0 flags:08000000[DOSE] valid:true time:2022-09-09 16:01:29 +0000 units:5.0 flags:08000000[DOSE] valid:true time:2022-09-03 07:29:02 +0000 units:6.0 flags:08000000[DOSE] valid:true time:2022-08-27 16:49:45 +0000 units:1.0 flags:08000000[DOSE] valid:true time:2022-08-26 14:11:51 +0000 units:4.0 flags:08000000[DOSE] valid:true time:2022-08-26 14:07:57 +0000 units:6.5 flags:08000000
-
+    func confirmedXfer() -> Data {
+        let A : Apdu = Apdu(type: Apdu.ApduType.Prst)
+        let D : Dpdu = Dpdu(invokeId: self.invokedId, choice: NovMessage.SCONFIRMED_EVENT_REPORT_CHOSEN)
+        let R : NovEventRequest = NovEventRequest(handle:NovMessage.STORE_HANDLE,time:0,type:NovEventReport.EventType.MDC_NOTI_SEGMENT_DATA.rawValue)
+        let P : Data = R.encode(instance : self.aReport.instance(), index : self.aReport.index(), count : self.aReport.count(), block : NovEventRequest.MIDDLE, confirmed : true)
+        return A.encode(payload: D.encode(payload: P))
+    }
 
     static func parse(data: Data) -> NovMessage {
         let msg : NovMessage = sharedInstance

@@ -51,7 +51,6 @@ class NovStateMachine {
     func processPayload(payload: Data) -> Fsa {
         
         let msg : NovMessage = NovMessage.parse(data: payload)
-        print("NFC: NovStateMachine.processPayload - ", msg.description())
         if (msg.isError()) {
             print("NFC : NovStateMachine.processPayload - invalid message")
             return Fsa()
@@ -115,16 +114,28 @@ class NovStateMachine {
                 }
             case .AWAIT_LOG_DATA:
                 if (msg.isEmpty()) {
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " send nil payload" )
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " retrying" )
                     return Fsa(action: .WRITE_READ, data: Data())
                 }
-                print("NFC: NovStateMachine.processPayload - not implemented yet")
+                if (self.curSegmentCount != (msg.index() + msg.count())) {
+                    return Fsa(action: .WRITE_READ, data: msg.confirmedXfer())
+                }
+                let doses : [NovInsulinDose] = msg.doses()
+                if (doses.count > 0) {
+                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + doses.count.description + " doses received")
+                    // TODO
+                    state = state.next()
+                    return Fsa(action: .WRITE_READ, data: msg.closeDown())
+                }
             case .AWAIT_CLOSE_DOWN:
                 if (msg.isClosed() == false) {
-                    print("NFC : NovStateMachine.processPayload - missing expected closure")
+                    print("NFC : NovStateMachine.processPayload - " + state.description + " missing expected closure")
+                } else {
+                    print("NFC : NovStateMachine.processPayload - " + state.description +  " successful download")
                 }
+                return Fsa(action: .DONE, data: Data())
             case .PROFIT:
-                print("NFC: NovStateMachine.processPayload - not implemented yet")
+                print("NFC: NovStateMachine.processPayload - " + state.description +  " not implemented yet")
             }
         }
         print("NFC: NovStateMachine.processPayload - processing failed")

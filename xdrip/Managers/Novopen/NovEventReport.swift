@@ -65,9 +65,21 @@ class NovEventReport {
         return evHandle
     }
     
+    func instance() -> UInt16 {
+        return evInstance
+    }
+    
+    func count() -> UInt32 {
+        return evCount
+    }
+    
+    func index() -> UInt32 {
+        return evIndex
+    }
+    
     func description() -> String {
         
-        var log : String = "[REPORT] L:" + evLength.description + " handle:" + String(format: "%04X", evHandle) + " time:" + String(format: "%08X", evTime) + "type:" + evType.description
+        var log : String = "[REPORT] L:" + evLength.description + " handle:" + String(format: "%04X", evHandle) + " time:" + String(format: "%08X", evTime) + " type:" + evType.description
         
         switch (evType)
         {
@@ -75,10 +87,11 @@ class NovEventReport {
             log += " " + evConfig.description()
             break
         case .MDC_NOTI_SEGMENT_DATA:
-            log += " instance:" + String(format: "%04X", evInstance) + " index:" + String(format: "%08X", evIndex) + " count:" + evCount.description + " doses: "
+            log += " instance:" + String(format: "%04X", evInstance) + " index:" + String(format: "%08X", evIndex) + " count:" + evCount.description + " doses:{"
             for d in evDoses {
-                log = log + d.description()
+                log += " " + d.description()
             }
+            log += "}"
             break
         case .MDC_NOTI_INVALID:
             log += " INVALID"

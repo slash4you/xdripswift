@@ -75,7 +75,7 @@ class NovEventRequest {
         return buf
     }
 
-    func encode(instance : UInt16, index : UInt16, count : UInt16, block : UInt8, confirmed : Bool) -> Data {
+    func encode(instance : UInt16, index : UInt32, count : UInt32, block : UInt8, confirmed : Bool) -> Data {
         var buf : Data = Data()
         
         let H1 : UInt8 = UInt8((evHandle >> 8) & 0xFF)
@@ -97,16 +97,18 @@ class NovEventRequest {
         let S1 : UInt8 = UInt8((instance >> 8) & 0xFF)
         let S0 : UInt8 = UInt8(instance & 0xFF)
         buf.append(contentsOf: [S1, S0])
-        buf.append(contentsOf: [0, 0])
 
+        let I3 : UInt8 = UInt8((index >> 24) & 0xFF)
+        let I2 : UInt8 = UInt8((index >> 16) & 0xFF)
         let I1 : UInt8 = UInt8((index >> 8) & 0xFF)
         let I0 : UInt8 = UInt8(index & 0xFF)
-        buf.append(contentsOf: [I1, I0])
-        buf.append(contentsOf: [0, 0])
+        buf.append(contentsOf: [I3, I2, I1, I0])
 
+        let C3 : UInt8 = UInt8((count >> 24) & 0xFF)
+        let C2 : UInt8 = UInt8((count >> 16) & 0xFF)
         let C1 : UInt8 = UInt8((count >> 8) & 0xFF)
         let C0 : UInt8 = UInt8(count & 0xFF)
-        buf.append(contentsOf: [C1, C0])
+        buf.append(contentsOf: [C3, C2, C1, C0])
 
         buf.append(contentsOf: [block])
 
