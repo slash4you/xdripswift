@@ -62,15 +62,15 @@ class WebServerManager {
                             }
                             maxReadingsNumber = count
                         } else {
-                            trace("in webServer handler, invalid count type @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                            trace("in webServer handler, invalid count type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                             return GCDWebServerErrorResponse(statusCode: 500)
                         }
                     } else {
-                        trace("in webServer handler, count arg not found @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                        trace("in webServer handler, count arg not found", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                         return GCDWebServerErrorResponse(statusCode: 500)
                     }
                 } else {
-                    trace("in webServer handler, invalid query type @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                    trace("in webServer handler, invalid query type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                     return GCDWebServerErrorResponse(statusCode: 500)
                 }
                 
@@ -83,19 +83,19 @@ class WebServerManager {
                                     json.append(sgv)
                                 }
                             } else {
-                                trace("in webServer handler, invalid bgreading type @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                                trace("in webServer handler, invalid bgreading type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                                 return GCDWebServerErrorResponse(statusCode: 500)
                             }
                         } else {
-                            trace("in webServer handler, invalid json data @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                            trace("in webServer handler, invalid json data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                             return GCDWebServerErrorResponse(statusCode: 500)
                         }
                     } else {
-                        trace("in webServer handler, invalid shared data @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                        trace("in webServer handler, invalid shared data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                         return GCDWebServerErrorResponse(statusCode: 500)
                     }
                 } else {
-                    trace("in webServer handler, invalid shared type @", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                    trace("in webServer handler, invalid shared type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                     return GCDWebServerErrorResponse(statusCode: 500)
                 }
                 return GCDWebServerDataResponse(jsonObject: json)
@@ -127,7 +127,7 @@ class WebServerManager {
         
         // unwrap sharedUserDefaults
         guard let sharedUserDefaults = sharedUserDefaults else {
-            trace("in webServer share, invalid shared data@", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+            trace("in webServer share, invalid shared data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
             return
         }
 
@@ -147,7 +147,7 @@ class WebServerManager {
         }
         
         guard let data = try? JSONSerialization.data(withJSONObject: dictionary) else {
-            trace("in webServer share, json serialization failed@", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+            trace("in webServer share, json serialization failed", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
             return
         }
         

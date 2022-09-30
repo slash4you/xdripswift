@@ -17,6 +17,8 @@
 		0A2D3C7428DA42B800D01D68 /* NovSegmentMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */; };
 		0A2D3C7628DE123400D01D68 /* NovSegmentEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */; };
 		0A2D3C7828DEF0CB00D01D68 /* NovSegmentDataXFer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */; };
+		0A2D3C7A28E20C9600D01D68 /* NovopenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7928E20C9600D01D68 /* NovopenManager.swift */; };
+		0A2D3C7C28E2295000D01D68 /* TextsNovopen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7B28E2295000D01D68 /* TextsNovopen.swift */; };
 		0A33390D28B3FC59002DF1CD /* PHDLinkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */; };
 		0A33390F28B90F7E002DF1CD /* PHDLinkLayerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */; };
 		0A33391128B9F7E4002DF1CD /* NovStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */; };
@@ -653,6 +655,8 @@
 		0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentMap.swift; sourceTree = "<group>"; };
 		0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentEntry.swift; sourceTree = "<group>"; };
 		0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentDataXFer.swift; sourceTree = "<group>"; };
+		0A2D3C7928E20C9600D01D68 /* NovopenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovopenManager.swift; sourceTree = "<group>"; };
+		0A2D3C7B28E2295000D01D68 /* TextsNovopen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextsNovopen.swift; sourceTree = "<group>"; };
 		0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayer.swift; sourceTree = "<group>"; };
 		0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayerHelper.swift; sourceTree = "<group>"; };
 		0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovStateMachine.swift; sourceTree = "<group>"; };
@@ -1673,6 +1677,7 @@
 				0A2D3C7328DA42B800D01D68 /* NovSegmentMap.swift */,
 				0A2D3C7528DE123400D01D68 /* NovSegmentEntry.swift */,
 				0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */,
+				0A2D3C7928E20C9600D01D68 /* NovopenManager.swift */,
 			);
 			path = Novopen;
 			sourceTree = "<group>";
@@ -2679,6 +2684,7 @@
 				F8B48A9322B2A705009BCC01 /* TextsSpeakReading.swift */,
 				D400F8022778BD8000B57648 /* TextsTreatmentsView.swift */,
 				F830992723C32A13005741DF /* TextsWatlaaView.swift */,
+				0A2D3C7B28E2295000D01D68 /* TextsNovopen.swift */,
 			);
 			path = Texts;
 			sourceTree = "<group>";
@@ -3783,6 +3789,7 @@
 				F8AF36152455C6F700B5977B /* ConstantsTrace.swift in Sources */,
 				F8F971B723A5914D00C3F17D /* BluetoothPeripheralType.swift in Sources */,
 				F80610C4222D4E4D00D8F236 /* ActionClosureable-extension.swift in Sources */,
+				0A2D3C7A28E20C9600D01D68 /* NovopenManager.swift in Sources */,
 				0A2D3C6C28D711E500D01D68 /* NovEventInfo.swift in Sources */,
 				F8F1670E27273EA7001AA3D8 /* GlucoseDataRxMessage.swift in Sources */,
 				F8B3A835227F08AC004BA588 /* PickerViewController.swift in Sources */,
@@ -3802,6 +3809,7 @@
 				F8A1587322EDC893007F5B5D /* ConstantsDexcomShare.swift in Sources */,
 				F8A1586F22EDC7EE007F5B5D /* ConstantsSuspensionPrevention.swift in Sources */,
 				F8B3A82D227F07D6004BA588 /* SettingsNavigationController.swift in Sources */,
+				0A2D3C7C28E2295000D01D68 /* TextsNovopen.swift in Sources */,
 				D482BD942776153F003C4FB2 /* TreatmentsNavigationController.swift in Sources */,
 				F80ED2EC236F68F90005C035 /* SettingsViewM5StackBluetoothSettingsViewModel.swift in Sources */,
 				F8BECB05235CE5D80060DAE1 /* GlucoseChartManager.swift in Sources */,

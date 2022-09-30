@@ -27,7 +27,7 @@ class Fsa {
     
     public init() {
         a = Action.DONE
-        d = Data()
+        d = Data([0])
     }
     
     public init(action : Action, data : Data) {

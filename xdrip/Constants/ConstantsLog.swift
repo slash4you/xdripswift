@@ -168,5 +168,7 @@ enum ConstantsLog {
     
     static let categoryWebServerController =                    "WebServerController              "
 
+    static let categoryNovopenController =                    "NovopenController              "
+
 }
 

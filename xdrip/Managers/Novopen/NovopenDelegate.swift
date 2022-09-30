@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+protocol NovopenDelegateProtocol: AnyObject {
+ 
+    func receivedInsulinData(serialNumber: String, date: Date, dose: Double)
+    
+}

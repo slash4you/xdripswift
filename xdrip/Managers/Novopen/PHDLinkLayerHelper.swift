@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreNFC // SLH
+import CoreNFC
 
 class PHDLinkLayerHelper {
 
@@ -53,7 +53,7 @@ class PHDLinkLayerHelper {
         
         print("NFC: " + PHDLinkLayer.parse(data: frame).description())
         
-        // TODO : SLH :  mlcMax vs fragment management
+        // TODO : mlcMax vs fragment management
         var out : Data = Data()
         let D1 : UInt8 = UInt8((frame.count >> 8) & 0xFF)
         let D0 : UInt8 = UInt8(frame.count & 0xFF)

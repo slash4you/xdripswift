@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 import os
-import CoreNFC // SLH
 
-class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
+class TreatmentsViewController : UIViewController {
     	
 	// MARK: - private properties
 	
@@ -31,350 +30,12 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
     
 	@IBOutlet weak var tableView: UITableView!
 	
-    private var session : NFCTagReaderSession? // SLH
-    
-    private var phd : PHDLinkLayerHelper? // SLH
-    
-    private var engine : NovStateMachine? // SLH
-    
-    private var transaction : Int = 0 // SLH
-    
-    private var mlcMax : Int = 255 // SLH
-    
-    private var mleMax : Int = 255 // SLH
-    
-    private var cachedResponse : Data = Data() // SLH
-
-    // SLH
-    @IBAction func importPencilData(_ sender: UIBarButtonItem) {
-        guard NFCNDEFReaderSession.readingAvailable else {
-            print("NFC: NFC is not available@")
-            return
-        }
-
-        if (self.session == nil) {
-            self.session = NFCTagReaderSession(pollingOption: [.iso14443], delegate: self)
-            self.phd = PHDLinkLayerHelper()
-            self.engine = NovStateMachine()
-            self.transaction = 0
-            self.mlcMax = 255
-            self.mleMax = 255
-            self.cachedResponse = Data()
-            if let tagSession = self.session {
-                tagSession.alertMessage = TextsLibreNFC.holdTopOfIphoneNearSensor
-                print("NFC: NFC start session@")
-                tagSession.begin()
-            }
-        }
-    }
-
-    // SLH
-    func transceiveEMPTY(tag : NFCISO7816Tag, payload: Data) {
-        let empty : Data = Data([0x00,0x03,0xD0,0x00,0x00])
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xD6, p1Parameter:0x00, p2Parameter:0x00, data: empty, expectedResponseLength:-1)
-        print("NFC: transceiveEMPTY - Send Empty command@", empty.toHexString())
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: transceiveEMPTY - Empty response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: transceiveEMPTY - Empty Update response@")
-                return
-            }
-            print("NFC: transceiveEMPTY - Empty response data@", response.toHexString())
-            self.transceiveUP( tag: tag, payload: payload )
-        }
-    }
-
-    // SLH
-    func transceiveUP(tag : NFCISO7816Tag, payload: Data) {
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xD6, p1Parameter:0x00, p2Parameter:0x00, data: payload, expectedResponseLength:-1)
-        print("NFC: transceiveUP - Send Update command@", payload.toHexString())
+    private var novopenManager : NovopenManager?
         
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: transceiveUP - Update response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: transceiveUP - Invalid Update response@")
-                return
-            }
-            print("NFC: transceiveUP - Update response data@", response.toHexString())
-            self.readLengthFromLinkLayer(tag: tag)
+    @IBAction func importPencilData(_ sender: UIBarButtonItem) {
+        if let novopen = self.novopenManager {
+            novopen.read()
         }
-    }
-    
-    // SLH
-    func readDataFromLinkLayer(tag: NFCISO7816Tag, offset: Int, remaining: Int, length: Int) -> Void {
-        // build arguments
-        let O1 : UInt8 = UInt8((offset >> 8) & 0xFF)
-        let O0 : UInt8 = UInt8(offset & 0xFF)
-        // read data
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:O1, p2Parameter:O0, data: Data(), expectedResponseLength:length)
-        print("NFC: readDataFromLinkLayer - Send Read Binary command offset=" + offset.description + " remaining=" + remaining.description + " length=" + length.description)
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: readDataFromLinkLayer - Read Binary response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: readDataFromLinkLayer - Invalid Read Binary response sw1=" + String(format: "%02X", sw1) + " sw2=" + String(format: "%02X", sw2) + " resp.length=" + response.count.description)
-                return
-            }
-            guard (response.count == length) else {
-                print("NFC: readDataFromLinkLayer - Invalid Read Binary response length@")
-                return
-            }
-
-            print("NFC: readDataFromLinkLayer - Read Binary response data@", response.toHexString())
-
-            // cache response
-            self.cachedResponse.append(contentsOf: response)
-            
-            if (remaining <= length) {
-                
-                if let phd = self.phd, let engine = self.engine {
-                    self.transaction += 1
-                    if (self.transaction < 12) {
-                        
-                        let input : Data = phd.unpackInnerPacket(tag: tag, bytes: self.cachedResponse)
-                        print("NFC: readDataFromLinkLayer - IN transaction:" + self.transaction.description + " L:" + input.count.description + " P:" + input.toHexString())
-                        
-                        if (input.count >= 0) {
-                            let fsa : Fsa = engine.processPayload(payload: input)
-                            switch fsa.action()
-                            {
-                            case .WRITE_READ:
-                                print("NFC: readDataFromLinkLayer - OUT L:" + fsa.data().count.description + " P:" + fsa.data().toHexString())
-                                let output: Data = phd.packInnerPacket(tag: tag, bytes: fsa.data())
-                                self.transceiveEMPTY(tag: tag, payload: output)
-                                break
-                            case .READ:
-                                self.readLengthFromLinkLayer(tag: tag)
-                                break
-                            default:
-                                print("NFC: readDataFromLinkLayer - no further action (" + fsa.action().description + ")")
-                                if let session = self.session {
-                                    session.invalidate()
-                                }
-                                break
-                            }
-                        } else {
-                            print("NFC: readDataFromLinkLayer - unpack data failed")
-                        }
-                    } else {
-                        print("NFC: readDataFromLinkLayer - maximum of transactions reached")
-                    }
-                }
-                
-            } else {
-                // bound length to mleMax
-                let boundedLength : Int = min((remaining - length), self.mleMax)
-                // read and cache next chunk
-                self.readDataFromLinkLayer(tag: tag, offset: (offset+length), remaining: (remaining - length), length: boundedLength)
-            }
-        }
-    }
-    
-    // SLH
-    func readLengthFromLinkLayer(tag : NFCISO7816Tag) -> Void {
-        // clear previous cached response
-        self.cachedResponse = Data()
-        // read length
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:0x00, p2Parameter:0x00, data: Data(), expectedResponseLength:2)
-        print("NFC: readLengthFromLinkLayer - Send Read Length command@")
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: readLengthFromLinkLayer - Read Length response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: readLengthFromLinkLayer - Invalid Read Length response@")
-                return
-            }
-            guard (response.count == 2) else {
-                print("NFC: readLengthFromLinkLayer - Invalid Read Length response@")
-                return
-            }
-            let len : Int = Int(response[0]) * 256 + Int(response[1])
-            print("NFC: readLengthFromLinkLayer - Expected Binary response length : L=", len)
-            
-            if (len <= self.mleMax) {
-                // read only one chunk
-                self.readDataFromLinkLayer(tag: tag, offset: 2, remaining: 0, length: len)
-            } else {
-                // read several chunks
-                self.readDataFromLinkLayer(tag: tag, offset: 2, remaining: len, length: self.mleMax)
-            }
-        }
-    }
-    
-    // SLH
-    func transceiveSN(tag : NFCISO7816Tag) -> Void {
-        let buf : Data = Data([ 0xE1, 0x04 ])
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xA4, p1Parameter:0x00, p2Parameter:0x0C, data: buf, expectedResponseLength:-1)
-        print("NFC: transceiveSN - Send SN command@", buf.toHexString())
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: transceiveSN - SN response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: transceiveSN - Invalid SN response@")
-                return
-            }
-            print("NFC: transceiveSN - SN response data@", response.toHexString())
-            self.readLengthFromLinkLayer(tag: tag)
-        }
-    }
-
-    // SLH
-    func readContainer(tag : NFCISO7816Tag) -> Void {
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xB0, p1Parameter:0x00, p2Parameter:0x00, data: Data(), expectedResponseLength:15)
-        print("NFC: readContainer - Send Read Binary command@")
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: readContainer - Read Binary response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: readContainer - Invalid Read Binary response@")
-                return
-            }
-            guard (response.count == 15) else {
-                print("NFC: readContainer - Invalid Read Binary response length@")
-                return
-            }
-            print("NFC: readContainer - Read Binary response data@", response.toHexString())
-            //let cclen : UInt16 = UInt16(response[0]) * 256 + UInt16(response[1])
-            //let mapping : UInt8 = response[2]
-            self.mleMax = Int(response[3]) * 256 + Int(response[4])
-            self.mleMax = min(self.mleMax, 255)
-            self.mlcMax = Int(response[5]) * 256 + Int(response[6])
-            self.mlcMax = min(self.mlcMax, 255)
-            //let t : UInt8 = response[7]
-            //let l : UInt8 = response[8]
-            //let ident : UInt16 = UInt16(response[9]) * 256 + UInt16(response[10])
-            //let nmax : UInt16 = UInt16(response[11]) * 256 + UInt16(response[12])
-            //let rsec : UInt8 = response[13]
-            //let wsec : UInt8 = response[14]
-            //print("NFC: cclen=0x", String(format: "%04X", cclen))
-            //print("NFC: mapping=0x", String(format: "%02X", mapping))
-            print("NFC: mleMax=0x", String(format: "%08X", self.mleMax))
-            print("NFC: mlcMax=0x", String(format: "%08X", self.mlcMax))
-            //print("NFC: t=0x", String(format: "%02X", t))
-            //print("NFC: l=0x", String(format: "%02X", l))
-            //print("NFC: ident=0x", String(format: "%04X", ident))
-            //print("NFC: nmax=0x", String(format: "%04X", nmax))
-            //print("NFC: rsec=0x", String(format: "%02X", rsec))
-            //print("NFC: wsec=0x", String(format: "%02X", wsec))
-
-            self.transceiveSN(tag: tag)
-        }
-    }
-    
-    // SLH
-    func transceiveSC(tag : NFCISO7816Tag) -> Void {
-        let buf : Data = Data([ 0xE1, 0x03 ])
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xA4, p1Parameter:0x00, p2Parameter:0x0C, data: buf, expectedResponseLength:-1)
-        print("NFC: transceiveSC - Send SC command@", buf.toHexString())
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: transceiveSC - SC response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: transceiveSC - Invalid SC response@")
-                return
-            }
-            print("NFC: transceiveSC - SC response data@", response.toHexString())
-            self.readContainer(tag: tag)
-        }
-    }
-
-    // SLH
-    func transceiveSA(tag : NFCISO7816Tag) -> Void {
-        let buf : Data = Data([ 0xD2, 0x76, 0x00, 0x00, 0x85, 0x01, 0x01 ])
-        let myAPDU = NFCISO7816APDU(instructionClass:0, instructionCode:0xA4, p1Parameter:0x04, p2Parameter:0x00, data: buf, expectedResponseLength:256)
-        print("NFC: transceiveSA - Send SA command@", buf.toHexString())
-        tag.sendCommand(apdu: myAPDU) { (response: Data, sw1: UInt8, sw2: UInt8, error: Error?) in
-            guard error == nil else {
-                if let error = error {
-                    print("NFC: transceiveSA - SA response error@", error.localizedDescription)
-                }
-                return
-            }
-            guard (sw1 == 0x90 && sw2 == 00) else {
-                print("NFC: transceiveSA - Invalid SA response@")
-                return
-            }
-            print("NFC: transceiveSA - SA response data@", response.toHexString())
-            self.transceiveSC(tag: tag)
-        }
-    }
-    
-    // SLH
-    func tagReaderSession(_ session: NFCTagReaderSession, didDetect tags: [NFCTag]) {
-        // Process detected tag objects.
-        print("NFC: tagReaderSession - Tag detected@")
-            
-        guard let firstTag = tags.first else { return }
-        guard case .iso7816(let tag) = firstTag else { return }
-
-        session.connect(to: firstTag) { error in
-            if let error = error {
-                print("NFC: tagReaderSession - Connection failure@", error.localizedDescription)
-                return
-            }
-            print("NFC: tagReaderSession - Tag connected@")
-            self.transceiveSC(tag: tag)
-        }
-    }
-    
-    // SLH
-    func tagReaderSessionDidBecomeActive(_ session: NFCTagReaderSession) {
-        print("NFC: tagReaderSessionDidBecomeActive - session did become active@")
-    }
-    
-    // SLH
-    func tagReaderSession(_ session: NFCTagReaderSession, didInvalidateWithError error: Error) {
-        // Check the invalidation reason from the returned error.
-        if let readerError = error as? NFCReaderError {
-            // Show an alert when the invalidation reason is not because of a
-            // successful read during a single-tag read session, or because the
-            // user canceled a multiple-tag read session from the UI or
-            // programmatically using the invalidate method call.
-            if (readerError.code != .readerSessionInvalidationErrorUserCanceled) {
-                //DispatchQueue.main.async {
-                    print("NFC: tagReaderSession - NFC error, session invalidation@")
-                //}
-            }
-        }
-        // To read new tags, a new session instance is required.
-        self.session = nil
-        self.phd = nil
-        self.engine = nil
-        self.transaction = 0
-        self.mleMax = 255
-        self.mlcMax = 255
-        self.cachedResponse = Data()
-        NovMessage.reset()
     }
 
     // MARK: - View Life Cycle
@@ -437,7 +98,8 @@ class TreatmentsViewController : UIViewController, NFCTagReaderSessionDelegate {
 		// initalize private properties
 		self.coreDataManager = coreDataManager
 		self.treatmentEntryAccessor = TreatmentEntryAccessor(coreDataManager: coreDataManager)
-	
+        self.novopenManager = NovopenManager(delegate: self)
+        
 		self.reload()
         
 	}
@@ -605,4 +267,13 @@ extension TreatmentsViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+}
+
+extension TreatmentsViewController : NovopenDelegateProtocol
+{
+    func receivedInsulinData(serialNumber: String, date: Date, dose: Double) {
+        
+        print("TreatmentsViewController - received insulin data SN=" + serialNumber + " date=" + date.description + " dose=" + dose.description)
+        
+    }
 }

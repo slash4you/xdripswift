@@ -132,8 +132,8 @@ class NovStateMachine {
                     print("NFC : NovStateMachine.processPayload - " + state.description + " missing expected closure")
                 } else {
                     print("NFC : NovStateMachine.processPayload - " + state.description +  " successful download")
+                    return Fsa(action: .DONE, data: Data([1]))
                 }
-                return Fsa(action: .DONE, data: Data())
             case .PROFIT:
                 print("NFC: NovStateMachine.processPayload - " + state.description +  " not implemented yet")
             }

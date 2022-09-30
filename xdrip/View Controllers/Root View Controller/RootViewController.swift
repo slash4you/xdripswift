@@ -275,10 +275,10 @@ final class RootViewController: UIViewController {
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground -  isIdleTimerDisabled
     private let applicationManagerKeyIsIdleTimerDisabled = "RootViewController-isIdleTimerDisabled"
 
-    /// SLH constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
+    /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
     private let applicationManagerKeyDisableSuspension = "applicationManagerKeyDisableSuspension"
     
-    /// SLH constant for key in ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground - trace that app goes to background
+    /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppWillEnterForeground - trace that app goes to background
     private let applicationManagerKeyEnableSuspension = "applicationManagerKeyEnableSuspension"
 
     /// constant for key in ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground - trace that app goes to background
@@ -411,7 +411,6 @@ final class RootViewController: UIViewController {
     /// create the landscape view
     private var landscapeChartViewController: LandscapeChartViewController?
 
-    // SLH
     private var webServerManager: WebServerManager?
 
     // MARK: - overriden functions
@@ -755,7 +754,6 @@ final class RootViewController: UIViewController {
             UserDefaults.standard.nightScoutSyncTreatmentsRequired = true
         })
 
-        // SLH
         ApplicationManager.shared.addClosureToRunWhenAppDidEnterBackground(key: applicationManagerKeyDisableSuspension, closure: {
             if let webServerManager = self.webServerManager {
                 webServerManager.disableSuspension()
@@ -952,7 +950,6 @@ final class RootViewController: UIViewController {
             return self?.glucoseChartManager?.glucoseChartWithFrame(frame)?.view
         }
 
-        // SLH
         webServerManager = WebServerManager(coreDataManager: coreDataManager)
         if let webServerManager = webServerManager {
             webServerManager.start()
