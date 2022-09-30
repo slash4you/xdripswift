@@ -7,9 +7,12 @@
 //
 
 import Foundation
+import os
 
 class NovStateMachine {
     
+    private var log = OSLog(subsystem: ConstantsLog.subSystem, category: ConstantsLog.categoryNovopenStateMachine)
+
     fileprivate enum State : CaseIterable  {
         case AWAIT_ASSOCIATION_REQ
         case AWAIT_CONFIGURATION
@@ -36,25 +39,26 @@ class NovStateMachine {
         }
     }
     
-    
+    private var curInsulinDose : Int32
     private var curSegmentCount : Int32
     private var state : State
     
     public init()
     {
+        curInsulinDose = -1
         curSegmentCount = -1
         state = State.AWAIT_ASSOCIATION_REQ
     }
     
-    func processPayload(payload: Data) -> Fsa {
+    func processPayload(payload: Data, delegate: NovopenDelegateProtocol) -> Fsa {
         
         let msg : NovMessage = NovMessage.parse(data: payload)
         if (msg.isError()) {
-            print("NFC : NovStateMachine.processPayload - invalid message")
+            trace("NFC : NovStateMachine.processPayload - invalid message", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
             return Fsa()
         }
         else if (msg.wantsRelease()) {
-            print("NFC : NovStateMachine.processPayload - remote close request")
+            trace("NFC : NovStateMachine.processPayload - remote close request", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
             state = .AWAIT_CLOSE_DOWN
             return Fsa(action: .WRITE_READ, data: msg.closeDown())
         }
@@ -63,9 +67,10 @@ class NovStateMachine {
             switch (state)
             {
             case .AWAIT_ASSOCIATION_REQ:
+                self.curInsulinDose = 0
                 if (msg.requestIsValid()) {
                     let D : Data = msg.acceptAssoc()
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_ASSOCIATION_REQ -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
@@ -73,7 +78,7 @@ class NovStateMachine {
             case .AWAIT_CONFIGURATION:
                 if (msg.configIsValid()) {
                     let D : Data = msg.acceptConfig()
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_CONFIGURATION -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
@@ -81,62 +86,83 @@ class NovStateMachine {
             case .ASK_INFORMATION:
                 if (msg.configIsValid()) {
                     let D : Data = msg.askInformation()
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - ASK_INFORMATION -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
             case .AWAIT_INFORMATION:
                 if (msg.specificationIsValid()) {
                     let D : Data = msg.confirmedAction()
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_INFORMATION -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 } else {
                     let D : Data = msg.askInformation()
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_INFORMATION -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     return Fsa(action: .WRITE_READ, data: D)
                 }
             case .AWAIT_STORAGE_INFO:
                 if (msg.segmentInfoIsValid()) {
                     self.curSegmentCount = msg.currentSegmentUsage()
                     let D : Data = msg.xferAction(segmentId: msg.currentSegmentId() )
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + Apdu.parse(data:D).description())
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_STORAGE_INFO -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
             case .AWAIT_XFER_CONFIRM:
                 if (msg.segmentDataIsValid()) {
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " send nil payload" )
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_XFER_CONFIRM -> next step", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: Data())
                 }
             case .AWAIT_LOG_DATA:
                 if (msg.isEmpty()) {
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " retrying" )
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_LOG_DATA -> retrying...", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
                     return Fsa(action: .WRITE_READ, data: Data())
                 }
                 if (self.curSegmentCount != (msg.index() + msg.count())) {
+                    
+                    let doses : [NovInsulinDose] = msg.doses()
+                    if (doses.count > 0) {
+                        for d in doses {
+                            if ( d.isValid() && self.curInsulinDose < ConstantsNovopen.maxDosesToDownload ) {
+                                delegate.receivedInsulinData(serialNumber: msg.pencilSerialNumber(), date: d.time(), dose: d.unit())
+                                self.curInsulinDose += 1
+                            }
+                        }
+                    }
+                    
                     return Fsa(action: .WRITE_READ, data: msg.confirmedXfer())
                 }
                 let doses : [NovInsulinDose] = msg.doses()
                 if (doses.count > 0) {
-                    print ("NFC: NovStateMachine.processPayload - " + state.description + " " + doses.count.description + " doses received")
-                    // TODO
-                    state = state.next()
-                    return Fsa(action: .WRITE_READ, data: msg.closeDown())
+                    for d in doses {
+                        if ( d.isValid() && self.curInsulinDose < ConstantsNovopen.maxDosesToDownload ) {
+                            delegate.receivedInsulinData(serialNumber: msg.pencilSerialNumber(), date: d.time(), dose: d.unit())
+                            self.curInsulinDose += 1
+                        }
+                    }
                 }
+                
+                trace("NFC : NovStateMachine.processPayload - AWAIT_LOG_DATA -> close connection", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
+
+                state = state.next()
+                return Fsa(action: .WRITE_READ, data: msg.closeDown())
+                
             case .AWAIT_CLOSE_DOWN:
                 if (msg.isClosed() == false) {
-                    print("NFC : NovStateMachine.processPayload - " + state.description + " missing expected closure")
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_CLOSE_DOWN -> missing expected closure", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
                 } else {
-                    print("NFC : NovStateMachine.processPayload - " + state.description +  " successful download")
+                    trace("NFC : NovStateMachine.processPayload - AWAIT_CLOSE_DOWN -> successful download", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
                     return Fsa(action: .DONE, data: Data([1]))
                 }
             case .PROFIT:
-                print("NFC: NovStateMachine.processPayload - " + state.description +  " not implemented yet")
+                trace("NFC : NovStateMachine.processPayload - PROFIT -> not implemented yet", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
             }
         }
-        print("NFC: NovStateMachine.processPayload - processing failed")
+        
+        trace("NFC : NovStateMachine.processPayload - processing failed", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
+
         return Fsa()
     }
     

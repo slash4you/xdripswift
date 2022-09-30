@@ -19,7 +19,7 @@ class PHDLinkLayerHelper {
 
     func unpackInnerPacket(tag : NFCISO7816Tag, bytes : Data) -> Data {
         let phdll : PHDLinkLayer = PHDLinkLayer.parse( data: bytes )
-        print("NFC: " + phdll.description())
+        //print("NFC: " + phdll.description())
         if (!phdll.isValid()) {
             print("NFC: unpackInnerPacket - invalid phdll")
             return Data()
@@ -51,7 +51,7 @@ class PHDLinkLayerHelper {
             return Data()
         }
         
-        print("NFC: " + PHDLinkLayer.parse(data: frame).description())
+        //print("NFC: " + PHDLinkLayer.parse(data: frame).description())
         
         // TODO : mlcMax vs fragment management
         var out : Data = Data()

@@ -92,10 +92,12 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: transceiveEMPTY - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: transceiveEMPTY - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             trace("NFC: transceiveEMPTY - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
@@ -111,10 +113,12 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: transceiveUP - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: transceiveUP - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             trace("NFC: transceiveUP - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
@@ -134,33 +138,40 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: readDataFromLinkLayer - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: readDataFromLinkLayer - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             guard (response.count == length) else {
                 trace("NFC: readDataFromLinkLayer - Invalid response length", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
+                return
+            }
+            guard (self.transaction < ConstantsNovopen.maxNfcTransactions) else {
+                trace("NFC: readDataFromLinkLayer - maximum of transactions reached", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
 
             trace("NFC: readDataFromLinkLayer - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
 
+            self.transaction += 1
+
             // cache response
             self.cachedResponse.append(contentsOf: response)
             
             if (remaining <= length) {
-                
                 if let phd = self.phd, let engine = self.engine {
-                    self.transaction += 1
-                    if (self.transaction < 15) {
                         
                         let input : Data = phd.unpackInnerPacket(tag: tag, bytes: self.cachedResponse)
-                        //print("NFC: readDataFromLinkLayer - IN transaction:" + self.transaction.description + " L:" + input.count.description + " P:" + input.toHexString())
+                        trace("NFC: readDataFromLinkLayer - input = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, input.toHexString())
                         
                         if (input.count >= 0) {
-                            let fsa : Fsa = engine.processPayload(payload: input)
+                            let fsa : Fsa = engine.processPayload(payload: input, delegate: self.nfcDelegate!)
                             switch fsa.action()
                             {
                             case .WRITE_READ:
@@ -173,24 +184,22 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                                 break
                             default:
                                 let result : Bool = ( fsa.data().count > 0 && fsa.data().first == 1 )
-                                trace("NFC: readDataFromLinkLayer - end of session success = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info, result.description)
+                                trace("NFC: readDataFromLinkLayer - end of session, status = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info, result.description)
                                 self.closeSession(success: result)
                                 break
                             }
                         } else {
                             trace("NFC: readDataFromLinkLayer - unpack data failed", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                            self.closeSession(success: false)
                         }
-                    } else {
-                        trace("NFC: readDataFromLinkLayer - maximum of transactions reached", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
-                    }
                 }
-                
             } else {
                 // bound length to mleMax
                 let boundedLength : Int = min((remaining - length), self.mleMax)
                 // read and cache next chunk
                 self.readDataFromLinkLayer(tag: tag, offset: (offset+length), remaining: (remaining - length), length: boundedLength)
             }
+
         }
     }
     
@@ -205,14 +214,17 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: readLengthFromLinkLayer - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: readLengthFromLinkLayer - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             guard (response.count == 2) else {
                 trace("NFC: readLengthFromLinkLayer - Invalid response length", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             
@@ -238,10 +250,12 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: transceiveSN - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: transceiveSN - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             trace("NFC: transceiveSN - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
@@ -257,14 +271,17 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: readContainer - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: readContainer - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             guard (response.count == 15) else {
                 trace("NFC: readContainer - Invalid response length", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
 
@@ -303,10 +320,12 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: transceiveSC - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: transceiveSC - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             trace("NFC: transceiveSC - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
@@ -323,10 +342,12 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
                 if let error = error {
                     trace("NFC: transceiveSA - response error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
                 }
+                self.closeSession(success: false)
                 return
             }
             guard (sw1 == 0x90 && sw2 == 00) else {
                 trace("NFC: transceiveSA - Invalid response", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error)
+                self.closeSession(success: false)
                 return
             }
             trace("NFC: transceiveSA - response = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .debug, response.toHexString())
@@ -344,6 +365,7 @@ class NovopenManager : NSObject, NFCTagReaderSessionDelegate {
         session.connect(to: firstTag) { error in
             if let error = error {
                 trace("NFC: tagReaderSession - Connection failure error = %{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .error, error.localizedDescription)
+                self.closeSession(success: false)
                 return
             }
             

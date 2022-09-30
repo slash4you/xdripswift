@@ -9,7 +9,7 @@
 import Foundation
 
 class NovMessage {
-    
+
     private static let sharedInstance = NovMessage()
     
     static let EVENT_REPORT_CHOSEN : UInt16 = 0x0100
@@ -90,6 +90,14 @@ class NovMessage {
         return aInfo.isAsExpected()
     }
     
+    func pencilSerialNumber() -> String {
+        return aInfo.aSpecification.serial()
+    }
+
+    func pencilSoftwareVersion() -> String {
+        return aInfo.aSpecification.softwareVersion()
+    }
+
     func segmentInfoIsValid() -> Bool {
         return aSegInfo.isValid()
     }
@@ -251,84 +259,84 @@ class NovMessage {
         msg.length = data.count
         
         if (msg.length < 4) {
-            print("NFC: NovMessage.parse - Invalid payload data")
+            //print ("NFC : NovMessage.parse - invalid payload data")
             return msg
         }
                 
         msg.apdu = Apdu.parse(data: data)
         
-        print ("NFC: ",msg.apdu.description())
+        //print ("NFC : NovMessage.parse - ",msg.apdu.description())
         
         switch msg.apdu.type() {
         case Apdu.ApduType.Aarq:
             msg.aarq = Aarq.parse(data: msg.apdu.payload())
-            print("NFC: ", msg.aarq.description())
+            //print("NFC : NovMessage.parse - ", msg.aarq.description())
             break
         case Apdu.ApduType.Aare:
             msg.aare = Aare.parse(data: msg.apdu.payload())
-            print("NFC: ", msg.aare.description())
+            //print("NFC : NovMessage.parse - ", msg.aare.description())
             break
         case Apdu.ApduType.Rlrq:
-            print("NFC: NovMessage.parse - not implemented yet")
+            //print("NFC: NovMessage.parse - not implemented yet")
             break
         case Apdu.ApduType.Rlre:
             msg.closed = true
             break
         case Apdu.ApduType.Abrt:
-            print("NFC: NovMessage.parse - not implemented yet")
+            //print("NFC: NovMessage.parse - not implemented yet")
             break
         case Apdu.ApduType.Invalid:
-            print("NFC: NovMessage.parse - not implemented yet")
+            //print("NFC: NovMessage.parse - not implemented yet")
             break
         case Apdu.ApduType.Prst:
             let dpdu : Dpdu = Dpdu.parse(data: msg.apdu.payload())
             
             msg.invokedId = dpdu.invokeId()
             
-            print ("NFC: ", dpdu.description())
+            //print ("NFC : NovMessage.parse - ", dpdu.description())
 
             switch (dpdu.choice())
             {
                 case CONFIRMED_ACTION_CHOSEN:
                 let action : NovConfirmedAction = NovConfirmedAction.parse(data: dpdu.payload())
-                print("NFC : " + action.description())
+                //print("NFC : NovMessage.parse - " + action.description())
                 switch (action.type()) {
-                case MDC_ACT_SEG_GET_INFO:
-                    msg.aSegInfo = NovSegmentList.parse(data: action.payload())
-                    print("NFC : " + msg.aSegInfo.description())
-                    break
-                case MDC_ACT_SEG_TRIG_XFER:
-                    msg.aSegData = NovSegmentDataXFer.parse(data: action.payload())
-                    print("NFC : " + msg.aSegData.description())
-                    break
-                default:
-                    print("NFC: NovMessage.parse - unexpected action = " + action.type().description)
-                    break
+                    case MDC_ACT_SEG_GET_INFO:
+                        msg.aSegInfo = NovSegmentList.parse(data: action.payload())
+                        //print("NFC : NovMessage.parse - " + msg.aSegInfo.description())
+                        break
+                    case MDC_ACT_SEG_TRIG_XFER:
+                        msg.aSegData = NovSegmentDataXFer.parse(data: action.payload())
+                        //print("NFC : NovMessage.parse - " + msg.aSegData.description())
+                        break
+                    default:
+                        //print("NFC: NovMessage.parse - unexpected action = " + action.type().description)
+                        break
                 }
                 break
                 
                 case CONFIRMED_EVENT_REPORT_CHOSEN:
                 msg.aReport = NovEventReport.parse(data: dpdu.payload())
-                print("NFC : " + msg.aReport.description())
+                //print("NFC : NovMessage.parse - " + msg.aReport.description())
                 break
                 case SCONFIRMED_EVENT_REPORT_CHOSEN:
                 msg.aRequest = NovEventRequest.parse(data: dpdu.payload())
-                print("NFC : " + msg.aRequest.description())
+                //print("NFC : NovMessage.parse - " + msg.aRequest.description())
                 break
                 case GET_CHOSEN:
                 msg.aInfo = NovEventInfo.parse(data: dpdu.payload())
-                print("NFC : " + msg.aInfo.description())
+                //print("NFC : NovMessage.parse - " + msg.aInfo.description())
                 break
                 case SGET_CHOSEN:
                 msg.aInfo = NovEventInfo.parse(data: dpdu.payload())
-                print("NFC : " + msg.aInfo.description())
+                //print("NFC : NovMessage.parse - " + msg.aInfo.description())
                 break
                 case CONFIRMED_ACTION:
                 msg.aAction = NovConfirmedAction.parse(data: dpdu.payload())
-                print("NFC : " + msg.aAction.description())
+                //print("NFC : NovMessage.parse - " + msg.aAction.description())
                 break
                 default:
-                print("NFC: NovMessage.parse - unexpected action = " + String(format: "%04X", dpdu.choice()))
+                //print("NFC: NovMessage.parse - unexpected action = " + String(format: "%04X", dpdu.choice()))
                 break
             }
             

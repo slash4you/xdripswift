@@ -273,7 +273,22 @@ extension TreatmentsViewController : NovopenDelegateProtocol
 {
     func receivedInsulinData(serialNumber: String, date: Date, dose: Double) {
         
-        print("TreatmentsViewController - received insulin data SN=" + serialNumber + " date=" + date.description + " dose=" + dose.description)
-        
+        // possibly not running on main thread here
+        DispatchQueue.main.async {
+            print("TreatmentsViewController - received insulin data from pencil SN=" + serialNumber + " -> date=" + date.description + " dose=" + dose.description)
+            
+            let treatments : [TreatmentEntry] = self.treatmentEntryAccessor.getTreatments(fromDate: date.addingTimeInterval(-1.0), toDate: date.addingTimeInterval(1.0), on: self.coreDataManager.mainManagedObjectContext)
+
+            if (treatments.count == 0) {
+                // insertion
+                _ = TreatmentEntry(date: date, value: dose, treatmentType: .Insulin, nightscoutEventType: nil, nsManagedObjectContext: self.coreDataManager.mainManagedObjectContext)
+                
+                // save to coredata
+                self.coreDataManager.saveChanges()
+                
+                self.reload()
+                
+            }
+        }
     }
 }

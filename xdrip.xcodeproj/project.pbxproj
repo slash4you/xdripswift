@@ -19,6 +19,7 @@
 		0A2D3C7828DEF0CB00D01D68 /* NovSegmentDataXFer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */; };
 		0A2D3C7A28E20C9600D01D68 /* NovopenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7928E20C9600D01D68 /* NovopenManager.swift */; };
 		0A2D3C7C28E2295000D01D68 /* TextsNovopen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7B28E2295000D01D68 /* TextsNovopen.swift */; };
+		0A2D3C7E28E7153400D01D68 /* ConstantsNovopen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C7D28E7153400D01D68 /* ConstantsNovopen.swift */; };
 		0A33390D28B3FC59002DF1CD /* PHDLinkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */; };
 		0A33390F28B90F7E002DF1CD /* PHDLinkLayerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */; };
 		0A33391128B9F7E4002DF1CD /* NovStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */; };
@@ -657,6 +658,7 @@
 		0A2D3C7728DEF0CB00D01D68 /* NovSegmentDataXFer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovSegmentDataXFer.swift; sourceTree = "<group>"; };
 		0A2D3C7928E20C9600D01D68 /* NovopenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovopenManager.swift; sourceTree = "<group>"; };
 		0A2D3C7B28E2295000D01D68 /* TextsNovopen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextsNovopen.swift; sourceTree = "<group>"; };
+		0A2D3C7D28E7153400D01D68 /* ConstantsNovopen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsNovopen.swift; sourceTree = "<group>"; };
 		0A33390C28B3FC59002DF1CD /* PHDLinkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayer.swift; sourceTree = "<group>"; };
 		0A33390E28B90F7E002DF1CD /* PHDLinkLayerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHDLinkLayerHelper.swift; sourceTree = "<group>"; };
 		0A33391028B9F7E4002DF1CD /* NovStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovStateMachine.swift; sourceTree = "<group>"; };
@@ -2817,6 +2819,7 @@
 				F8E3A2AA23DA520B00E5E98A /* ConstantsWatch.swift */,
 				4752B3FF263570DA0081D551 /* ConstantsStatistics.swift */,
 				0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */,
+				0A2D3C7D28E7153400D01D68 /* ConstantsNovopen.swift */,
 			);
 			name = Constants;
 			path = xdrip/Constants;
@@ -3871,6 +3874,7 @@
 				F8A389C823203E3E0010F405 /* ConstantsM5Stack.swift in Sources */,
 				F898EDEA233F53BF00BFB79B /* UIButton.swift in Sources */,
 				F81F9FF822861E6D0028C70F /* KeyValueObserverTimeKeeper.swift in Sources */,
+				0A2D3C7E28E7153400D01D68 /* ConstantsNovopen.swift in Sources */,
 				F8B3A858227F6971004BA588 /* UISwitch.swift in Sources */,
 				F8E6C78C24CDDB83007C1199 /* SnoozeViewController.swift in Sources */,
 				F8AF11F824B1E6EE00AE5BA2 /* XdripError.swift in Sources */,

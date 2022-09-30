@@ -25,7 +25,15 @@ class NovInsulinDose {
     }
 
     func description() -> String {
-        return "[DOSE] valid:" + isValid().description + " time:" + aAbsoluteTime.description + " units:" + aUnits.description + " flags:" + String(format:"%08X",aFlags)
+        return "[DOSE] valid:" + isValid().description + " time:" + aAbsoluteTime.ISOStringFromDate() + " units:" + aUnits.description + " flags:" + String(format:"%08X",aFlags)
+    }
+    
+    func unit() -> Double {
+        return aUnits
+    }
+    
+    func time() -> Date {
+        return aAbsoluteTime
     }
     
     func isValid() -> Bool {

@@ -170,5 +170,9 @@ enum ConstantsLog {
 
     static let categoryNovopenController =                    "NovopenController              "
 
+    static let categoryNovopenStateMachine =                    "NovopenStateMachine              "
+
+    static let categoryNovopenMessage =                    "NovopenMessage              "
+
 }
 
