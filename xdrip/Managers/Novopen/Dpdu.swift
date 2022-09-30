@@ -10,26 +10,26 @@ import Foundation
 
 class Dpdu {
 
-    private var dInvokeId : UInt16
-    private var dChoice : UInt16
+    private var aInvokeId : UInt16
+    private var aChoice : UInt16
     private var payloadData : Data
 
     public init()
     {
-        dInvokeId = 0
-        dChoice = 0
+        aInvokeId = 0
+        aChoice = 0
         payloadData = Data()
     }
    
     public init(invokeId : UInt16, choice : UInt16)
     {
-        dInvokeId = invokeId
-        dChoice = choice
+        aInvokeId = invokeId
+        aChoice = choice
         payloadData = Data()
     }
 
     func description() -> String {
-        return "[DPDU] invokeId:" + String(format: "%04X", dInvokeId) + " Choice:" + String(format: "%04X", dChoice) + " L:" + payloadData.count.description + " Payload:" + payloadData.toHexString()
+        return "[DPDU] invokeId:" + String(format: "%04X", aInvokeId) + " Choice:" + String(format: "%04X", aChoice) + " L:" + payloadData.count.description + " Payload:" + payloadData.toHexString()
     }
     
     func payload() -> Data {
@@ -37,11 +37,11 @@ class Dpdu {
     }
     
     func choice() -> UInt16 {
-        return dChoice
+        return aChoice
     }
     
     func invokeId() -> UInt16 {
-        return dInvokeId
+        return aInvokeId
     }
     
     static func parse(data: Data) -> Dpdu {
@@ -53,7 +53,7 @@ class Dpdu {
             return Dpdu()
         }
 
-        let _ = UInt16(data[index])*256 + UInt16(data[index+1])
+        let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -61,7 +61,7 @@ class Dpdu {
             return Dpdu()
         }
 
-        apdu.dInvokeId = UInt16(data[index])*256 + UInt16(data[index+1])
+        apdu.aInvokeId = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -69,7 +69,7 @@ class Dpdu {
             return Dpdu()
         }
 
-        apdu.dChoice = UInt16(data[index])*256 + UInt16(data[index+1])
+        apdu.aChoice = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -77,7 +77,7 @@ class Dpdu {
             return Dpdu()
         }
 
-        let length : Int = Int(data[index])*256 + Int(data[index+1])
+        let length : Int = Int(data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped)
         index += 2
 
         if (length > 0) {
@@ -103,12 +103,12 @@ class Dpdu {
         let H0 : UInt8 = UInt8(len & 0xFF)
         buf.append(contentsOf: [H1, H0])
 
-        let I1 : UInt8 = UInt8((dInvokeId >> 8) & 0xFF)
-        let I0 : UInt8 = UInt8(dInvokeId & 0xFF)
+        let I1 : UInt8 = UInt8((aInvokeId >> 8) & 0xFF)
+        let I0 : UInt8 = UInt8(aInvokeId & 0xFF)
         buf.append(contentsOf: [I1, I0])
 
-        let C1 : UInt8 = UInt8((dChoice >> 8) & 0xFF)
-        let C0 : UInt8 = UInt8(dChoice & 0xFF)
+        let C1 : UInt8 = UInt8((aChoice >> 8) & 0xFF)
+        let C0 : UInt8 = UInt8(aChoice & 0xFF)
         buf.append(contentsOf: [C1, C0])
 
         let L1 : UInt8 = UInt8((payload.count >> 8) & 0xFF)

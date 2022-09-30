@@ -10,20 +10,20 @@ import Foundation
 
 class Aarq {
     
-    private var proto : UInt16
-    private var version : UInt32
-    private var elements : UInt16
+    private var aProto : UInt16
+    private var aVersion : UInt32
+    private var aElements : UInt16
     private var apoep : Apoep
     
     public init() {
-        proto = 0
-        version = 0
-        elements = 0
+        aProto = 0
+        aVersion = 0
+        aElements = 0
         apoep = Apoep()
     }
     
     func description() -> String {
-        var log : String = "[AARQ] proto:" + String(format: "%04X", proto) + " version:" + String(format: "%08X", version) + " elements:" + String(format: "%04X", elements)
+        var log : String = "[AARQ] proto:" + String(format: "%04X", aProto) + " version:" + String(format: "%08X", aVersion) + " elements:" + String(format: "%04X", aElements)
         if isValid() {
             log += " -> " + apoep.description()
         } else {
@@ -33,7 +33,7 @@ class Aarq {
     }
     
     func isValid() -> Bool {
-        return (proto == Apoep.APOEP && apoep.id().count == 8)
+        return (aProto == Apoep.APOEP && apoep.id().count == 8)
     }
 
     func payload() -> Apoep {
@@ -50,7 +50,7 @@ class Aarq {
             return Aarq()
         }
 
-        req.version = UInt32(data[index]) << 24 + UInt32(data[index+1]) << 16 + UInt32(data[index+2]) << 8 + UInt32(data[index+3])
+        req.aVersion = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
         index += 4
         
         if (data.endIndex < (index+1)) {
@@ -58,7 +58,7 @@ class Aarq {
             return Aarq()
         }
 
-        req.elements = UInt16(data[index]) << 8 + UInt16(data[index+1])
+        req.aElements = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -66,18 +66,18 @@ class Aarq {
             return Aarq()
         }
 
-        let _ = UInt16(data[index]) << 8 + UInt16(data[index+1])
+        let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
-        if (req.elements > 0) {
-            for _ in 1 ... req.elements {
+        if (req.aElements > 0) {
+            for _ in 1 ... req.aElements {
                 
                 if (data.endIndex < (index+1)) {
                     print("Invalid data len")
                     return Aarq()
                 }
 
-                req.proto = UInt16(data[index]) << 8 + UInt16(data[index+1])
+                req.aProto = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -85,7 +85,7 @@ class Aarq {
                     return Aarq()
                 }
 
-                let len = UInt16(data[index]) << 8 + UInt16(data[index+1])
+                let len : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 let nextindex = index + Int(len)
@@ -95,7 +95,7 @@ class Aarq {
                     return Aarq()
                 }
 
-                if (req.proto == Apoep.APOEP) {
+                if (req.aProto == Apoep.APOEP) {
                     req.apoep = Apoep.parse(data: data[ index ..< nextindex ])
                 }
                 

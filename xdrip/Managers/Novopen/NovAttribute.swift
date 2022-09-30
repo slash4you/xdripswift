@@ -55,32 +55,32 @@ class NovAttribute {
         }
     }
 
-    private var atype : AttributeType
-    private var type : UInt16
-    private var ivalue : Int32
-    private var dvalue : Data
+    private var aKind : AttributeType
+    private var aType : UInt16
+    private var aValue : Int32
+    private var aBytes : Data
 
     public init() {
-        type = 0
-        atype = .MDC_ATTR_INVALID
-        ivalue = 0
-        dvalue = Data()
+        aType = 0
+        aKind = .MDC_ATTR_INVALID
+        aValue = -1
+        aBytes = Data()
     }
     
     func description() -> String {
-        return "[ATTR] kind=" + type.description + " ivalue=" + ivalue.description + " bytes=" + dvalue.toHexString()
+        return "[ATTR] kind=" + aKind.description + " ivalue=" + aValue.description + " bytes=" + aBytes.toHexString()
     }
     
     func kind() -> AttributeType {
-        return self.atype
+        return aKind
     }
     
     func value() -> Int32 {
-        return ivalue
+        return aValue
     }
     
     func bytes() -> Data {
-        return dvalue
+        return aBytes
     }
     
     static func parse(data : Data) -> NovAttribute {
@@ -92,7 +92,7 @@ class NovAttribute {
             return NovAttribute()
         }
 
-        attr.type = UInt16(data[index])*256 + UInt16(data[index+1])
+        attr.aType = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -100,7 +100,7 @@ class NovAttribute {
             return NovAttribute()
         }
 
-        let length : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let length : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         let nextindex : Int = index + Int(length)
@@ -110,18 +110,20 @@ class NovAttribute {
             return NovAttribute()
         }
 
-        attr.dvalue = data[index ..< nextindex]
+        attr.aBytes = data[index ..< nextindex]
 
-        attr.atype = AttributeType.findByValue(val: attr.type)
+        attr.aKind = AttributeType.findByValue(val: attr.aType)
         
         if (length == 4) {
-            attr.ivalue = (Int32(data[index]) << 24) + (Int32(data[index+1]) << 16) + (Int32(data[index+2]) << 8) + Int32(data[index+3])
+            // TODO : 32 bits length data is signed ?
+            attr.aValue = data.subdata(in: index ..< index+4).to(Int32.self).byteSwapped
         }
         else if (length == 2) {
-            attr.ivalue = (Int32(data[index]) << 8) + Int32(data[index+1])
+            // TODO : 16 bits length data is signed ?
+            attr.aValue = Int32(data.subdata(in: index ..< index+2).to(Int16.self).byteSwapped)
         }
         else {
-            attr.ivalue = -1
+            attr.aValue = -1
         }
         
         index = nextindex

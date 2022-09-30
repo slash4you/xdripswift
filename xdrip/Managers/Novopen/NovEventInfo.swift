@@ -53,7 +53,7 @@ class NovEventInfo {
             return NovEventInfo()
         }
 
-        info.aHandle = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        info.aHandle = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -61,7 +61,7 @@ class NovEventInfo {
             return NovEventInfo()
         }
 
-        let icount : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let icount : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -69,7 +69,7 @@ class NovEventInfo {
             return NovEventInfo()
         }
 
-        let _ : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (icount > 0) {

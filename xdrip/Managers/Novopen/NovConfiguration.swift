@@ -88,7 +88,7 @@ class NovConfiguration {
             return NovConfiguration()
         }
 
-        let I : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let I : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -96,7 +96,7 @@ class NovConfiguration {
             return NovConfiguration()
         }
 
-        let count : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let count : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -104,7 +104,7 @@ class NovConfiguration {
             return NovConfiguration()
         }
 
-        cfg.cfgLength = UInt16(data[index])*256 + UInt16(data[index+1])
+        cfg.cfgLength = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (count > 0) {
@@ -115,7 +115,7 @@ class NovConfiguration {
                     return NovConfiguration()
                 }
 
-                let _ : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -123,7 +123,7 @@ class NovConfiguration {
                     return NovConfiguration()
                 }
 
-                let H : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let H : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -131,7 +131,7 @@ class NovConfiguration {
                     return NovConfiguration()
                 }
 
-                let acount : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let acount : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -139,7 +139,7 @@ class NovConfiguration {
                     return NovConfiguration()
                 }
 
-                let _ : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (acount > 0) {

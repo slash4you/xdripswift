@@ -39,7 +39,7 @@ class NovRelativeTime {
             return NovRelativeTime()
         }
 
-        time.aRelativeTime = UInt32(data[index]) << 24 + UInt32(data[index+1]) << 16 + UInt32(data[index+2]) << 8 + UInt32(data[index+3])
+        time.aRelativeTime = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
         index += 4
 
         time.aAbsoluteTime = Date()

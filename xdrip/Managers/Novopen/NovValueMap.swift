@@ -15,15 +15,15 @@ class NovValueMap {
         var tcount : UInt16
     }
     
-    private var list : [Entry]
+    private var aList : [Entry]
     
     public init() {
-        list = [Entry]()
+        aList = [Entry]()
     }
     
     func description() -> String {
         var log : String = "["
-        for e in list {
+        for e in aList {
             log = log + "(" + String(format: "%04X", e.type) + "," + String(format: "%04X", e.tcount) + ") "
         }
         log = log + "]"
@@ -39,7 +39,7 @@ class NovValueMap {
             return NovValueMap()
         }
 
-        let count : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let count : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -47,7 +47,7 @@ class NovValueMap {
             return NovValueMap()
         }
 
-        let _ : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (count > 0) {
@@ -58,7 +58,7 @@ class NovValueMap {
                     return NovValueMap()
                 }
 
-                let type : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let type : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -66,10 +66,10 @@ class NovValueMap {
                     return NovValueMap()
                 }
 
-                let tcount : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+                let tcount : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
-                map.list.append( Entry(type: type, tcount: tcount ) )
+                map.aList.append( Entry(type: type, tcount: tcount ) )
 
             }
         }

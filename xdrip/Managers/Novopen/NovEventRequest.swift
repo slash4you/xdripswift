@@ -130,7 +130,7 @@ class NovEventRequest {
             return NovEventRequest()
         }
 
-        er.evHandle = UInt16(data[index])*256 + UInt16(data[index+1])
+        er.evHandle = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+3)) {
@@ -138,7 +138,7 @@ class NovEventRequest {
             return NovEventRequest()
         }
 
-        er.evTime = (UInt32(data[index]) << 24) + (UInt32(data[index+1]) << 16) + (UInt32(data[index+2]) << 8) + UInt32(data[index+3])
+        er.evTime = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
         index += 4
 
         if (data.endIndex < (index+1)) {
@@ -146,7 +146,7 @@ class NovEventRequest {
             return NovEventRequest()
         }
 
-        er.evType = UInt16(data[index])*256 + UInt16(data[index+1])
+        er.evType = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -154,7 +154,7 @@ class NovEventRequest {
             return NovEventRequest()
         }
 
-        er.evReplyLen = UInt16(data[index])*256 + UInt16(data[index+1])
+        er.evReplyLen = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (er.evReplyLen == 4) {
@@ -164,7 +164,7 @@ class NovEventRequest {
                 return NovEventRequest()
             }
 
-            er.evReportId = UInt16(data[index])*256 + UInt16(data[index+1])
+            er.evReportId = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             if (data.endIndex < (index+1)) {
@@ -172,7 +172,7 @@ class NovEventRequest {
                 return NovEventRequest()
             }
 
-            er.evReportResult = UInt16(data[index])*256 + UInt16(data[index+1])
+            er.evReportResult = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
         }
         

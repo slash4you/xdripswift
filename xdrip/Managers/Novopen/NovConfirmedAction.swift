@@ -88,7 +88,7 @@ class NovConfirmedAction {
             return NovConfirmedAction()
         }
 
-        action.aHandle = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        action.aHandle = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -96,7 +96,7 @@ class NovConfirmedAction {
             return NovConfirmedAction()
         }
 
-        action.aType = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        action.aType = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -104,7 +104,7 @@ class NovConfirmedAction {
             return NovConfirmedAction()
         }
 
-        let length : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let length : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (length > 0) {

@@ -9,8 +9,6 @@
 import Foundation
 
 class NovStateMachine {
-
-    static let MAX_REQUESTS : Int = 100
     
     fileprivate enum State : CaseIterable  {
         case AWAIT_ASSOCIATION_REQ

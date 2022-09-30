@@ -50,7 +50,7 @@ class NovSegmentDataXFer {
             return NovSegmentDataXFer()
         }
 
-        xfer.aSegmentId = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        xfer.aSegmentId = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -58,7 +58,7 @@ class NovSegmentDataXFer {
             return NovSegmentDataXFer()
         }
 
-        xfer.aResponseCode = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        xfer.aResponseCode = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         return xfer

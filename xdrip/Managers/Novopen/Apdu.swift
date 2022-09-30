@@ -99,7 +99,7 @@ class Apdu {
             return Apdu()
         }
 
-        let T : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let T : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         apdu.aType = ApduType.findByValue(val: T)
@@ -114,7 +114,7 @@ class Apdu {
             return Apdu()
         }
 
-        let length : Int = Int(data[index]) * 256 + Int(data[index+1])
+        let length : Int = Int(data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped)
         index += 2
 
         if (length > 0) {

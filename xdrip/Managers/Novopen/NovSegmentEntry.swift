@@ -93,7 +93,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aClassId = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aClassId = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -101,7 +101,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aMetricType = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aMetricType = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -109,7 +109,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aOType = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aOType = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -117,7 +117,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aHandle = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aHandle = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -125,7 +125,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aMCount = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aMCount = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -133,7 +133,7 @@ class NovSegmentEntry {
             return NovSegmentEntry()
         }
 
-        seg.aMLen = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        seg.aMLen = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (seg.aMLen == 4) {
@@ -145,7 +145,7 @@ class NovSegmentEntry {
                 return NovSegmentEntry()
             }
 
-            seg.aVal1 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+            seg.aVal1 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             if (data.endIndex < (index+1)) {
@@ -153,7 +153,7 @@ class NovSegmentEntry {
                 return NovSegmentEntry()
             }
 
-            seg.aVal2 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+            seg.aVal2 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
             
             

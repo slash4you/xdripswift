@@ -29,7 +29,7 @@ class NovModel {
             return NovModel()
         }
         
-        let length : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let length : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
         
         let nextIndex : Int = index + Int(length)

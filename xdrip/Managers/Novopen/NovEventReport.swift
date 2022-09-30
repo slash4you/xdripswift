@@ -110,7 +110,7 @@ class NovEventReport {
             return NovEventReport()
         }
 
-        er.evHandle = UInt16(data[index])*256 + UInt16(data[index+1])
+        er.evHandle = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+3)) {
@@ -118,7 +118,7 @@ class NovEventReport {
             return NovEventReport()
         }
 
-        er.evTime = (UInt32(data[index]) << 24) + (UInt32(data[index+1]) << 16) + (UInt32(data[index+2]) << 8) + UInt32(data[index+3])
+        er.evTime = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
         index += 4
 
         if (data.endIndex < (index+1)) {
@@ -126,7 +126,7 @@ class NovEventReport {
             return NovEventReport()
         }
 
-        let eventType : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+        let eventType : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         er.evType = EventType.findByValue(val: eventType)
@@ -136,7 +136,7 @@ class NovEventReport {
             return NovEventReport()
         }
 
-        er.evLength = UInt16(data[index])*256 + UInt16(data[index+1])
+        er.evLength = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
         
         let nextIndex : Int = index + Int(er.evLength)
@@ -155,7 +155,7 @@ class NovEventReport {
                 return NovEventReport()
             }
 
-            er.evInstance = UInt16(data[index])*256 + UInt16(data[index+1])
+            er.evInstance = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             if (data.endIndex < (index+3)) {
@@ -163,7 +163,7 @@ class NovEventReport {
                 return NovEventReport()
             }
 
-            er.evIndex = (UInt32(data[index]) << 24) + (UInt32(data[index+1]) << 16) + (UInt32(data[index+2]) << 8) + UInt32(data[index+3])
+            er.evIndex = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
             index += 4
 
             if (data.endIndex < (index+3)) {
@@ -171,7 +171,7 @@ class NovEventReport {
                 return NovEventReport()
             }
 
-            er.evCount = (UInt32(data[index]) << 24) + (UInt32(data[index+1]) << 16) + (UInt32(data[index+2]) << 8) + UInt32(data[index+3])
+            er.evCount = data.subdata(in: index ..< index+4).to(UInt32.self).byteSwapped
             index += 4
 
             if (data.endIndex < (index+1)) {
@@ -179,7 +179,7 @@ class NovEventReport {
                 return NovEventReport()
             }
 
-            let _ : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+            let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             if (data.endIndex < (index+1)) {
@@ -187,7 +187,7 @@ class NovEventReport {
                 return NovEventReport()
             }
 
-            let _ : UInt16 = UInt16(data[index])*256 + UInt16(data[index+1])
+            let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             if (er.evCount > 0) {

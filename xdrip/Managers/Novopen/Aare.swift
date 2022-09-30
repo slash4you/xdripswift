@@ -10,30 +10,30 @@ import Foundation
 
 class Aare {
     
-    private var result : UInt16
-    private var proto : UInt16
+    private var aResult : UInt16
+    private var aProto : UInt16
     private var apoep : Apoep
     
     public init()
     {
-        result = 0
-        proto = 0
+        aResult = 0
+        aProto = 0
         apoep = Apoep()
     }
 
     public init(res: UInt16, pro: UInt16, a : Apoep)
     {
-        result = res
-        proto = pro
+        aResult = res
+        aProto = pro
         apoep = a
     }
     
     func description() -> String {
-        return "[AARE] result:" + String(format: "%04X", result) + " proto:" + String(format: "%04X", proto) + "  -> " + apoep.description()
+        return "[AARE] result:" + String(format: "%04X", aResult) + " proto:" + String(format: "%04X", aProto) + "  -> " + apoep.description()
     }
     
     func isValid() -> Bool {
-        return (proto == Apoep.APOEP && apoep.id().count == 8)
+        return (aProto == Apoep.APOEP && apoep.id().count == 8)
     }
 
     func payload() -> Apoep {
@@ -43,12 +43,12 @@ class Aare {
     func encode() -> Data {
         var buf : Data = Data()
 
-        let R1 : UInt8 = UInt8((result >> 8) & 0xFF)
-        let R0 : UInt8 = UInt8(result & 0xFF)
+        let R1 : UInt8 = UInt8((aResult >> 8) & 0xFF)
+        let R0 : UInt8 = UInt8(aResult & 0xFF)
         buf.append(contentsOf: [R1, R0])
 
-        let P1 : UInt8 = UInt8((proto >> 8) & 0xFF)
-        let P0 : UInt8 = UInt8(proto & 0xFF)
+        let P1 : UInt8 = UInt8((aProto >> 8) & 0xFF)
+        let P0 : UInt8 = UInt8(aProto & 0xFF)
         buf.append(contentsOf: [P1, P0])
 
         let payload : Data = apoep.encode(mode: 0, config: 0, type: Apoep.SYS_TYPE_MANAGER, ocount: 0, olen: 0)
@@ -72,7 +72,7 @@ class Aare {
             return Aare()
         }
 
-        response.result = UInt16(data[index]) << 8 + UInt16(data[index+1])
+        response.aResult = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -80,17 +80,17 @@ class Aare {
             return Aare()
         }
 
-        response.proto = UInt16(data[index]) << 8 + UInt16(data[index+1])
+        response.aProto = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
-        if (response.proto == Apoep.APOEP) {
+        if (response.aProto == Apoep.APOEP) {
             
             if (data.endIndex < (index+1)) {
                 print("Invalid data len")
                 return Aare()
             }
 
-            let len = UInt16(data[index]) << 8 + UInt16(data[index+1])
+            let len : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
             index += 2
 
             let nextIndex : Int = index + Int(len)

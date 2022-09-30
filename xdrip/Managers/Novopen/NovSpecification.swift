@@ -72,7 +72,7 @@ class NovSpecification {
             return NovSpecification()
         }
 
-        let scount : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let scount : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (data.endIndex < (index+1)) {
@@ -80,7 +80,7 @@ class NovSpecification {
             return NovSpecification()
         }
 
-        let _ : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+        let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
         index += 2
 
         if (scount > 0) {
@@ -91,7 +91,7 @@ class NovSpecification {
                     return NovSpecification()
                 }
 
-                let type : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+                let type : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -99,7 +99,7 @@ class NovSpecification {
                     return NovSpecification()
                 }
 
-                let _ : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+                let _ : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 if (data.endIndex < (index+1)) {
@@ -107,7 +107,7 @@ class NovSpecification {
                     return NovSpecification()
                 }
 
-                let length : UInt16 = UInt16(data[index]) * 256 + UInt16(data[index+1])
+                let length : UInt16 = data.subdata(in: index ..< index+2).to(UInt16.self).byteSwapped
                 index += 2
 
                 let nextIndex : Int = index + Int(length)
