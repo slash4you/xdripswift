@@ -8,12 +8,14 @@
 
 import Foundation
 import UIKit
-
+import os
 
 class TreatmentsViewController : UIViewController {
-	
+    	
 	// MARK: - private properties
 	
+    private var log = OSLog(subsystem: ConstantsLog.subSystem, category: ConstantsLog.categoryTreatmentsViewController)
+
 	/// TreatmentCollection is used to get and sort data.
 	private var treatmentCollection: TreatmentCollection?
 	
@@ -92,8 +94,15 @@ class TreatmentsViewController : UIViewController {
     }
     
 	
+    private var novopenManager : NovopenManager?
+        
+    @IBAction func importPencilData(_ sender: UIBarButtonItem) {
+        if let novopen = self.novopenManager {
+            novopen.read()
+        }
+    }
+
     // MARK: - View Life Cycle
-    
 	override func viewWillAppear(_ animated: Bool) {
         
 		super.viewWillAppear(animated)
@@ -194,7 +203,8 @@ class TreatmentsViewController : UIViewController {
 		// initalize private properties
 		self.coreDataManager = coreDataManager
 		self.treatmentEntryAccessor = TreatmentEntryAccessor(coreDataManager: coreDataManager)
-	
+        self.novopenManager = NovopenManager(delegate: self)
+        
 		self.reload()
         
 	}
@@ -379,4 +389,32 @@ extension TreatmentsViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+}
+
+extension TreatmentsViewController : NovopenDelegateProtocol
+{
+    func receivedInsulinData(serialNumber: String, date: Date, dose: Double) {
+        
+        // possibly not running on main thread here
+        DispatchQueue.main.async {
+            
+            trace("TreatmentsViewController - from pencil=%{public}@ at date=%{public}@ bolus=%{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info, serialNumber, date.description, dose.description)
+
+            let treatments : [TreatmentEntry] = self.treatmentEntryAccessor.getTreatments(fromDate: date.addingTimeInterval(-1.0), toDate: date.addingTimeInterval(1.0), on: self.coreDataManager.mainManagedObjectContext)
+
+            if (treatments.count == 0) {
+                
+                trace("TreatmentsViewController - pencil data has been recorded", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info)
+
+                // insertion
+                _ = TreatmentEntry(date: date, value: dose, treatmentType: .Insulin, nightscoutEventType: nil, nsManagedObjectContext: self.coreDataManager.mainManagedObjectContext)
+                
+                // save to coredata
+                self.coreDataManager.saveChanges()
+                
+                self.reload()
+                
+            }
+        }
+    }
 }
