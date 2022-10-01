@@ -14,7 +14,7 @@ class TreatmentsViewController : UIViewController {
     	
 	// MARK: - private properties
 	
-    private var log = OSLog(subsystem: ConstantsLog.subSystem, category: ConstantsLog.categoryWebServerController)
+    private var log = OSLog(subsystem: ConstantsLog.subSystem, category: ConstantsLog.categoryTreatmentsViewController)
 
 	/// TreatmentCollection is used to get and sort data.
 	private var treatmentCollection: TreatmentCollection?
@@ -275,11 +275,15 @@ extension TreatmentsViewController : NovopenDelegateProtocol
         
         // possibly not running on main thread here
         DispatchQueue.main.async {
-            print("TreatmentsViewController - received insulin data from pencil SN=" + serialNumber + " -> date=" + date.description + " dose=" + dose.description)
             
+            trace("TreatmentsViewController - from pencil=%{public}@ at date=%{public}@ bolus=%{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info, serialNumber, date.description, dose.description)
+
             let treatments : [TreatmentEntry] = self.treatmentEntryAccessor.getTreatments(fromDate: date.addingTimeInterval(-1.0), toDate: date.addingTimeInterval(1.0), on: self.coreDataManager.mainManagedObjectContext)
 
             if (treatments.count == 0) {
+                
+                trace("TreatmentsViewController - pencil data has been recorded", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info)
+
                 // insertion
                 _ = TreatmentEntry(date: date, value: dose, treatmentType: .Insulin, nightscoutEventType: nil, nsManagedObjectContext: self.coreDataManager.mainManagedObjectContext)
                 

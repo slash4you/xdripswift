@@ -174,5 +174,7 @@ enum ConstantsLog {
 
     static let categoryNovopenMessage =                    "NovopenMessage              "
 
+    static let categoryTreatmentsViewController =                    "TreatmentsViewController              "
+
 }
 
