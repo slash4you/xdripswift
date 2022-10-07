@@ -12,4 +12,5 @@ enum ConstantsNovopen {
 
     static let maxDosesToDownload = 10
 
+    static let timeCorrelationPrecision : Double = 2.0
 }

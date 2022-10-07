@@ -400,7 +400,7 @@ extension TreatmentsViewController : NovopenDelegateProtocol
             
             trace("TreatmentsViewController - from pencil=%{public}@ at date=%{public}@ bolus=%{public}@", log: self.log, category: ConstantsLog.categoryNovopenController, type: .info, serialNumber, date.description, dose.description)
 
-            let treatments : [TreatmentEntry] = self.treatmentEntryAccessor.getTreatments(fromDate: date.addingTimeInterval(-1.0), toDate: date.addingTimeInterval(1.0), on: self.coreDataManager.mainManagedObjectContext)
+            let treatments : [TreatmentEntry] = self.treatmentEntryAccessor.getTreatments(fromDate: date.addingTimeInterval(-1.0*ConstantsNovopen.timeCorrelationPrecision), toDate: date.addingTimeInterval(ConstantsNovopen.timeCorrelationPrecision), on: self.coreDataManager.mainManagedObjectContext)
 
             if (treatments.count == 0) {
                 
