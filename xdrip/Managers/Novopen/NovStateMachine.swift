@@ -55,7 +55,7 @@ class NovStateMachine {
         let msg : NovMessage = NovMessage.parse(data: payload)
         if (msg.isError()) {
             trace("NFC : NovStateMachine.processPayload - invalid message", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
-            return Fsa()
+            return Fsa(action: .DONE, data: Data([108]))
         }
         else if (msg.wantsRelease()) {
             trace("NFC : NovStateMachine.processPayload - remote close request", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
@@ -74,7 +74,8 @@ class NovStateMachine {
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
-                break
+                return Fsa(action: .DONE, data: Data([107]))
+                
             case .AWAIT_CONFIGURATION:
                 if (msg.configIsValid()) {
                     let D : Data = msg.acceptConfig()
@@ -82,7 +83,8 @@ class NovStateMachine {
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
-                break
+                return Fsa(action: .DONE, data: Data([106]))
+                
             case .ASK_INFORMATION:
                 if (msg.configIsValid()) {
                     let D : Data = msg.askInformation()
@@ -90,6 +92,8 @@ class NovStateMachine {
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
+                return Fsa(action: .DONE, data: Data([105]))
+
             case .AWAIT_INFORMATION:
                 if (msg.specificationIsValid()) {
                     let D : Data = msg.confirmedAction()
@@ -101,6 +105,7 @@ class NovStateMachine {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_INFORMATION -> %{public}@", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug, Apdu.parse(data:D).description())
                     return Fsa(action: .WRITE_READ, data: D)
                 }
+
             case .AWAIT_STORAGE_INFO:
                 if (msg.segmentInfoIsValid()) {
                     self.curSegmentCount = msg.currentSegmentUsage()
@@ -109,12 +114,16 @@ class NovStateMachine {
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: D)
                 }
+                return Fsa(action: .DONE, data: Data([104]))
+
             case .AWAIT_XFER_CONFIRM:
                 if (msg.segmentDataIsValid()) {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_XFER_CONFIRM -> next step", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
                     state = state.next()
                     return Fsa(action: .WRITE_READ, data: Data())
                 }
+                return Fsa(action: .DONE, data: Data([103]))
+
             case .AWAIT_LOG_DATA:
                 if (msg.isEmpty()) {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_LOG_DATA -> retrying...", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
@@ -152,18 +161,19 @@ class NovStateMachine {
             case .AWAIT_CLOSE_DOWN:
                 if (msg.isClosed() == false) {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_CLOSE_DOWN -> missing expected closure", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
+                    return Fsa(action: .DONE, data: Data([102]))
                 } else {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_CLOSE_DOWN -> successful download", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
-                    return Fsa(action: .DONE, data: Data([1]))
+                    return Fsa(action: .DONE, data: Data([0]))
                 }
             case .PROFIT:
                 trace("NFC : NovStateMachine.processPayload - PROFIT -> not implemented yet", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
+                return Fsa(action: .DONE, data: Data([101]))
             }
         }
         
-        trace("NFC : NovStateMachine.processPayload - processing failed", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
-
-        return Fsa()
+        //trace("NFC : NovStateMachine.processPayload - processing failed", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
+        //return Fsa(action: .DONE, data: Data([100]))
     }
     
     

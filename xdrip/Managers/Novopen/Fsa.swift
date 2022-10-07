@@ -24,12 +24,7 @@ class Fsa {
 
     private var a : Action
     private var d : Data
-    
-    public init() {
-        a = Action.DONE
-        d = Data([0])
-    }
-    
+        
     public init(action : Action, data : Data) {
         a = action
         d = data
