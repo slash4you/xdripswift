@@ -8,7 +8,7 @@
 
 enum ConstantsNovopen {
 
-    static let maxNfcTransactions = 15
+    static let maxNfcTransactions = 30
 
     static let maxDosesToDownload = 10
 
