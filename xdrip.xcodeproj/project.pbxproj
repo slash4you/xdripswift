@@ -41,6 +41,7 @@
 		0A34D24228CDD4F2000DA716 /* NovInsulinDose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */; };
 		0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */; };
 		0A364585284CE1F800BB90FE /* blank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A364584284CE1F800BB90FE /* blank.wav */; };
+		0A5F27BC28F746360080E253 /* WebServerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F27BB28F746360080E253 /* WebServerDelegate.swift */; };
 		0A60228228537CCA00E23598 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60228128537CCA00E23598 /* WebServerManager.swift */; };
 		0A6022842855DC8D00E23598 /* ConstantsWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */; };
 		470B618A270C448000561E56 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470B6188270C448000561E56 /* Interface.storyboard */; };
@@ -72,6 +73,8 @@
 		CE1B2FE125D0264B00F642F5 /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE1B2FD425D0264900F642F5 /* Main.strings */; };
 		D400F8032778BD8000B57648 /* TextsTreatmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400F8022778BD8000B57648 /* TextsTreatmentsView.swift */; };
 		D4028CC02774A50600341476 /* TreatmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4028CBF2774A50600341476 /* TreatmentsViewController.swift */; };
+		D4082870286B9EA60004FD0B /* SettingsViewInsulinOnBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408286F286B9EA60004FD0B /* SettingsViewInsulinOnBoardModel.swift */; };
+		D4082878286CAD020004FD0B /* InsulinOnBoardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4082877286CAD020004FD0B /* InsulinOnBoardCalculator.swift */; };
 		D40C3DA4277542C400111B73 /* TreatmentEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C3DA3277542C400111B73 /* TreatmentEntry+CoreDataClass.swift */; };
 		D40C3DA62775438F00111B73 /* TreatmentEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C3DA52775438F00111B73 /* TreatmentEntry+CoreDataProperties.swift */; };
 		D417E51C282EC8DB008DC467 /* ProgressBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417E51B282EC8DB008DC467 /* ProgressBarViewController.swift */; };
@@ -697,6 +700,7 @@
 		0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovInsulinDose.swift; sourceTree = "<group>"; };
 		0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskAudio.swift; sourceTree = "<group>"; };
 		0A364584284CE1F800BB90FE /* blank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blank.wav; sourceTree = "<group>"; };
+		0A5F27BB28F746360080E253 /* WebServerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerDelegate.swift; sourceTree = "<group>"; };
 		0A60228128537CCA00E23598 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
 		0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsWebServer.swift; sourceTree = "<group>"; };
 		198D44C3260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Common.strings; sourceTree = "<group>"; };
@@ -838,6 +842,8 @@
 		CE1B2FE425D026B400F642F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Common.strings; sourceTree = "<group>"; };
 		D400F8022778BD8000B57648 /* TextsTreatmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextsTreatmentsView.swift; sourceTree = "<group>"; };
 		D4028CBF2774A50600341476 /* TreatmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentsViewController.swift; sourceTree = "<group>"; };
+		D408286F286B9EA60004FD0B /* SettingsViewInsulinOnBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewInsulinOnBoardModel.swift; sourceTree = "<group>"; };
+		D4082877286CAD020004FD0B /* InsulinOnBoardCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinOnBoardCalculator.swift; sourceTree = "<group>"; };
 		D40C3DA3277542C400111B73 /* TreatmentEntry+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatmentEntry+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D40C3DA52775438F00111B73 /* TreatmentEntry+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreatmentEntry+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D417E51B282EC8DB008DC467 /* ProgressBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarViewController.swift; sourceTree = "<group>"; };
@@ -1736,6 +1742,7 @@
 			isa = PBXGroup;
 			children = (
 				0A60228128537CCA00E23598 /* WebServerManager.swift */,
+				0A5F27BB28F746360080E253 /* WebServerDelegate.swift */,
 			);
 			path = WebServer;
 			sourceTree = "<group>";
@@ -1797,6 +1804,7 @@
 				D4E499AC277B4CE7000F8CBA /* DateOnly.swift */,
 				D4E499AA277B43E3000F8CBA /* TreatmentCollection.swift */,
 				D48E8F77278E49B300CCEE08 /* TreatmentNSResponse.swift */,
+				D4082877286CAD020004FD0B /* InsulinOnBoardCalculator.swift */,
 			);
 			path = Treatments;
 			sourceTree = "<group>";
@@ -2678,6 +2686,7 @@
 				4752B4052635878E0081D551 /* SettingsViewStatisticsSettingsViewModel.swift */,
 				F8E51D6824549E2C001C9E5A /* SettingsViewTraceSettingsViewModel.swift */,
 				47150A3F27F6211C00DB2994 /* SettingsViewTreatmentsSettingsViewModel.swift */,
+				D408286F286B9EA60004FD0B /* SettingsViewInsulinOnBoardModel.swift */,
 			);
 			path = SettingsViewModels;
 			sourceTree = "<group>";
@@ -3684,6 +3693,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4082878286CAD020004FD0B /* InsulinOnBoardCalculator.swift in Sources */,
 				F8BDD450221CAA64006EAB84 /* TextsCommon.swift in Sources */,
 				F81D6D4E22BFC762005EFAE2 /* TextsDexcomShareTestResult.swift in Sources */,
 				0A2D3C7628DE123400D01D68 /* NovSegmentEntry.swift in Sources */,
@@ -3701,6 +3711,7 @@
 				F8F9721923A5915900C3F17D /* CGMGNSEntryTransmitter.swift in Sources */,
 				F8B3A84A227F090E004BA588 /* SettingsViewGeneralSettingsViewModel.swift in Sources */,
 				F83098FE23AD3F84005741DF /* UITabBarController.swift in Sources */,
+				D4082870286B9EA60004FD0B /* SettingsViewInsulinOnBoardModel.swift in Sources */,
 				F816E11A243923B2009EE65B /* Droplet+CoreDataClass.swift in Sources */,
 				F80D916D24F82A17006840B5 /* CGMLibre2TransmitterDelegate.swift in Sources */,
 				F8B955EB2591355200C06016 /* CGMLibre2Transmitter+TestData.swift in Sources */,
@@ -3817,6 +3828,7 @@
 				F821CF57229BF43A005C1E43 /* SnoozeParameters.swift in Sources */,
 				F830992823C32A13005741DF /* TextsWatlaaView.swift in Sources */,
 				F8A2BC4525DB2679001D1E78 /* AtomResponseType.swift in Sources */,
+				0A5F27BC28F746360080E253 /* WebServerDelegate.swift in Sources */,
 				F8B3A79722635A25004BA588 /* AlertEntry+CoreDataProperties.swift in Sources */,
 				F830992023C291E2005741DF /* WatlaaBluetoothTransmitter.swift in Sources */,
 				F8AF36152455C6F700B5977B /* ConstantsTrace.swift in Sources */,

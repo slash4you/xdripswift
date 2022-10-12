@@ -31,13 +31,16 @@ class WebServerManager {
 
     private var backgroundTask : BackgroundTask?
 
+    public weak var delegate: WebServerDelegateProtocol?
+
     /// initializer
-    public init(coreDataManager:CoreDataManager) {
+    public init(coreDataManager: CoreDataManager, healthDelegate: WebServerDelegateProtocol) {
 
         self.coreDataManager = coreDataManager
         self.bgReadingsAccessor = BgReadingsAccessor(coreDataManager: coreDataManager)
         self.sensorAccessor = SensorsAccessor(coreDataManager: coreDataManager)
         self.webServer = GCDWebServer()
+        self.delegate = healthDelegate
         
         self.backgroundTask = BackgroundTask()
         self.sharedUserDefaults = UserDefaults(suiteName: Bundle.main.appGroupSuiteName)
@@ -52,6 +55,7 @@ class WebServerManager {
             })
             
             webServer.addHandler(forMethod: "GET", path: ConstantsWebServer.defaultServiceUrl, request: GCDWebServerRequest.self, processBlock: {request in
+                                
                 var maxReadingsNumber = 1
                 if let query = request.query {
                     if let countArg = query["count"] {
@@ -68,6 +72,16 @@ class WebServerManager {
                     } else {
                         trace("in webServer handler, count arg not found", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                         return GCDWebServerErrorResponse(statusCode: 500)
+                    }
+                    if let heartArg = query["heart"] {
+                        if let heartInt = Int(heartArg) {
+                            self.delegate!.receivedHealthData(heart: heartInt)
+                        }
+                    }
+                    if let stepsArg = query["steps"] {
+                        if let stepsInt = Int(stepsArg) {
+                            self.delegate!.receivedHealthData(steps: stepsInt)
+                        }
                     }
                 } else {
                     trace("in webServer handler, invalid query type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
@@ -123,7 +137,7 @@ class WebServerManager {
     }
 
     /// share latest readings with http clients
-    public func share() {
+    public func share(iob : Double) -> Void {
         
         // unwrap sharedUserDefaults
         guard let sharedUserDefaults = sharedUserDefaults else {
