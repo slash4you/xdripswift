@@ -139,7 +139,7 @@ extension Date {
 
         if let days = diffComponents.day, let hours = diffComponents.hour {
             
-            daysAndHoursAgoString = days.description + "d" + hours.description + "h"
+            daysAndHoursAgoString = String(format:"%02u",days) + "d " + String(format:"%02u",hours) + "h"
             
             // if the function was called using appendAgo == true, then add the "ago" string
             if appendAgo ?? false {
