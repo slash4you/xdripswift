@@ -93,7 +93,6 @@ final class RootViewController: UIViewController {
     
     @IBOutlet weak var sageLabelOutlet: UILabel!
     @IBOutlet weak var stepsLabelOutlet: UILabel!
-    @IBOutlet weak var heartLabelOutlet: UILabel!
     @IBOutlet weak var iobLabelOutlet: UILabel!
     
     /// outlet for label that shows how many minutes ago and so on
@@ -248,8 +247,7 @@ final class RootViewController: UIViewController {
                     }
                     self.iobLabelOutlet.textColor = UIColor.darkGray
                     self.iobLabelOutlet.text = iobLabelText
-                    self.heartLabelOutlet.text = " "
-                    self.stepsLabelOutlet.text = " "
+                    self.stepsLabelOutlet.text = "..."
                     self.sageLabelOutlet.text = " "
                     
                 } else {
@@ -1569,7 +1567,6 @@ final class RootViewController: UIViewController {
         chartLongPressGestureRecognizerOutlet.delegate = self
         chartPanGestureRecognizerOutlet.delegate = self
         
-        self.heartLabelOutlet.text = " "
         self.stepsLabelOutlet.text = " "
 
         // at this moment, coreDataManager is not yet initialized, we're just calling here prerender and reloadChart to show the chart with x and y axis and gridlines, but without readings. The readings will be loaded once coreDataManager is setup, after which updateChart() will be called, which will initiate loading of readings from coredata
@@ -2096,7 +2093,6 @@ final class RootViewController: UIViewController {
             minutesLabelOutlet.text = " "
             diffLabelOutlet.text = " "
             iobLabelOutlet.text = " "
-            heartLabelOutlet.text = " "
             stepsLabelOutlet.text = " "
             sageLabelOutlet.text = " "
                 
@@ -2179,7 +2175,7 @@ final class RootViewController: UIViewController {
 
         var sageLabelText : String = " "
         if let activeSensor = activeSensor {
-            sageLabelText = activeSensor.startDate.daysAndHoursAgo() + " ago"
+            sageLabelText = activeSensor.startDate.daysAndHoursAgo(appendAgo: false)
         }
         sageLabelOutlet.text = sageLabelText
                 
@@ -3498,9 +3494,8 @@ extension RootViewController: WebServerDelegateProtocol {
     
     func receivedHealthData(heart: Int) {
         // possibly not running on main thread here
-        DispatchQueue.main.async {
-            self.heartLabelOutlet.text = heart.description
-        }
+        //DispatchQueue.main.async {
+        //}
     }
     
     func receivedHealthData(steps: Int) {
