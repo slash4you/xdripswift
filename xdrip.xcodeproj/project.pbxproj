@@ -4832,7 +4832,7 @@
 		F870D3DF25126A49008967B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = "group.com.${DEVELOPMENT_TEAM}.loopkit.LoopGroup";
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_WIDGET_ENTITLEMENTS_DEBUG)";
 				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_DEBUG)";
 				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
@@ -4856,7 +4856,7 @@
 		F870D3E025126A49008967B0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = "group.com.${DEVELOPMENT_TEAM}.loopkit.LoopGroup";
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_WIDGET_ENTITLEMENTS_RELEASE)";
 				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_RELEASE)";
 				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
@@ -5004,7 +5004,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB1D964808BD308C74247D66 /* Pods-xdrip.debug.xcconfig */;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = "group.com.${DEVELOPMENT_TEAM}.loopkit.LoopGroup";
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_ENTITLEMENTS_DEBUG)";
@@ -5032,7 +5032,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 170A1629CB2C62ADD901F4A6 /* Pods-xdrip.release.xcconfig */;
 			buildSettings = {
-				APP_GROUP_IDENTIFIER = "group.com.${DEVELOPMENT_TEAM}.loopkit.LoopGroup";
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_ENTITLEMENTS_RELEASE)";

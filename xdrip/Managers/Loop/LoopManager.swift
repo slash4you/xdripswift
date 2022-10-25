@@ -58,7 +58,7 @@ public class LoopManager:NSObject {
         // if needed, remove readings less than loopDelay minutes old
         if loopDelay > 0 {
             
-            trace("    loopDelay = %{public}@. Deleting %{public}@ readings.",log: log, category: ConstantsLog.categoryLoopManager, type: .info, loopDelay.description, lastReadings.count)
+            trace("    loopDelay = %{public}@. Deleting %{public}@ readings.",log: log, category: ConstantsLog.categoryLoopManager, type: .info, loopDelay.description, lastReadings.count.description)
             
             while lastReadings.count > 0 &&  lastReadings[0].timeStamp.addingTimeInterval(loopDelay) > Date() {
 
@@ -139,6 +139,8 @@ public class LoopManager:NSObject {
         // append readings already stored in this storedDictionary so that we get dictionary filled with maxReadingsToShareWithLoop readings, if possible
         if let storedDictionary = UserDefaults.standard.readingsStoredInSharedUserDefaultsAsDictionary, storedDictionary.count > 0 {
             
+            trace("    store %{public}@ readings.",log: log, category: ConstantsLog.categoryLoopManager, type: .info, storedDictionary.count.description)
+
             let maxAmountsOfReadingsToAppend = ConstantsShareWithLoop.maxReadingsToShareWithLoop - dictionary.count
             
             if maxAmountsOfReadingsToAppend > 0 {
