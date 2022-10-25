@@ -30,23 +30,23 @@ class TodayViewController: UIViewController, NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
-        
+
         // If an error is encountered, use NCUpdateResult.Failed
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
         
         xDripClient.fetchLast(2, callback:  { (error, glucoseArray) in
-            
+
             if error != nil {
                 return
             }
-            
+
             guard let glucoseArray = glucoseArray, glucoseArray.count > 0 else {
                 return
             }
-            
+
             self.updateLabels(latestReadings: glucoseArray)
-            
+
         })
         
         completionHandler(NCUpdateResult.newData)
@@ -95,8 +95,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         guard latestReadings.count > 0 else {
             valueLabelOutlet.text = "---"
             valueLabelOutlet.textColor = UIColor.darkGray
-            minutesLabelOutlet.text = ""
-            diffLabelOutlet.text = ""
+            minutesLabelOutlet.text = " "
+            diffLabelOutlet.text = " "
             return
         }
         
@@ -157,9 +157,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         // get minutes ago and create text for minutes ago label
         let minutesAgo = -Int(lastReading.timestamp.timeIntervalSinceNow) / 60
-        let minutesAgoText = minutesAgo.description + " " + (minutesAgo == 1 ? Texts.minute:Texts.minutes) + " " + Texts.ago
         
-        minutesLabelOutlet.text = minutesAgoText
+        minutesLabelOutlet.text = minutesAgo.description + " mn"
         
         // create delta text
         diffLabelOutlet.text = unitizedDeltaString(bgReading: lastReading, previousBgReading: lastButOneReading, mgdl: bloodGlucoseUnitIsMgDl)

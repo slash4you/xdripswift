@@ -184,6 +184,8 @@ public class LoopManager:NSObject {
             // append readings already stored in this storedDictionary so that we get dictionary filled with maxReadingsToShareWithLoop readings, if possible
             if let storedDictionary = UserDefaults.standard.readingsStoredInSharedUserDefaultsAsDictionary, storedDictionary.count > 0 {
                 
+            trace("    store %{public}@ readings.",log: log, category: ConstantsLog.categoryLoopManager, type: .info, storedDictionary.count.description)
+
                 let maxAmountsOfReadingsToAppend = ConstantsShareWithLoop.maxReadingsToShareWithLoop - dictionary.count
                 
                 if maxAmountsOfReadingsToAppend > 0 {
