@@ -57,10 +57,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     /// setup colors and so
     private func setupView() {
-        
-        // set background color to black
-        self.view.backgroundColor = UIColor.black
-        
+                
         // set minutesLabelOutlet.textColor to white
         self.minutesLabelOutlet.textColor = UIColor.white
         
@@ -94,7 +91,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // if there's no readings, then give empty fields
         guard latestReadings.count > 0 else {
             valueLabelOutlet.text = "---"
-            valueLabelOutlet.textColor = UIColor.darkGray
+            valueLabelOutlet.textColor = UIColor.lightGray
             minutesLabelOutlet.text = " "
             diffLabelOutlet.text = " "
             return
