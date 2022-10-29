@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -57,6 +58,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="kwc-8V-xeL"/>
+                        <color key="backgroundColor" red="0.21760228737113407" green="0.21760228737113407" blue="0.21760228737113407" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="tT7-EZ-yCt" firstAttribute="leading" secondItem="chW-dl-9hs" secondAttribute="trailing" constant="10" id="Ek0-kk-aq4"/>
                             <constraint firstAttribute="trailing" secondItem="FbD-iW-csn" secondAttribute="trailing" constant="10" id="UI7-yw-mt4"/>
