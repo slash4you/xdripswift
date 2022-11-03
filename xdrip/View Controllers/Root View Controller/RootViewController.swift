@@ -8,6 +8,7 @@ import HealthKitUI
 import AVFoundation
 import PieCharts
 import WatchConnectivity
+import WidgetKit
 
 /// viewcontroller for the home screen
 final class RootViewController: UIViewController {
@@ -1360,6 +1361,8 @@ final class RootViewController: UIViewController {
                 webServerManager?.share(iob: iobValue)
                 
                 updateWatchApp()
+                // Request reload for all widgets
+                WidgetCenter.shared.reloadAllTimelines()
             }
             
         }
