@@ -39,9 +39,22 @@
 		0A34D24228CDD4F2000DA716 /* NovInsulinDose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */; };
 		0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */; };
 		0A364585284CE1F800BB90FE /* blank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A364584284CE1F800BB90FE /* blank.wav */; };
+		0A478C6B290D22EE00A73294 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A478C6A290D22ED00A73294 /* WidgetKit.framework */; };
+		0A478C6D290D22EE00A73294 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A478C6C290D22EE00A73294 /* SwiftUI.framework */; };
+		0A478C70290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A478C6F290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift */; };
+		0A478C73290D22EF00A73294 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A478C72290D22EF00A73294 /* Assets.xcassets */; };
+		0A478C75290D22EF00A73294 /* xDrip4iOS_WidgetKit.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0A478C71290D22EE00A73294 /* xDrip4iOS_WidgetKit.intentdefinition */; };
+		0A478C76290D22EF00A73294 /* xDrip4iOS_WidgetKit.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0A478C71290D22EE00A73294 /* xDrip4iOS_WidgetKit.intentdefinition */; };
+		0A478C79290D22EF00A73294 /* xDrip4iOS WidgetKitExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0A478C69290D22ED00A73294 /* xDrip4iOS WidgetKitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0A5F27BC28F746360080E253 /* WebServerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5F27BB28F746360080E253 /* WebServerDelegate.swift */; };
 		0A60228228537CCA00E23598 /* WebServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60228128537CCA00E23598 /* WebServerManager.swift */; };
 		0A6022842855DC8D00E23598 /* ConstantsWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */; };
+		0A99CFD8290E771000CC676D /* XDripClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFD7290E771000CC676D /* XDripClient.swift */; };
+		0A99CFDA290E774300CC676D /* Glucose+GlucoseKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFD9290E774300CC676D /* Glucose+GlucoseKit.swift */; };
+		0A99CFDC290E7B8C00CC676D /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFDB290E7B8C00CC676D /* Double.swift */; };
+		0A99CFDE290E7BAF00CC676D /* ConstantsBloodGlucose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFDD290E7BAF00CC676D /* ConstantsBloodGlucose.swift */; };
+		0A99CFE0290E7BD200CC676D /* ConstantsBGGraphBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFDF290E7BD200CC676D /* ConstantsBGGraphBuilder.swift */; };
+		0A99CFE2290E7C5200CC676D /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFE1290E7C5200CC676D /* Date.swift */; };
 		470B618A270C448000561E56 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470B6188270C448000561E56 /* Interface.storyboard */; };
 		470B618C270C448100561E56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 470B618B270C448100561E56 /* Assets.xcassets */; };
 		470B6192270C448100561E56 /* Watch App WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 470B6191270C448100561E56 /* Watch App WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -592,6 +605,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0A478C77290D22EF00A73294 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8AC425221ADEBD60078C348 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A478C68290D22ED00A73294;
+			remoteInfo = "xDrip4iOS WidgetKitExtension";
+		};
 		470B6193270C448100561E56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8AC425221ADEBD60078C348 /* Project object */;
@@ -645,6 +665,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				F870D3DD25126A49008967B0 /* xDrip4iOS Widget.appex in Embed App Extensions */,
+				0A478C79290D22EF00A73294 /* xDrip4iOS WidgetKitExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -684,9 +705,23 @@
 		0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovInsulinDose.swift; sourceTree = "<group>"; };
 		0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskAudio.swift; sourceTree = "<group>"; };
 		0A364584284CE1F800BB90FE /* blank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = blank.wav; sourceTree = "<group>"; };
+		0A478C69290D22ED00A73294 /* xDrip4iOS WidgetKitExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "xDrip4iOS WidgetKitExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A478C6A290D22ED00A73294 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		0A478C6C290D22EE00A73294 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		0A478C6F290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = xDrip4iOS_WidgetKit.swift; sourceTree = "<group>"; };
+		0A478C71290D22EE00A73294 /* xDrip4iOS_WidgetKit.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = xDrip4iOS_WidgetKit.intentdefinition; sourceTree = "<group>"; };
+		0A478C72290D22EF00A73294 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0A478C74290D22EF00A73294 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A478C7D290D242100A73294 /* xDrip4iOS WidgetKitExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "xDrip4iOS WidgetKitExtension.entitlements"; sourceTree = "<group>"; };
 		0A5F27BB28F746360080E253 /* WebServerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerDelegate.swift; sourceTree = "<group>"; };
 		0A60228128537CCA00E23598 /* WebServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServerManager.swift; sourceTree = "<group>"; };
 		0A6022832855DC8D00E23598 /* ConstantsWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsWebServer.swift; sourceTree = "<group>"; };
+		0A99CFD7290E771000CC676D /* XDripClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XDripClient.swift; sourceTree = "<group>"; };
+		0A99CFD9290E774300CC676D /* Glucose+GlucoseKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glucose+GlucoseKit.swift"; sourceTree = "<group>"; };
+		0A99CFDB290E7B8C00CC676D /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		0A99CFDD290E7BAF00CC676D /* ConstantsBloodGlucose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsBloodGlucose.swift; sourceTree = "<group>"; };
+		0A99CFDF290E7BD200CC676D /* ConstantsBGGraphBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsBGGraphBuilder.swift; sourceTree = "<group>"; };
+		0A99CFE1290E7C5200CC676D /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		170A1629CB2C62ADD901F4A6 /* Pods-xdrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xdrip.release.xcconfig"; path = "Target Support Files/Pods-xdrip/Pods-xdrip.release.xcconfig"; sourceTree = "<group>"; };
 		198D44C3260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Common.strings; sourceTree = "<group>"; };
 		198D44C4260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Alerts.strings; sourceTree = "<group>"; };
@@ -1625,6 +1660,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0A478C66290D22ED00A73294 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A478C6D290D22EE00A73294 /* SwiftUI.framework in Frameworks */,
+				0A478C6B290D22EE00A73294 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2F95F647D357FD5C1665313D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1696,6 +1740,18 @@
 			path = Novopen;
 			sourceTree = "<group>";
 		};
+		0A478C6E290D22EE00A73294 /* xDrip4iOS WidgetKit */ = {
+			isa = PBXGroup;
+			children = (
+				0A99CFD6290E76E300CC676D /* xDripClient */,
+				0A478C6F290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift */,
+				0A478C71290D22EE00A73294 /* xDrip4iOS_WidgetKit.intentdefinition */,
+				0A478C72290D22EF00A73294 /* Assets.xcassets */,
+				0A478C74290D22EF00A73294 /* Info.plist */,
+			);
+			path = "xDrip4iOS WidgetKit";
+			sourceTree = "<group>";
+		};
 		0A60228028537C6900E23598 /* WebServer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1703,6 +1759,19 @@
 				0A5F27BB28F746360080E253 /* WebServerDelegate.swift */,
 			);
 			path = WebServer;
+			sourceTree = "<group>";
+		};
+		0A99CFD6290E76E300CC676D /* xDripClient */ = {
+			isa = PBXGroup;
+			children = (
+				0A99CFD7290E771000CC676D /* XDripClient.swift */,
+				0A99CFD9290E774300CC676D /* Glucose+GlucoseKit.swift */,
+				0A99CFDB290E7B8C00CC676D /* Double.swift */,
+				0A99CFDD290E7BAF00CC676D /* ConstantsBloodGlucose.swift */,
+				0A99CFDF290E7BD200CC676D /* ConstantsBGGraphBuilder.swift */,
+				0A99CFE1290E7C5200CC676D /* Date.swift */,
+			);
+			path = xDripClient;
 			sourceTree = "<group>";
 		};
 		470B6187270C448000561E56 /* Watch App */ = {
@@ -1742,6 +1811,8 @@
 				F821CF9622AE589E005C1E43 /* HealthKit.framework */,
 				F870D3D225126A49008967B0 /* NotificationCenter.framework */,
 				4DB0736D7B1553FC8350324C /* Pods_xdrip.framework */,
+				0A478C6A290D22ED00A73294 /* WidgetKit.framework */,
+				0A478C6C290D22EE00A73294 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2356,10 +2427,12 @@
 		F8AC425121ADEBD60078C348 = {
 			isa = PBXGroup;
 			children = (
+				0A478C7D290D242100A73294 /* xDrip4iOS WidgetKitExtension.entitlements */,
 				F8E3A2A223D4E7E200E5E98A /* Default-568h@2x.png */,
 				F870D3D425126A49008967B0 /* xDrip4iOS Widget */,
 				470B6187270C448000561E56 /* Watch App */,
 				470B6195270C448100561E56 /* Watch App WatchKit Extension */,
+				0A478C6E290D22EE00A73294 /* xDrip4iOS WidgetKit */,
 				F8AC425B21ADEBD60078C348 /* Products */,
 				F8AC425C21ADEBD60078C348 /* xdrip */,
 				F85DC29B21CFCEB800B9F74A /* Recovered References */,
@@ -2377,6 +2450,7 @@
 				F870D3D125126A49008967B0 /* xDrip4iOS Widget.appex */,
 				470B6186270C448000561E56 /* xDrip4iO5.app */,
 				470B6191270C448100561E56 /* Watch App WatchKit Extension.appex */,
+				0A478C69290D22ED00A73294 /* xDrip4iOS WidgetKitExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3283,6 +3357,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0A478C68290D22ED00A73294 /* xDrip4iOS WidgetKitExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A478C7C290D22EF00A73294 /* Build configuration list for PBXNativeTarget "xDrip4iOS WidgetKitExtension" */;
+			buildPhases = (
+				0A478C65290D22ED00A73294 /* Sources */,
+				0A478C66290D22ED00A73294 /* Frameworks */,
+				0A478C67290D22ED00A73294 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "xDrip4iOS WidgetKitExtension";
+			productName = "xDrip4iOS WidgetKitExtension";
+			productReference = 0A478C69290D22ED00A73294 /* xDrip4iOS WidgetKitExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		470B6185270C448000561E56 /* Watch App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 470B61A9270C448200561E56 /* Build configuration list for PBXNativeTarget "Watch App" */;
@@ -3352,6 +3443,7 @@
 			dependencies = (
 				F870D3DC25126A49008967B0 /* PBXTargetDependency */,
 				470B61A0270C448200561E56 /* PBXTargetDependency */,
+				0A478C78290D22EF00A73294 /* PBXTargetDependency */,
 			);
 			name = xdrip;
 			productName = xdrip;
@@ -3364,11 +3456,14 @@
 		F8AC425221ADEBD60078C348 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				DefaultBuildSystemTypeForWorkspace = Original;
-				LastSwiftUpdateCheck = 1310;
+				DefaultBuildSystemTypeForWorkspace = Latest;
+				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Johan Degraeve";
 				TargetAttributes = {
+					0A478C68290D22ED00A73294 = {
+						CreatedOnToolsVersion = 14.0;
+					};
 					470B6185270C448000561E56 = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -3425,11 +3520,20 @@
 				F870D3D025126A49008967B0 /* xDrip4iOS Widget */,
 				470B6185270C448000561E56 /* Watch App */,
 				470B6190270C448100561E56 /* Watch App WatchKit Extension */,
+				0A478C68290D22ED00A73294 /* xDrip4iOS WidgetKitExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0A478C67290D22ED00A73294 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A478C73290D22EF00A73294 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		470B6184270C448000561E56 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3660,6 +3764,21 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0A478C65290D22ED00A73294 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A99CFE0290E7BD200CC676D /* ConstantsBGGraphBuilder.swift in Sources */,
+				0A478C75290D22EF00A73294 /* xDrip4iOS_WidgetKit.intentdefinition in Sources */,
+				0A99CFD8290E771000CC676D /* XDripClient.swift in Sources */,
+				0A99CFE2290E7C5200CC676D /* Date.swift in Sources */,
+				0A99CFDA290E774300CC676D /* Glucose+GlucoseKit.swift in Sources */,
+				0A99CFDE290E7BAF00CC676D /* ConstantsBloodGlucose.swift in Sources */,
+				0A99CFDC290E7B8C00CC676D /* Double.swift in Sources */,
+				0A478C70290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		470B618D270C448100561E56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3769,6 +3888,7 @@
 				F821CF8122A5C814005C1E43 /* RepeatingTimer.swift in Sources */,
 				F80D915C24F06A40006840B5 /* PreLibre2.swift in Sources */,
 				470F021326DD515300C5D626 /* SettingsViewSensorCountdownSettingsViewModel.swift in Sources */,
+				0A478C76290D22EF00A73294 /* xDrip4iOS_WidgetKit.intentdefinition in Sources */,
 				477F45E6285B993200AC8475 /* GlucoseMiniChartManager.swift in Sources */,
 				F64039B5281E91500051EFFE /* TextsQuickActions.swift in Sources */,
 				F8F9722223A5915900C3F17D /* CRC.swift in Sources */,
@@ -4101,6 +4221,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A478C78290D22EF00A73294 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A478C68290D22ED00A73294 /* xDrip4iOS WidgetKitExtension */;
+			targetProxy = 0A478C77290D22EF00A73294 /* PBXContainerItemProxy */;
+		};
 		470B6194270C448100561E56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 470B6190270C448100561E56 /* Watch App WatchKit Extension */;
@@ -4709,6 +4834,70 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0A478C7A290D22EF00A73294 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "xDrip4iOS WidgetKitExtension.entitlements";
+				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_DEBUG)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4180;
+				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "xDrip4iOS WidgetKit/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "xDrip4iOS WidgetKit";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Johan Degraeve. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.10.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.health-slh.xdripswift.xDrip4iOS-WidgetKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0A478C7B290D22EF00A73294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "xDrip4iOS WidgetKitExtension.entitlements";
+				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_RELEASE)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4180;
+				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "xDrip4iOS WidgetKit/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "xDrip4iOS WidgetKit";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Johan Degraeve. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 4.10.5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.health-slh.xdripswift.xDrip4iOS-WidgetKit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		470B61A3270C448200561E56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4931,7 +5120,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4990,7 +5179,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -5004,6 +5193,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB1D964808BD308C74247D66 /* Pods-xdrip.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -5012,7 +5202,7 @@
 				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
 				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
 				INFOPLIST_FILE = "$(SRCROOT)/xdrip/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5032,6 +5222,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 170A1629CB2C62ADD901F4A6 /* Pods-xdrip.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -5040,7 +5231,7 @@
 				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
 				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
 				INFOPLIST_FILE = "$(SRCROOT)/xdrip/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5058,6 +5249,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0A478C7C290D22EF00A73294 /* Build configuration list for PBXNativeTarget "xDrip4iOS WidgetKitExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A478C7A290D22EF00A73294 /* Debug */,
+				0A478C7B290D22EF00A73294 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		470B61A8270C448200561E56 /* Build configuration list for PBXNativeTarget "Watch App WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
