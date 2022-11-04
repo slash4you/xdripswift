@@ -248,7 +248,7 @@ final class RootViewController: UIViewController {
                     }
                     self.iobLabelOutlet.textColor = UIColor.darkGray
                     self.iobLabelOutlet.text = iobLabelText
-                    self.stepsLabelOutlet.text = "..."
+                    self.stepsLabelOutlet.text = " "
                     self.sageLabelOutlet.text = " "
                     
                 } else {
@@ -1351,14 +1351,7 @@ final class RootViewController: UIViewController {
                     loopManager?.share()
                 }
 
-                var iobValue : Double = 0.0
-                if let lastReading = bgReadingsAccessor.last(forSensor: nil) {
-                    if let calculator = insulinOnBoardCalculator {
-                        iobValue = calculator.insulinYetToBeConsumedAt(date: lastReading.timeStamp)
-                    }
-                }
-
-                webServerManager?.share(iob: iobValue)
+                webServerManager?.share()
                 
                 updateWatchApp()
                 // Request reload for all widgets
@@ -1570,8 +1563,6 @@ final class RootViewController: UIViewController {
         chartLongPressGestureRecognizerOutlet.delegate = self
         chartPanGestureRecognizerOutlet.delegate = self
         
-        self.stepsLabelOutlet.text = " "
-
         // at this moment, coreDataManager is not yet initialized, we're just calling here prerender and reloadChart to show the chart with x and y axis and gridlines, but without readings. The readings will be loaded once coreDataManager is setup, after which updateChart() will be called, which will initiate loading of readings from coredata
         self.chartOutlet.reloadChart()
         
@@ -1822,7 +1813,7 @@ final class RootViewController: UIViewController {
                     self.loopManager?.share()
                 }
 
-                self.webServerManager?.share(iob: 0.0)
+                self.webServerManager?.share()
 
             }
             
@@ -2186,6 +2177,8 @@ final class RootViewController: UIViewController {
         let diffLabelText = lastReading.unitizedDeltaString(previousBgReading: lastButOneReading, showUnit: true, highGranularity: true, mgdl: UserDefaults.standard.bloodGlucoseUnitIsMgDl)
         
         diffLabelOutlet.text = diffLabelText
+
+        stepsLabelOutlet.text = UserDefaults.standard.stepsCount.description
         
         // update the chart up to now
         updateChartWithResetEndDate()
@@ -3432,7 +3425,7 @@ extension RootViewController:NightScoutFollowerDelegate {
                     self.loopManager?.share()
                 }
 
-                webServerManager?.share(iob: 0.0)
+                webServerManager?.share()
 
                 updateWatchApp()
                 
@@ -3497,14 +3490,15 @@ extension RootViewController: WebServerDelegateProtocol {
     
     func receivedHealthData(heart: Int) {
         // possibly not running on main thread here
-        //DispatchQueue.main.async {
-        //}
+        DispatchQueue.main.async {
+            UserDefaults.standard.heartRate = heart
+        }
     }
     
     func receivedHealthData(steps: Int) {
         // possibly not running on main thread here
         DispatchQueue.main.async {
-            self.stepsLabelOutlet.text = steps.description
+            UserDefaults.standard.stepsCount = steps
         }
     }
     

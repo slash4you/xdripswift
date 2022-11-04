@@ -27,8 +27,6 @@ class WebServerManager {
 
     private var webServer: GCDWebServer?
 
-    public let sharedUserDefaults: UserDefaults?
-
     private var backgroundTask : BackgroundTask?
 
     public weak var delegate: WebServerDelegateProtocol?
@@ -43,7 +41,6 @@ class WebServerManager {
         self.delegate = healthDelegate
         
         self.backgroundTask = BackgroundTask()
-        self.sharedUserDefaults = UserDefaults(suiteName: Bundle.main.appGroupSuiteName)
     }
     
     public func start() {
@@ -87,31 +84,35 @@ class WebServerManager {
                     trace("in webServer handler, invalid query type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                     return GCDWebServerErrorResponse(statusCode: 500)
                 }
-                
-                var json = Array<AnyObject>()
-                if let shared = self.sharedUserDefaults {
-                    if let sharedData = shared.data(forKey: "latestNightScoutReadings") {
-                        if let decoded = try? JSONSerialization.jsonObject(with: sharedData, options: []) {
-                            if let sgvs = decoded as? Array<AnyObject> {
+
+                // JSON serialization
+                var json = [AnyObject]()
+                if let dictionary = UserDefaults.standard.nightscoutReadings {
+                    if let jsonAsData = try? JSONSerialization.data(withJSONObject: dictionary) {
+                        if let jsonAsObject = try? JSONSerialization.jsonObject(with: jsonAsData, options: []) {
+                            if let sgvs = jsonAsObject as? [AnyObject] {
+                                // get only the last maxReadingsNumber readings
                                 for sgv in sgvs.prefix(maxReadingsNumber) {
                                     json.append(sgv)
                                 }
                             } else {
-                                trace("in webServer handler, invalid bgreading type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                                trace("in webServer handler, invalid json object type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                                 return GCDWebServerErrorResponse(statusCode: 500)
                             }
                         } else {
-                            trace("in webServer handler, invalid json data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                            trace("in webServer handler, json object serialization failed", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                             return GCDWebServerErrorResponse(statusCode: 500)
                         }
                     } else {
-                        trace("in webServer handler, invalid shared data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
+                        trace("in webServer handler, json data serialization failed", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                         return GCDWebServerErrorResponse(statusCode: 500)
                     }
                 } else {
                     trace("in webServer handler, invalid shared type", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
                     return GCDWebServerErrorResponse(statusCode: 500)
                 }
+
+                // Successfull response with serialized json data
                 return GCDWebServerDataResponse(jsonObject: json)
             })
 
@@ -137,14 +138,8 @@ class WebServerManager {
     }
 
     /// share latest readings with http clients
-    public func share(iob : Double) -> Void {
+    public func share() -> Void {
         
-        // unwrap sharedUserDefaults
-        guard let sharedUserDefaults = sharedUserDefaults else {
-            trace("in webServer share, invalid shared data", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
-            return
-        }
-
         // get last readings with calculated value
         let lastReadings = bgReadingsAccessor.getLatestBgReadings(limit: ConstantsWebServer.maxReadingsToUpload, howOld: ConstantsWebServer.maxBgReadingsDaysToUpload, forSensor: nil, ignoreRawData: false, ignoreCalculatedValue: false)
 
@@ -153,19 +148,15 @@ class WebServerManager {
             return
         }
 
-        // convert to json NightScout Share format
+        // convert to NightScout representation
         var dictionary = [Dictionary<String, Any>]()
         for reading in lastReadings {
             let representation = reading.dictionaryRepresentationForNightScoutUpload()
             dictionary.append(representation)
         }
-        
-        guard let data = try? JSONSerialization.data(withJSONObject: dictionary) else {
-            trace("in webServer share, json serialization failed", log: self.log, category: ConstantsLog.categoryWebServerController, type: .error)
-            return
-        }
-        
-        sharedUserDefaults.set(data, forKey: "latestNightScoutReadings")
+                
+        // share data
+        UserDefaults.standard.nightscoutReadings = dictionary
     }
 
     public func enableSuspension() {
