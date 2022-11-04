@@ -376,6 +376,14 @@ extension UserDefaults {
         /// - stored as data as read from transmitter
         case librePatchInfo = "librePatchInfo"
         
+        /// dictionary representation of nightscout readings to be shared  with Watch. This is the json representation
+        case nightscoutReadingsAsDictionary = "nightscoutReadingsAsDictionary"
+
+        /// heart rate value
+        case heartRateMeasure = "heartRateMeasure"
+        /// steps count value
+        case stepsCountMeasure = "stepsCountMeasure"
+
     }
     
     // MARK: - =====  User Configurable Settings ======
@@ -1946,6 +1954,34 @@ extension UserDefaults {
         }
     }
     
+    /// dictionary representation of nightscout readings to be shared  with Watch. This is not the json representation, it's an array of dictionary
+    var nightscoutReadings: [Dictionary<String, Any>]? {
+        get {
+            return object(forKey: Key.nightscoutReadingsAsDictionary.rawValue) as? [Dictionary<String, Any>]
+        }
+        set {
+            set(newValue, forKey: Key.nightscoutReadingsAsDictionary.rawValue)
+        }
+    }
+
+    var heartRate: Int {
+        get {
+            return integer(forKey: Key.heartRateMeasure.rawValue)
+        }
+        set {
+            set(newValue, forKey: Key.heartRateMeasure.rawValue)
+        }
+    }
+
+    var stepsCount: Int {
+        get {
+            return integer(forKey: Key.stepsCountMeasure.rawValue)
+        }
+        set {
+            set(newValue, forKey: Key.stepsCountMeasure.rawValue)
+        }
+    }
+
 }
 
 
