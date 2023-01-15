@@ -4857,7 +4857,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 4.10.5;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.health-slh.xdripswift.xDrip4iOS-WidgetKit";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-WidgetKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4889,7 +4889,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 4.10.5;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.health-slh.xdripswift.xDrip4iOS-WidgetKit";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-WidgetKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
