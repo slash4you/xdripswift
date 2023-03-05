@@ -129,6 +129,7 @@ class NovStateMachine {
                     trace("NFC : NovStateMachine.processPayload - AWAIT_LOG_DATA -> retrying...", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .error)
                     return Fsa(action: .WRITE_READ, data: Data())
                 }
+                
                 if (self.curSegmentCount != (msg.index() + msg.count())) {
                     
                     let doses : [NovInsulinDose] = msg.doses()
@@ -141,8 +142,18 @@ class NovStateMachine {
                         }
                     }
                     
-                    return Fsa(action: .WRITE_READ, data: msg.confirmedXfer())
+                    if (self.curInsulinDose >= ConstantsNovopen.maxDosesToDownload) {
+                        // abort requesting
+                        trace("NFC : NovStateMachine.processPayload - AWAIT_LOG_DATA -> MAX doses -> close connection", log: self.log, category: ConstantsLog.categoryNovopenStateMachine, type: .debug)
+                        state = state.next()
+                        return Fsa(action: .WRITE_READ, data: msg.closeDown())
+                    } else {
+                        // request next chunk
+                        return Fsa(action: .WRITE_READ, data: msg.confirmedXfer())
+                    }
                 }
+                
+                // only one chunk
                 let doses : [NovInsulinDose] = msg.doses()
                 if (doses.count > 0) {
                     for d in doses {
