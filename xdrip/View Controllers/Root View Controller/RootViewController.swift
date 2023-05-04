@@ -99,14 +99,8 @@ final class RootViewController: UIViewController {
     /// outlet for label that shows how many minutes ago and so on
     @IBOutlet weak var minutesLabelOutlet: UILabel!
     
-    @IBOutlet weak var minutesAgoLabelOutlet: UILabel!
-    
-    
     /// outlet for label that shows difference with previous reading
     @IBOutlet weak var diffLabelOutlet: UILabel!
-    
-    @IBOutlet weak var diffLabelUnitOutlet: UILabel!
-    
     
     /// outlet for label that shows the current reading
     @IBOutlet weak var valueLabelOutlet: UILabel!

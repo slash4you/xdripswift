@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		470824D2297484B500C52317 /* SwiftCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 470824D1297484B500C52317 /* SwiftCharts */; };
-		470824D3297484B500C52317 /* SwiftCharts in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 470824D1297484B500C52317 /* SwiftCharts */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0A2D3C6628D705F800D01D68 /* NovSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6528D705F800D01D68 /* NovSpecification.swift */; };
 		0A2D3C6828D70ED800D01D68 /* NovRelativeTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6728D70ED800D01D68 /* NovRelativeTime.swift */; };
 		0A2D3C6A28D710A800D01D68 /* NovModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D3C6928D710A800D01D68 /* NovModel.swift */; };
@@ -41,6 +39,7 @@
 		0A34D24228CDD4F2000DA716 /* NovInsulinDose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A34D24128CDD4F2000DA716 /* NovInsulinDose.swift */; };
 		0A364583284CDF8800BB90FE /* BackgroundTaskAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A364582284CDF8800BB90FE /* BackgroundTaskAudio.swift */; };
 		0A364585284CE1F800BB90FE /* blank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0A364584284CE1F800BB90FE /* blank.wav */; };
+		0A44E22E29B50DAB00C25B50 /* GCDWebServer in Frameworks */ = {isa = PBXBuildFile; productRef = 0A44E22D29B50DAB00C25B50 /* GCDWebServer */; };
 		0A478C6B290D22EE00A73294 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A478C6A290D22ED00A73294 /* WidgetKit.framework */; };
 		0A478C6D290D22EE00A73294 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A478C6C290D22EE00A73294 /* SwiftUI.framework */; };
 		0A478C70290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A478C6F290D22EE00A73294 /* xDrip4iOS_WidgetKit.swift */; };
@@ -57,6 +56,8 @@
 		0A99CFDE290E7BAF00CC676D /* ConstantsBloodGlucose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFDD290E7BAF00CC676D /* ConstantsBloodGlucose.swift */; };
 		0A99CFE0290E7BD200CC676D /* ConstantsBGGraphBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFDF290E7BD200CC676D /* ConstantsBGGraphBuilder.swift */; };
 		0A99CFE2290E7C5200CC676D /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99CFE1290E7C5200CC676D /* Date.swift */; };
+		470824D2297484B500C52317 /* SwiftCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 470824D1297484B500C52317 /* SwiftCharts */; };
+		470824D3297484B500C52317 /* SwiftCharts in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 470824D1297484B500C52317 /* SwiftCharts */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		470B618A270C448000561E56 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470B6188270C448000561E56 /* Interface.storyboard */; };
 		470B618C270C448100561E56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 470B618B270C448100561E56 /* Assets.xcassets */; };
 		470B6192270C448100561E56 /* Watch App WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 470B6191270C448100561E56 /* Watch App WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -1739,6 +1740,7 @@
 				470824D2297484B500C52317 /* SwiftCharts in Frameworks */,
 				4779BCEE2974306300515714 /* ActionClosurable in Frameworks */,
 				F821CF9722AE589E005C1E43 /* HealthKit.framework in Frameworks */,
+				0A44E22E29B50DAB00C25B50 /* GCDWebServer in Frameworks */,
 				4779BCF42974308F00515714 /* PieCharts in Frameworks */,
 				4779BCF12974307700515714 /* CryptoSwift in Frameworks */,
 			);
@@ -3482,6 +3484,7 @@
 				4779BCF02974307700515714 /* CryptoSwift */,
 				4779BCF32974308F00515714 /* PieCharts */,
 				470824D1297484B500C52317 /* SwiftCharts */,
+				0A44E22D29B50DAB00C25B50 /* GCDWebServer */,
 			);
 			productName = xdrip;
 			productReference = F8AC425A21ADEBD60078C348 /* xdrip.app */;
@@ -3555,6 +3558,7 @@
 				4779BCEC2974306300515714 /* XCRemoteSwiftPackageReference "ActionClosurable" */,
 				4779BCEF2974307700515714 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				4779BCF22974308F00515714 /* XCRemoteSwiftPackageReference "PieCharts" */,
+				0A44E22C29B50DAB00C25B50 /* XCRemoteSwiftPackageReference "GCDWebServer" */,
 			);
 			productRefGroup = F8AC425B21ADEBD60078C348 /* Products */;
 			projectDirPath = "";
@@ -4872,7 +4876,7 @@
 				CODE_SIGN_ENTITLEMENTS = "xDrip4iOS WidgetKitExtension.entitlements";
 				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_DEBUG)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4180;
+				CURRENT_PROJECT_VERSION = 4184;
 				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "xDrip4iOS WidgetKit/Info.plist";
@@ -4884,7 +4888,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.10.5;
+				MARKETING_VERSION = 4.11.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-WidgetKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4904,7 +4908,7 @@
 				CODE_SIGN_ENTITLEMENTS = "xDrip4iOS WidgetKitExtension.entitlements";
 				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_RELEASE)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4180;
+				CURRENT_PROJECT_VERSION = 4184;
 				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "xDrip4iOS WidgetKit/Info.plist";
@@ -4916,7 +4920,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.10.5;
+				MARKETING_VERSION = 4.11.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-WidgetKit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5051,9 +5055,9 @@
 			buildSettings = {
 				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_WIDGET_ENTITLEMENTS_DEBUG)";
-				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_DEBUG)";
-				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
-				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RDPG23HKPP;
 				INFOPLIST_FILE = "xDrip4iOS Widget/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5064,6 +5068,7 @@
 				MARKETING_VERSION = "$(XDRIP_MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5075,9 +5080,9 @@
 			buildSettings = {
 				APP_GROUP_IDENTIFIER = "group.${MAIN_APP_BUNDLE_IDENTIFIER}.loopkit.LoopGroup";
 				CODE_SIGN_ENTITLEMENTS = "$(XDRIP_WIDGET_ENTITLEMENTS_RELEASE)";
-				CODE_SIGN_IDENTITY = "$(XDRIP_CODE_SIGN_IDENTITY_RELEASE)";
-				CODE_SIGN_STYLE = "$(XDRIP_CODE_SIGN_STYLE)";
-				DEVELOPMENT_TEAM = "$(XDRIP_DEVELOPMENT_TEAM)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RDPG23HKPP;
 				INFOPLIST_FILE = "xDrip4iOS Widget/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5088,6 +5093,7 @@
 				MARKETING_VERSION = "$(XDRIP_MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MAIN_APP_BUNDLE_IDENTIFIER).xDrip4iOS-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5338,6 +5344,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0A44E22C29B50DAB00C25B50 /* XCRemoteSwiftPackageReference "GCDWebServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yene/GCDWebServer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.5.5;
+			};
+		};
 		4779BCE92974303400515714 /* XCRemoteSwiftPackageReference "SwiftCharts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivanschuetz/SwiftCharts";
@@ -5373,6 +5387,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0A44E22D29B50DAB00C25B50 /* GCDWebServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A44E22C29B50DAB00C25B50 /* XCRemoteSwiftPackageReference "GCDWebServer" */;
+			productName = GCDWebServer;
+		};
 		470824D1297484B500C52317 /* SwiftCharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4779BCE92974303400515714 /* XCRemoteSwiftPackageReference "SwiftCharts" */;
