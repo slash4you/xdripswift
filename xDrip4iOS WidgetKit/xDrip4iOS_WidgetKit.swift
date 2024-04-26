@@ -296,6 +296,7 @@ struct xDrip4iOS_WidgetKitEntryView : View {
         case .accessoryCircular:
             LabeledGauge(current: entry.glucose, since: entry.since, trend: entry.trend)
                 .privacySensitive()
+                .widgetBackground(Color(.gray).opacity(0.22))
         case .accessoryRectangular:
             HStack {
                 LabeledGauge(current: entry.glucose, since: entry.since, trend: entry.trend)
@@ -307,14 +308,12 @@ struct xDrip4iOS_WidgetKitEntryView : View {
                 }.offset(y:-10)
             }
             .privacySensitive()
+            .widgetBackground(Color(.gray).opacity(0.22))
         case .accessoryInline:
             Text("\(entry.glucose, specifier: "%.0f") \(entry.trend)  \(entry.delta, specifier: "%.0f")mg/dL \(-entry.since.timeIntervalSinceNow/60.0, specifier: "%.0f")m")
                 .privacySensitive()
+                .widgetBackground(Color(.gray).opacity(0.22))
         default:
-            ZStack {
-                ContainerRelativeShape()
-                    .inset(by: 0)
-                    .fill(Color(.gray).opacity(0.22))
                 VStack {
                     LabeledGauge(current: entry.glucose, since: entry.since, trend: entry.trend)
                     HStack {
@@ -327,7 +326,19 @@ struct xDrip4iOS_WidgetKitEntryView : View {
                     }
                     .privacySensitive()
                 }
+                .widgetBackground(Color(.gray).opacity(0.22))
+        }
+    }
+}
+
+extension View {
+    func widgetBackground(_ backgroundView: some View) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return containerBackground(for: .widget) {
+                backgroundView
             }
+        } else {
+            return background(backgroundView)
         }
     }
 }
@@ -342,7 +353,8 @@ struct xDrip4iOS_WidgetKit: Widget {
         }
         .configurationDisplayName("xDrip4iOS Widget")
         .description("Setup for xDrip4iOS app widgets.")
-        .supportedFamilies([.accessoryCircular,.accessoryRectangular, .accessoryInline, .systemSmall])
+        .supportedFamilies([.accessoryCircular,.accessoryRectangular, .accessoryInline, .systemSmall, .systemMedium])
+        .contentMarginsDisabled()
     }
 }
 
@@ -361,6 +373,9 @@ struct xDrip4iOS_WidgetKit_Previews: PreviewProvider {
             xDrip4iOS_WidgetKitEntryView(entry: SimpleEntry(date: Date(), glucose: 0.0, trend: "\u{2192}", delta: 0.0, since: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
                 .previewDisplayName("Small")
+            xDrip4iOS_WidgetKitEntryView(entry: SimpleEntry(date: Date(), glucose: 0.0, trend: "\u{2192}", delta: 0.0, since: Date()))
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+                .previewDisplayName("Medium")
         }
     }
 }
