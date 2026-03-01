@@ -33,12 +33,14 @@ extension XDripWatchComplication.Entry {
         var urgentHighLimitInMgDl: Double
         var keepAliveIsDisabled: Bool
         var liveDataIsEnabled: Bool
+        var sensorAgeInMinutes: Double
+        var sensorMaxAgeInMinutes: Double
         
         var bgUnitString: String
         var bgValueInMgDl: Double?
         var bgReadingDate: Date?
                 
-        init(bgReadingValues: [Double]? = nil, bgReadingDates: [Date]? = nil, isMgDl: Bool? = true, slopeOrdinal: Int? = 0, deltaValueInUserUnit: Double? = nil, urgentLowLimitInMgDl: Double? = 60, lowLimitInMgDl: Double? = 80, highLimitInMgDl: Double? = 180, urgentHighLimitInMgDl: Double? = 250, keepAliveIsDisabled: Bool? = false, remainingComplicationUserInfoTransfers: Int? = 99, liveDataIsEnabled: Bool? = false) {
+        init(bgReadingValues: [Double]? = nil, bgReadingDates: [Date]? = nil, isMgDl: Bool? = true, slopeOrdinal: Int? = 0, deltaValueInUserUnit: Double? = nil, urgentLowLimitInMgDl: Double? = 60, lowLimitInMgDl: Double? = 80, highLimitInMgDl: Double? = 180, urgentHighLimitInMgDl: Double? = 250, keepAliveIsDisabled: Bool? = false, remainingComplicationUserInfoTransfers: Int? = 99, liveDataIsEnabled: Bool? = false, sensorAgeInMinutes: Double? = 0, sensorMaxAgeInMinutes: Double? = 14400) {
             self.bgReadingValues = bgReadingValues
             self.bgReadingDates = bgReadingDates
             self.isMgDl = isMgDl ?? true
@@ -50,6 +52,8 @@ extension XDripWatchComplication.Entry {
             self.urgentHighLimitInMgDl = urgentHighLimitInMgDl ?? 250
             self.keepAliveIsDisabled = keepAliveIsDisabled ?? false
             self.liveDataIsEnabled = liveDataIsEnabled ?? false
+            self.sensorAgeInMinutes = sensorAgeInMinutes ?? 0
+            self.sensorMaxAgeInMinutes = sensorMaxAgeInMinutes ?? 14400
             
             self.bgValueInMgDl = (bgReadingValues?.count ?? 0) > 0 ? bgReadingValues?[0] : nil
             self.bgReadingDate = (bgReadingDates?.count ?? 0) > 0 ? bgReadingDates?[0] : nil
@@ -201,6 +205,55 @@ extension XDripWatchComplication.Entry {
             return (minValue, maxValue, nilValue, gaugeColor, Gradient(colors: colorArray))
         }
         
+        /// returns the sensor age formatted as days and hours (e.g. "9d 14h")
+        func sensorAgeString() -> String {
+            guard sensorAgeInMinutes > 0 else { return "---" }
+            let totalHours = Int(sensorAgeInMinutes) / 60
+            let days = totalHours / 24
+            let hours = totalHours % 24
+            if days > 0 {
+                return "\(days)d \(hours)h"
+            } else {
+                return "\(hours)h"
+            }
+        }
+        
+        /// returns the sensor time remaining formatted as days and hours (e.g. "4d 10h")
+        func sensorTimeRemainingString() -> String {
+            guard sensorAgeInMinutes > 0, sensorMaxAgeInMinutes > 0 else { return "---" }
+            let remainingMinutes = sensorMaxAgeInMinutes - sensorAgeInMinutes
+            guard remainingMinutes > 0 else { return Texts_WatchComplication.sensorExpired }
+            let totalHours = Int(remainingMinutes) / 60
+            let days = totalHours / 24
+            let hours = totalHours % 24
+            if days > 0 {
+                return "\(days)d \(hours)h"
+            } else {
+                return "\(hours)h"
+            }
+        }
+        
+        /// returns the sensor progress as a value between 0 and 1
+        func sensorProgress() -> Double {
+            guard sensorMaxAgeInMinutes > 0 else { return 0 }
+            return min(sensorAgeInMinutes / sensorMaxAgeInMinutes, 1.0)
+        }
+        
+        /// returns the color for the sensor age based on remaining time
+        func sensorAgeColor() -> Color {
+            guard sensorAgeInMinutes > 0, sensorMaxAgeInMinutes > 0 else { return .gray }
+            let remainingMinutes = sensorMaxAgeInMinutes - sensorAgeInMinutes
+            if remainingMinutes < 0 {
+                return ConstantsHomeView.sensorProgressExpiredSwiftUI
+            } else if remainingMinutes <= ConstantsHomeView.sensorProgressViewUrgentInMinutes {
+                return ConstantsHomeView.sensorProgressViewProgressColorUrgentSwiftUI
+            } else if remainingMinutes <= ConstantsHomeView.sensorProgressViewWarningInMinutes {
+                return ConstantsHomeView.sensorProgressViewProgressColorWarningSwiftUI
+            } else {
+                return ConstantsHomeView.sensorProgressNormalTextColorSwiftUI
+            }
+        }
+        
         func isSmallScreen() -> Bool {
             return (WKInterfaceDevice.current().screenBounds.size.width < ConstantsAppleWatch.pixelWidthLimitForSmallScreen) ? true : false
         }
@@ -224,6 +277,6 @@ extension XDripWatchComplication.Entry {
 
 extension XDripWatchComplication.Entry {
     static var placeholder: Self {
-        .init(date: .now, widgetState: WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, keepAliveIsDisabled: false, liveDataIsEnabled: true))
+        .init(date: .now, widgetState: WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, keepAliveIsDisabled: false, liveDataIsEnabled: true, sensorAgeInMinutes: 13500, sensorMaxAgeInMinutes: 14400))
     }
 }

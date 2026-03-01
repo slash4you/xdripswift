@@ -35,4 +35,20 @@ class Texts_WatchComplication {
     static let toEnable: String = {
         return NSLocalizedString("toEnable", tableName: filename, bundle: Bundle.main, value: "to enable", comment: "Watch complication - text for to enable")
     }()
+    
+    static let sensorAge: String = {
+        return NSLocalizedString("sensorAge", tableName: filename, bundle: Bundle.main, value: "Sensor Age", comment: "Watch complication - sensor age title")
+    }()
+    
+    static let sensorExpired: String = {
+        return NSLocalizedString("sensorExpired", tableName: filename, bundle: Bundle.main, value: "Expired", comment: "Watch complication - sensor expired text")
+    }()
+    
+    static let remaining: String = {
+        return NSLocalizedString("remaining", tableName: filename, bundle: Bundle.main, value: "left", comment: "Watch complication - remaining time label")
+    }()
+    
+    static let noSensor: String = {
+        return NSLocalizedString("noSensor", tableName: filename, bundle: Bundle.main, value: "No Sensor", comment: "Watch complication - no active sensor text")
+    }()
 }

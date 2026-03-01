@@ -481,7 +481,7 @@ final class WatchStateModel: NSObject, ObservableObject {
             date.timeIntervalSince1970
         }
         
-        let complicationSharedUserDefaultsModel = ComplicationSharedUserDefaultsModel(bgReadingValues: bgReadingValues, bgReadingDatesAsDouble: bgReadingDatesAsDouble, isMgDl: isMgDl, slopeOrdinal: slopeOrdinal, deltaValueInUserUnit: deltaValueInUserUnit, urgentLowLimitInMgDl: urgentLowLimitInMgDl, lowLimitInMgDl: lowLimitInMgDl, highLimitInMgDl: highLimitInMgDl, urgentHighLimitInMgDl: urgentHighLimitInMgDl, keepAliveIsDisabled: keepAliveIsDisabled, liveDataIsEnabled: liveDataIsEnabled)
+        let complicationSharedUserDefaultsModel = ComplicationSharedUserDefaultsModel(bgReadingValues: bgReadingValues, bgReadingDatesAsDouble: bgReadingDatesAsDouble, isMgDl: isMgDl, slopeOrdinal: slopeOrdinal, deltaValueInUserUnit: deltaValueInUserUnit, urgentLowLimitInMgDl: urgentLowLimitInMgDl, lowLimitInMgDl: lowLimitInMgDl, highLimitInMgDl: highLimitInMgDl, urgentHighLimitInMgDl: urgentHighLimitInMgDl, keepAliveIsDisabled: keepAliveIsDisabled, liveDataIsEnabled: liveDataIsEnabled, sensorAgeInMinutes: sensorAgeInMinutes, sensorMaxAgeInMinutes: sensorMaxAgeInMinutes)
         
         // store the model in the shared user defaults using a name that is uniquely specific to this copy of the app as installed on
         // the user's device - this allows several copies of the app to be installed without cross-contamination of widget/complication data

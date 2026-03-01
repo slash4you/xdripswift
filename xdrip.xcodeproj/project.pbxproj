@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2DF5952F54986C00F8629A /* SensorAgeComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5942F54986C00F8629A /* SensorAgeComplication.swift */; };
+		0A2DF5972F54987500F8629A /* SensorAgeComplication+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5962F54987500F8629A /* SensorAgeComplication+Entry.swift */; };
+		0A2DF5992F54988100F8629A /* SensorAgeComplication+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5982F54988100F8629A /* SensorAgeComplication+Provider.swift */; };
+		0A2DF59B2F54988800F8629A /* SensorAgeComplication+EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF59A2F54988800F8629A /* SensorAgeComplication+EntryView.swift */; };
+		0A2DF59D2F54989700F8629A /* SensorAgeAccessoryCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF59C2F54989700F8629A /* SensorAgeAccessoryCircularView.swift */; };
+		0A2DF59F2F5498A200F8629A /* SensorAgeAccessoryRectangularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF59E2F5498A200F8629A /* SensorAgeAccessoryRectangularView.swift */; };
+		0A2DF5A12F5498AC00F8629A /* SensorAgeAccessoryCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5A02F5498AC00F8629A /* SensorAgeAccessoryCornerView.swift */; };
+		0A2DF5A32F5498B100F8629A /* SensorAgeAccessoryInlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DF5A22F5498B100F8629A /* SensorAgeAccessoryInlineView.swift */; };
 		47037B8E2C072346000BD6BD /* ConstantsAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88EC279260120C000DF0EAF /* ConstantsAlerts.swift */; };
 		47037B8F2C072973000BD6BD /* ConstantsAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88EC279260120C000DF0EAF /* ConstantsAlerts.swift */; };
 		47037B902C072974000BD6BD /* ConstantsAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88EC279260120C000DF0EAF /* ConstantsAlerts.swift */; };
@@ -793,6 +801,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A2DF5942F54986C00F8629A /* SensorAgeComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorAgeComplication.swift; sourceTree = "<group>"; };
+		0A2DF5962F54987500F8629A /* SensorAgeComplication+Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorAgeComplication+Entry.swift"; sourceTree = "<group>"; };
+		0A2DF5982F54988100F8629A /* SensorAgeComplication+Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorAgeComplication+Provider.swift"; sourceTree = "<group>"; };
+		0A2DF59A2F54988800F8629A /* SensorAgeComplication+EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SensorAgeComplication+EntryView.swift"; sourceTree = "<group>"; };
+		0A2DF59C2F54989700F8629A /* SensorAgeAccessoryCircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorAgeAccessoryCircularView.swift; sourceTree = "<group>"; };
+		0A2DF59E2F5498A200F8629A /* SensorAgeAccessoryRectangularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorAgeAccessoryRectangularView.swift; sourceTree = "<group>"; };
+		0A2DF5A02F5498AC00F8629A /* SensorAgeAccessoryCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorAgeAccessoryCornerView.swift; sourceTree = "<group>"; };
+		0A2DF5A22F5498B100F8629A /* SensorAgeAccessoryInlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorAgeAccessoryInlineView.swift; sourceTree = "<group>"; };
 		198D44C4260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Alerts.strings; sourceTree = "<group>"; };
 		198D44C5260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/AlertTypesSettingsView.strings; sourceTree = "<group>"; };
 		198D44C6260A3A3300A2B4A2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BluetoothPeripheralsView.strings; sourceTree = "<group>"; };
@@ -1909,6 +1925,10 @@
 				4746066C2B9618B800AC9214 /* AccessoryCornerView.swift */,
 				4746066E2B9618FD00AC9214 /* AccessoryInlineView.swift */,
 				474606682B9616AA00AC9214 /* AccessoryRectangularView.swift */,
+				0A2DF59C2F54989700F8629A /* SensorAgeAccessoryCircularView.swift */,
+				0A2DF59E2F5498A200F8629A /* SensorAgeAccessoryRectangularView.swift */,
+				0A2DF5A02F5498AC00F8629A /* SensorAgeAccessoryCornerView.swift */,
+				0A2DF5A22F5498B100F8629A /* SensorAgeAccessoryInlineView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1986,6 +2006,10 @@
 				474606662B95F12A00AC9214 /* DataModels */,
 				476FA90F2BDC1FE30091866C /* Texts */,
 				474606672B96168A00AC9214 /* Views */,
+				0A2DF5942F54986C00F8629A /* SensorAgeComplication.swift */,
+				0A2DF5962F54987500F8629A /* SensorAgeComplication+Entry.swift */,
+				0A2DF5982F54988100F8629A /* SensorAgeComplication+Provider.swift */,
+				0A2DF59A2F54988800F8629A /* SensorAgeComplication+EntryView.swift */,
 			);
 			path = "xDrip Watch Complication";
 			sourceTree = "<group>";
@@ -3998,14 +4022,19 @@
 				478A92642B8FBEBF0084C394 /* TextsHomeView.swift in Sources */,
 				474606652B95E48D00AC9214 /* ComplicationSharedUserDefaultsModel.swift in Sources */,
 				478A92662B90AB230084C394 /* GlucoseChartType.swift in Sources */,
+				0A2DF59F2F5498A200F8629A /* SensorAgeAccessoryRectangularView.swift in Sources */,
+				0A2DF5A32F5498B100F8629A /* SensorAgeAccessoryInlineView.swift in Sources */,
+				0A2DF5A12F5498AC00F8629A /* SensorAgeAccessoryCornerView.swift in Sources */,
 				478A92632B8FB5490084C394 /* XDripWatchComplication+Provider.swift in Sources */,
 				478A92592B8FA1F20084C394 /* Double.swift in Sources */,
 				4746066F2B9618FD00AC9214 /* AccessoryInlineView.swift in Sources */,
 				4715C3302C9ED5E10052215F /* LiveActivityType.swift in Sources */,
 				474606892B9637F600AC9214 /* TextsSettingsView.swift in Sources */,
 				47EDD15A2BE01E9000C5A286 /* ConstantsWatchComplication.swift in Sources */,
+				0A2DF59B2F54988800F8629A /* SensorAgeComplication+EntryView.swift in Sources */,
 				478A923E2B8B64DE0084C394 /* ConstantsHomeView.swift in Sources */,
 				4796C6072B9516FD00DE2210 /* Bundle.swift in Sources */,
+				0A2DF5972F54987500F8629A /* SensorAgeComplication+Entry.swift in Sources */,
 				47E91BBA2B9A43F20063181B /* FollowerBackgroundKeepAliveType.swift in Sources */,
 				476FA90E2BDC1EF80091866C /* TextsWatchComplication.swift in Sources */,
 				478A92582B8FA1F20084C394 /* Date.swift in Sources */,
@@ -4013,9 +4042,12 @@
 				4713B0142BBAB12D009F2838 /* ConstantsAppleWatch.swift in Sources */,
 				478A925F2B8FB5290084C394 /* XDripWatchComplication+Entry.swift in Sources */,
 				478A925A2B8FA27D0084C394 /* TextsCommon.swift in Sources */,
+				0A2DF59D2F54989700F8629A /* SensorAgeAccessoryCircularView.swift in Sources */,
 				4746068C2B96380200AC9214 /* ConstantsLibreLinkUp.swift in Sources */,
+				0A2DF5992F54988100F8629A /* SensorAgeComplication+Provider.swift in Sources */,
 				478A925D2B8FA6D30084C394 /* ConstantsUI.swift in Sources */,
 				474606692B9616AA00AC9214 /* AccessoryRectangularView.swift in Sources */,
+				0A2DF5952F54986C00F8629A /* SensorAgeComplication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

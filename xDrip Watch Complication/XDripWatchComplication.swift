@@ -10,6 +10,13 @@ import WidgetKit
 import SwiftUI
 
 @main
+struct XDripWatchComplicationBundle: WidgetBundle {
+    var body: some Widget {
+        XDripWatchComplication()
+        SensorAgeComplication()
+    }
+}
+
 struct XDripWatchComplication: Widget {
     let kind: String = "xDripWatchComplication"
 
