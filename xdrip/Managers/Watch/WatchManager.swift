@@ -168,6 +168,28 @@ final class WatchManager: NSObject, ObservableObject {
             watchState.deviceStatusLastLoopDate = nil
         }
         
+        // calculate TIR over the last 24 hours using the low/high limits in mg/dL
+        let tirReadings = bgReadingsAccessor.getLatestBgReadings(limit: nil, fromDate: .now.addingTimeInterval(-3600 * 24), forSensor: nil, ignoreRawData: true, ignoreCalculatedValue: false)
+        
+        let lowLimitInMgDl = UserDefaults.standard.lowMarkValue
+        let highLimitInMgDl = UserDefaults.standard.highMarkValue
+        
+        let validTIRReadings = tirReadings.filter { $0.calculatedValue > 0 && $0.calculatedValue >= 39 && $0.calculatedValue <= 450 }
+        
+        if validTIRReadings.count > 0 {
+            let totalCount = validTIRReadings.count
+            let lowCount = validTIRReadings.filter { $0.calculatedValue < lowLimitInMgDl }.count
+            let highCount = validTIRReadings.filter { $0.calculatedValue > highLimitInMgDl }.count
+            
+            watchState.timeBelowRangeValue = Double((lowCount * 200) / (totalCount * 2))
+            watchState.timeAboveRangeValue = Double((highCount * 200) / (totalCount * 2))
+            watchState.timeInRangeValue = 100 - (watchState.timeBelowRangeValue ?? 0) - (watchState.timeAboveRangeValue ?? 0)
+        } else {
+            watchState.timeInRangeValue = nil
+            watchState.timeBelowRangeValue = nil
+            watchState.timeAboveRangeValue = nil
+        }
+        
         watchState.remainingComplicationUserInfoTransfers = session.remainingComplicationUserInfoTransfers
         
         sendStateToWatch(forceComplicationUpdate: false)

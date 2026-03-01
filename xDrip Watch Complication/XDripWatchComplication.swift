@@ -14,6 +14,7 @@ struct XDripWatchComplicationBundle: WidgetBundle {
     var body: some Widget {
         XDripWatchComplication()
         SensorAgeComplication()
+        TimeInRangeComplication()
     }
 }
 

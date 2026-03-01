@@ -1,5 +1,5 @@
 //
-//  SensorAgeComplication+Provider.swift
+//  TimeInRangeComplication+Provider.swift
 //  xDrip Watch Complication Extension
 //
 //  Created by Claude on 1/3/26.
@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 import Foundation
 
-extension SensorAgeComplication {
+extension TimeInRangeComplication {
     struct Provider: TimelineProvider {
         
         func placeholder(in context: Context) -> Entry {
@@ -31,7 +31,7 @@ extension SensorAgeComplication {
 
 // MARK: - Helpers
 
-extension SensorAgeComplication.Provider {
+extension TimeInRangeComplication.Provider {
     func getWidgetStateFromSharedUserDefaults() -> XDripWatchComplication.Entry.WidgetState? {
         guard let sharedUserDefaults = UserDefaults(suiteName: Bundle.main.appGroupSuiteName) else { return nil }
         
@@ -57,6 +57,6 @@ extension SensorAgeComplication.Provider {
     }
     
     private var sampleWidgetState: XDripWatchComplication.Entry.WidgetState {
-        return XDripWatchComplication.Entry.WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, liveDataIsEnabled: true, sensorAgeInMinutes: 13500, sensorMaxAgeInMinutes: 14400)
+        return XDripWatchComplication.Entry.WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, liveDataIsEnabled: true, timeInRangeValue: 85, timeBelowRangeValue: 5, timeAboveRangeValue: 10)
     }
 }

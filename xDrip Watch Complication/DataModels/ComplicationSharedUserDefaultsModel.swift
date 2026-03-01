@@ -23,4 +23,7 @@ struct ComplicationSharedUserDefaultsModel: Codable {
     var liveDataIsEnabled: Bool
     var sensorAgeInMinutes: Double
     var sensorMaxAgeInMinutes: Double
+    var timeInRangeValue: Double
+    var timeBelowRangeValue: Double
+    var timeAboveRangeValue: Double
 }

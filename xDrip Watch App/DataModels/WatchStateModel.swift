@@ -57,6 +57,11 @@ final class WatchStateModel: NSObject, ObservableObject {
     @Published var requestingDataIconColor: Color = ConstantsAppleWatch.requestingDataIconColorInactive
     @Published var lastComplicationUpdateTimeStamp: Date = .distantPast
     
+    // time in range statistics (24h)
+    @Published var timeInRangeValue: Double = 0
+    @Published var timeBelowRangeValue: Double = 0
+    @Published var timeAboveRangeValue: Double = 0
+    
     // use this to track the AID/looping status
     @Published var deviceStatusIOB: Double = 0
     @Published var deviceStatusCOB: Double = 0
@@ -444,6 +449,10 @@ final class WatchStateModel: NSObject, ObservableObject {
             remainingComplicationUserInfoTransfers = dictionary["remainingComplicationUserInfoTransfers"] as? Int ?? 99
             liveDataIsEnabled = dictionary["liveDataIsEnabled"] as? Bool ?? false
             
+            timeInRangeValue = dictionary["timeInRangeValue"] as? Double ?? 0
+            timeBelowRangeValue = dictionary["timeBelowRangeValue"] as? Double ?? 0
+            timeAboveRangeValue = dictionary["timeAboveRangeValue"] as? Double ?? 0
+            
             if let lastLoopDateAsDouble = dictionary["deviceStatusLastLoopDate"] as? Double {
                 deviceStatusLastLoopDate = Date(timeIntervalSince1970: lastLoopDateAsDouble)
             } else {
@@ -481,7 +490,7 @@ final class WatchStateModel: NSObject, ObservableObject {
             date.timeIntervalSince1970
         }
         
-        let complicationSharedUserDefaultsModel = ComplicationSharedUserDefaultsModel(bgReadingValues: bgReadingValues, bgReadingDatesAsDouble: bgReadingDatesAsDouble, isMgDl: isMgDl, slopeOrdinal: slopeOrdinal, deltaValueInUserUnit: deltaValueInUserUnit, urgentLowLimitInMgDl: urgentLowLimitInMgDl, lowLimitInMgDl: lowLimitInMgDl, highLimitInMgDl: highLimitInMgDl, urgentHighLimitInMgDl: urgentHighLimitInMgDl, keepAliveIsDisabled: keepAliveIsDisabled, liveDataIsEnabled: liveDataIsEnabled, sensorAgeInMinutes: sensorAgeInMinutes, sensorMaxAgeInMinutes: sensorMaxAgeInMinutes)
+        let complicationSharedUserDefaultsModel = ComplicationSharedUserDefaultsModel(bgReadingValues: bgReadingValues, bgReadingDatesAsDouble: bgReadingDatesAsDouble, isMgDl: isMgDl, slopeOrdinal: slopeOrdinal, deltaValueInUserUnit: deltaValueInUserUnit, urgentLowLimitInMgDl: urgentLowLimitInMgDl, lowLimitInMgDl: lowLimitInMgDl, highLimitInMgDl: highLimitInMgDl, urgentHighLimitInMgDl: urgentHighLimitInMgDl, keepAliveIsDisabled: keepAliveIsDisabled, liveDataIsEnabled: liveDataIsEnabled, sensorAgeInMinutes: sensorAgeInMinutes, sensorMaxAgeInMinutes: sensorMaxAgeInMinutes, timeInRangeValue: timeInRangeValue, timeBelowRangeValue: timeBelowRangeValue, timeAboveRangeValue: timeAboveRangeValue)
         
         // store the model in the shared user defaults using a name that is uniquely specific to this copy of the app as installed on
         // the user's device - this allows several copies of the app to be installed without cross-contamination of widget/complication data

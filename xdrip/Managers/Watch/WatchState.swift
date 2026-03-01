@@ -34,6 +34,11 @@ struct WatchState: Codable {
     var liveDataIsEnabled: Bool?
     var remainingComplicationUserInfoTransfers: Int?
     
+    // time in range statistics (24h)
+    var timeInRangeValue: Double?
+    var timeBelowRangeValue: Double?
+    var timeAboveRangeValue: Double?
+    
     // use this to track the AID/looping status if sent
     var deviceStatusCreatedAt: Double?
     var deviceStatusLastLoopDate: Double?

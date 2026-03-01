@@ -35,12 +35,15 @@ extension XDripWatchComplication.Entry {
         var liveDataIsEnabled: Bool
         var sensorAgeInMinutes: Double
         var sensorMaxAgeInMinutes: Double
+        var timeInRangeValue: Double
+        var timeBelowRangeValue: Double
+        var timeAboveRangeValue: Double
         
         var bgUnitString: String
         var bgValueInMgDl: Double?
         var bgReadingDate: Date?
                 
-        init(bgReadingValues: [Double]? = nil, bgReadingDates: [Date]? = nil, isMgDl: Bool? = true, slopeOrdinal: Int? = 0, deltaValueInUserUnit: Double? = nil, urgentLowLimitInMgDl: Double? = 60, lowLimitInMgDl: Double? = 80, highLimitInMgDl: Double? = 180, urgentHighLimitInMgDl: Double? = 250, keepAliveIsDisabled: Bool? = false, remainingComplicationUserInfoTransfers: Int? = 99, liveDataIsEnabled: Bool? = false, sensorAgeInMinutes: Double? = 0, sensorMaxAgeInMinutes: Double? = 14400) {
+        init(bgReadingValues: [Double]? = nil, bgReadingDates: [Date]? = nil, isMgDl: Bool? = true, slopeOrdinal: Int? = 0, deltaValueInUserUnit: Double? = nil, urgentLowLimitInMgDl: Double? = 60, lowLimitInMgDl: Double? = 80, highLimitInMgDl: Double? = 180, urgentHighLimitInMgDl: Double? = 250, keepAliveIsDisabled: Bool? = false, remainingComplicationUserInfoTransfers: Int? = 99, liveDataIsEnabled: Bool? = false, sensorAgeInMinutes: Double? = 0, sensorMaxAgeInMinutes: Double? = 14400, timeInRangeValue: Double? = 0, timeBelowRangeValue: Double? = 0, timeAboveRangeValue: Double? = 0) {
             self.bgReadingValues = bgReadingValues
             self.bgReadingDates = bgReadingDates
             self.isMgDl = isMgDl ?? true
@@ -54,6 +57,9 @@ extension XDripWatchComplication.Entry {
             self.liveDataIsEnabled = liveDataIsEnabled ?? false
             self.sensorAgeInMinutes = sensorAgeInMinutes ?? 0
             self.sensorMaxAgeInMinutes = sensorMaxAgeInMinutes ?? 14400
+            self.timeInRangeValue = timeInRangeValue ?? 0
+            self.timeBelowRangeValue = timeBelowRangeValue ?? 0
+            self.timeAboveRangeValue = timeAboveRangeValue ?? 0
             
             self.bgValueInMgDl = (bgReadingValues?.count ?? 0) > 0 ? bgReadingValues?[0] : nil
             self.bgReadingDate = (bgReadingDates?.count ?? 0) > 0 ? bgReadingDates?[0] : nil
@@ -254,6 +260,37 @@ extension XDripWatchComplication.Entry {
             }
         }
         
+        /// returns the time in range color based on the percentage
+        func timeInRangeColor() -> Color {
+            if timeInRangeValue >= 70 {
+                return .green
+            } else if timeInRangeValue >= 50 {
+                return .yellow
+            } else if timeInRangeValue > 0 {
+                return .orange
+            } else {
+                return .gray
+            }
+        }
+        
+        /// returns time in range formatted as a percentage string (e.g. "85%")
+        func timeInRangeString() -> String {
+            guard timeInRangeValue > 0 else { return "---" }
+            return "\(Int(timeInRangeValue))%"
+        }
+        
+        /// returns time below range formatted as a percentage string
+        func timeBelowRangeString() -> String {
+            guard timeBelowRangeValue > 0 || timeInRangeValue > 0 else { return "---" }
+            return "\(Int(timeBelowRangeValue))%"
+        }
+        
+        /// returns time above range formatted as a percentage string
+        func timeAboveRangeString() -> String {
+            guard timeAboveRangeValue > 0 || timeInRangeValue > 0 else { return "---" }
+            return "\(Int(timeAboveRangeValue))%"
+        }
+        
         func isSmallScreen() -> Bool {
             return (WKInterfaceDevice.current().screenBounds.size.width < ConstantsAppleWatch.pixelWidthLimitForSmallScreen) ? true : false
         }
@@ -277,6 +314,6 @@ extension XDripWatchComplication.Entry {
 
 extension XDripWatchComplication.Entry {
     static var placeholder: Self {
-        .init(date: .now, widgetState: WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, keepAliveIsDisabled: false, liveDataIsEnabled: true, sensorAgeInMinutes: 13500, sensorMaxAgeInMinutes: 14400))
+        .init(date: .now, widgetState: WidgetState(bgReadingValues: ConstantsWatchComplication.bgReadingValuesPlaceholderData, bgReadingDates: ConstantsWatchComplication.bgReadingDatesPlaceholderData(), isMgDl: true, slopeOrdinal: 4, deltaValueInUserUnit: 0, urgentLowLimitInMgDl: 70, lowLimitInMgDl: 90, highLimitInMgDl: 140, urgentHighLimitInMgDl: 180, keepAliveIsDisabled: false, liveDataIsEnabled: true, sensorAgeInMinutes: 13500, sensorMaxAgeInMinutes: 14400, timeInRangeValue: 85, timeBelowRangeValue: 5, timeAboveRangeValue: 10))
     }
 }

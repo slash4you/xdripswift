@@ -51,4 +51,24 @@ class Texts_WatchComplication {
     static let noSensor: String = {
         return NSLocalizedString("noSensor", tableName: filename, bundle: Bundle.main, value: "No Sensor", comment: "Watch complication - no active sensor text")
     }()
+    
+    static let timeInRange: String = {
+        return NSLocalizedString("timeInRange", tableName: filename, bundle: Bundle.main, value: "Time In Range", comment: "Watch complication - time in range title")
+    }()
+    
+    static let tirShort: String = {
+        return NSLocalizedString("tirShort", tableName: filename, bundle: Bundle.main, value: "TIR", comment: "Watch complication - time in range short label")
+    }()
+    
+    static let low: String = {
+        return NSLocalizedString("low", tableName: filename, bundle: Bundle.main, value: "Low", comment: "Watch complication - low label")
+    }()
+    
+    static let high: String = {
+        return NSLocalizedString("high", tableName: filename, bundle: Bundle.main, value: "High", comment: "Watch complication - high label")
+    }()
+    
+    static let noData: String = {
+        return NSLocalizedString("noData", tableName: filename, bundle: Bundle.main, value: "No Data", comment: "Watch complication - no data text")
+    }()
 }
