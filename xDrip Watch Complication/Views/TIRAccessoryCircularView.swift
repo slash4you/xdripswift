@@ -16,9 +16,13 @@ extension TimeInRangeComplication.EntryView {
             Gauge(value: entry.widgetState.timeInRangeValue / 100) {
                 Text("Not shown")
             } currentValueLabel: {
-                VStack(spacing: -2) {
+                VStack(spacing: -6) {
+                    Text("%")
+                        .font(.system(size: 10))
+                        .minimumScaleFactor(0.2)
+                        .lineLimit(1)
                     Text("\(Int(entry.widgetState.timeInRangeValue))")
-                        .font(.system(size: 16)).bold()
+                        .font(.system(size: 18)).bold()
                         .minimumScaleFactor(0.2)
                         .lineLimit(1)
                 }

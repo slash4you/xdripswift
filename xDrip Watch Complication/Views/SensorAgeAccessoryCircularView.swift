@@ -16,7 +16,7 @@ extension SensorAgeComplication.EntryView {
             Gauge(value: entry.widgetState.sensorProgress()) {
                 Text("Not shown")
             } currentValueLabel: {
-                VStack(spacing: -2) {
+                VStack(spacing: -4) {
                     Text(sensorAgeDaysString())
                         .font(.system(size: 14)).bold()
                         .minimumScaleFactor(0.2)
