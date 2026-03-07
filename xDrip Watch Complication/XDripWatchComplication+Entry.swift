@@ -75,7 +75,7 @@ extension XDripWatchComplication.Entry {
                 if bgValueInMgDl >= 400 {
                     returnValue = Texts_Common.HIGH
                 } else if bgValueInMgDl >= 40 {
-                    returnValue = bgValueInMgDl.mgDlToMmolAndToString(mgDl: isMgDl)
+                    returnValue = bgValueInMgDl.mgDlToMmolAndToString(mgDl: isMgDl)+trendArrow()
                 } else if bgValueInMgDl > 12 {
                     returnValue = Texts_Common.LOW
                 } else {

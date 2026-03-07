@@ -21,10 +21,6 @@ extension TimeInRangeComplication.EntryView {
                         .font(.system(size: 16)).bold()
                         .minimumScaleFactor(0.2)
                         .lineLimit(1)
-                    Text("%")
-                        .font(.system(size: 10))
-                        .minimumScaleFactor(0.2)
-                        .lineLimit(1)
                 }
             } minimumValueLabel: {
                 Text("0")
