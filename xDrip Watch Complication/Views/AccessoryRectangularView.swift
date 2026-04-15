@@ -66,36 +66,40 @@ extension XDripWatchComplication.EntryView {
                     .foregroundStyle(.teal)
                     .padding(0)
                     
-                    Text(Texts_WatchComplication.goTo)
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14))
-                        .foregroundStyle(.colorPrimary)
-                    
-                    + Text(" \(ConstantsHomeView.applicationName)")
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14)).bold()
-                        .foregroundStyle(.white)
-                    
-                    + Text(" -> ")
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14))
-                        .foregroundStyle(.colorPrimary)
-                    
-                    + Text(Texts_WatchComplication.settings)
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14)).bold()
-                        .foregroundStyle(.white)
-                    
-                    + Text(" -> ")
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14))
-                        .foregroundStyle(.colorPrimary)
-                    
-                    + Text(Texts_WatchComplication.appleWatch + " ")
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14)).bold()
-                        .foregroundStyle(.white)
-                    
-                    + Text(Texts_WatchComplication.toEnable)
-                        .font(.system(size: entry.widgetState.isSmallScreen() ? 10 : 14))
-                        .foregroundStyle(.colorPrimary)
+                    accessoryRectangularDisabledText
                 }
             }
         }
         .widgetBackground(backgroundView: Color.clear)
+    }
+
+    private var accessoryRectangularDisabledText: Text {
+        let fontSize: CGFloat = entry.widgetState.isSmallScreen() ? 10 : 14
+        let primaryFont = Font.system(size: fontSize)
+        let boldFont = Font.system(size: fontSize).bold()
+
+        let goTo = Text(Texts_WatchComplication.goTo)
+            .font(primaryFont)
+            .foregroundStyle(.colorPrimary)
+        let appName = Text(ConstantsHomeView.applicationName)
+            .font(boldFont)
+            .foregroundStyle(.white)
+        let arrow1 = Text(" -> ")
+            .font(primaryFont)
+            .foregroundStyle(.colorPrimary)
+        let settings = Text(Texts_WatchComplication.settings)
+            .font(boldFont)
+            .foregroundStyle(.white)
+        let arrow2 = Text(" -> ")
+            .font(primaryFont)
+            .foregroundStyle(.colorPrimary)
+        let appleWatch = Text(Texts_WatchComplication.appleWatch + " ")
+            .font(boldFont)
+            .foregroundStyle(.white)
+        let toEnable = Text(Texts_WatchComplication.toEnable)
+            .font(primaryFont)
+            .foregroundStyle(.colorPrimary)
+
+        return goTo + appName + arrow1 + settings + arrow2 + appleWatch + toEnable
     }
 }
